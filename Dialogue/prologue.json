@@ -1,0 +1,514 @@
+[
+  {
+    "id": "prologue_epigraph",
+    "type": "Epigraph",
+    "speaker": "",
+    "text": "篱门是蜘蛛的家，\n土墙是薜荔的家，\n枝繁叶茂的果树是鸟雀的家。",
+    "nextId": "barrel_days"
+  },
+  {
+    "id": "barrel_days",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "……这是第几天了，十三天吗，还是十四天。",
+    "illustrationId": "prologue.barrel.dark",
+    "nextId": "barrel_fruit"
+  },
+  {
+    "id": "barrel_fruit",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "逃走那晚，就不该在身下塞这么多水果。",
+    "nextId": "barrel_fruit_jam"
+  },
+  {
+    "id": "barrel_fruit_jam",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "我的下半身都快被果酱腌入味了。",
+    "nextId": "barrel_regret"
+  },
+  {
+    "id": "barrel_regret",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "唉，我真是个傻逼。与其在这桶里憋屈死，还不如回到那船上。",
+    "nextId": "barrel_pause"
+  },
+  {
+    "id": "barrel_pause",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "……",
+    "nextId": "barrel_startled"
+  },
+  {
+    "id": "barrel_startled",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "？！",
+    "nextId": "outside_fragment"
+  },
+  {
+    "id": "outside_fragment",
+    "type": "Dialogue",
+    "speaker": "？？？（桶外）",
+    "text": "…温生…...这…….",
+    "nextId": "outside_call_for_net"
+  },
+  {
+    "id": "outside_call_for_net",
+    "type": "Dialogue",
+    "speaker": "？？？（桶外）",
+    "text": "……快看……桶……………拿网……",
+    "nextId": "barrel_lifted"
+  },
+  {
+    "id": "barrel_lifted",
+    "type": "Narration",
+    "speaker": "",
+    "text": "四周开始剧烈摇晃，木桶似乎被人从海里拖起。",
+    "nextId": "outside_heavy"
+  },
+  {
+    "id": "outside_heavy",
+    "type": "Dialogue",
+    "speaker": "？？？（桶外）",
+    "text": "哇，好沉……我们怕不是捞到宝了。",
+    "nextId": "barrel_lid_opened"
+  },
+  {
+    "id": "barrel_lid_opened",
+    "type": "Narration",
+    "speaker": "",
+    "text": "头顶的桶盖被掀开，一束刺眼的光照进来。",
+    "illustrationId": "prologue.barrel.crew",
+    "nextId": "aier_handle_carefully"
+  },
+  {
+    "id": "aier_handle_carefully",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "嘿，动作小心点，别把里面的宝贝弄坏了。",
+    "nextId": "wuzuona_make_room"
+  },
+  {
+    "id": "wuzuona_make_room",
+    "type": "Dialogue",
+    "speaker": "乌佐娜",
+    "text": "臭竿子往后站站！我看不见了。",
+    "nextId": "wensheng_shoved"
+  },
+  {
+    "id": "wensheng_shoved",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "别推别推！我要掉进去了！..…..呕！",
+    "nextId": "kuxin_smell"
+  },
+  {
+    "id": "kuxin_smell",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "天哪…这是什么味道。你们把别人的腌菜桶捞上来了吗？",
+    "nextId": "crew_silence"
+  },
+  {
+    "id": "crew_silence",
+    "type": "Dialogue",
+    "speaker": "众人",
+    "text": "…………",
+    "nextId": "wensheng_mermaid"
+  },
+  {
+    "id": "wensheng_mermaid",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "阳，这不是你心心念念的美人鱼吗？",
+    "nextId": "yang_throw_back"
+  },
+  {
+    "id": "yang_throw_back",
+    "type": "Dialogue",
+    "speaker": "阳",
+    "text": "呃，要不我们还是把他丢回海里吧？连着桶一起。",
+    "nextId": "kuxin_ruined_food"
+  },
+  {
+    "id": "kuxin_ruined_food",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "先别丢。桶下面的食物都让他糟蹋了。",
+    "nextId": "yang_why_wait"
+  },
+  {
+    "id": "yang_why_wait",
+    "type": "Dialogue",
+    "speaker": "阳",
+    "text": "所以呢？",
+    "nextId": "kuxin_inspect_food"
+  },
+  {
+    "id": "kuxin_inspect_food",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "至少得先把人弄出来，我要看看还能剩下多少。",
+    "nextId": "bahda_clear_space"
+  },
+  {
+    "id": "bahda_clear_space",
+    "type": "Dialogue",
+    "speaker": "巴赫炟",
+    "text": "都先让开。别围着他了。",
+    "nextId": "crew_steps_back"
+  },
+  {
+    "id": "crew_steps_back",
+    "type": "Narration",
+    "speaker": "",
+    "text": "众人稍稍散开。",
+    "nextId": "aier_climb_out"
+  },
+  {
+    "id": "aier_climb_out",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "来，孩子。能自己出来吗？",
+    "nextId": "inor_reaches_deck"
+  },
+  {
+    "id": "inor_reaches_deck",
+    "type": "Narration",
+    "speaker": "",
+    "text": "伊诺尔扶着桶沿爬出来，第一次站上 Wanderer 的甲板。",
+    "illustrationId": "prologue.deck.sunset",
+    "nextId": "inor_surveys_ship"
+  },
+  {
+    "id": "inor_surveys_ship",
+    "type": "Narration",
+    "speaker": "",
+    "text": "环顾四周，这是一艘小型双桅帆船。",
+    "nextId": "inor_notices_ship_origin"
+  },
+  {
+    "id": "inor_notices_ship_origin",
+    "type": "Narration",
+    "speaker": "",
+    "text": "从船体看来，它像是精灵建造的小型商船，上面留着不少改造痕迹。",
+    "nextId": "inor_notices_crew"
+  },
+  {
+    "id": "inor_notices_crew",
+    "type": "Narration",
+    "speaker": "",
+    "text": "船上人不多。除去几个忙碌的水手，几乎全都凑到了他周围。",
+    "nextId": "aier_ask_story"
+  },
+  {
+    "id": "aier_ask_story",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "行了，说说这是怎么一回事吧？你叫什么名字？从哪来？",
+    "nextId": "inor_introduction"
+  },
+  {
+    "id": "inor_introduction",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "…伊诺尔，从灰海那边来。",
+    "nextId": "aier_ask_circumstances"
+  },
+  {
+    "id": "aier_ask_circumstances",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "是怎么落到这么个境地的？",
+    "nextId": "origin_choice"
+  },
+  {
+    "id": "origin_choice",
+    "type": "Choice",
+    "speaker": "",
+    "text": "",
+    "choices": [
+      {
+        "text": "……我所在的商船被海盗袭击了。整艘船都被击沉了，我最后一刻躲进了这个桶里。",
+        "targetId": "pirate_bahda_silence"
+      },
+      {
+        "text": "我听说传奇冒险家都是这么出海的。",
+        "targetId": "adventurer_bahda_silence"
+      }
+    ]
+  },
+  {
+    "id": "pirate_bahda_silence",
+    "type": "Dialogue",
+    "speaker": "巴赫炟",
+    "text": "……",
+    "nextId": "pirate_wensheng_reply"
+  },
+  {
+    "id": "pirate_wensheng_reply",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "奇怪，我这些天在桅杆上没察觉附近有海盗活动啊。",
+    "nextId": "pirate_wuzuona_accusation"
+  },
+  {
+    "id": "pirate_wuzuona_accusation",
+    "type": "Dialogue",
+    "speaker": "乌佐娜",
+    "text": "我就说这臭竿子每天都在上面打盹吧！",
+    "nextId": "pirate_wensheng_retort"
+  },
+  {
+    "id": "pirate_wensheng_retort",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "别以为你在后甲板偷偷喝酒的时候没人看见！",
+    "nextId": "after_origin_choice"
+  },
+  {
+    "id": "adventurer_bahda_silence",
+    "type": "Dialogue",
+    "speaker": "巴赫炟",
+    "text": "……",
+    "nextId": "adventurer_wuzuona_reply"
+  },
+  {
+    "id": "adventurer_wuzuona_reply",
+    "type": "Dialogue",
+    "speaker": "乌佐娜",
+    "text": "这是个疯子，他的下一句怕不是要去寻找伟大宝藏。",
+    "nextId": "adventurer_wensheng_approval"
+  },
+  {
+    "id": "adventurer_wensheng_approval",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "还挺有冒险精神的，我喜欢。",
+    "nextId": "adventurer_yang_barrel"
+  },
+  {
+    "id": "adventurer_yang_barrel",
+    "type": "Dialogue",
+    "speaker": "阳",
+    "text": "那你陪他一起回桶里。",
+    "nextId": "adventurer_wensheng_declines"
+  },
+  {
+    "id": "adventurer_wensheng_declines",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "那算了。",
+    "nextId": "after_origin_choice"
+  },
+  {
+    "id": "after_origin_choice",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "所以你在里面漂了多久？",
+    "fishing": "Trigger",
+    "nextId": "inor_drift_duration"
+  },
+  {
+    "id": "inor_drift_duration",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "记不清了…...大概有十多天了",
+    "nextId": "wensheng_tough"
+  },
+  {
+    "id": "wensheng_tough",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "嚯，命够硬的。",
+    "nextId": "wuzuona_placement"
+  },
+  {
+    "id": "wuzuona_placement",
+    "type": "Dialogue",
+    "speaker": "乌佐娜",
+    "text": "所以我们该拿他怎么办呢？船……船长？啊……船长已经回去了。艾尔？",
+    "nextId": "aier_no_land"
+  },
+  {
+    "id": "aier_no_land",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "总不能真把这孩子扔回海里吧。",
+    "nextId": "aier_no_land_soon"
+  },
+  {
+    "id": "aier_no_land_soon",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "三弦号才刚离开浅海，谁知道下次看见陆地是什么时候。",
+    "nextId": "aier_ask_spare_room"
+  },
+  {
+    "id": "aier_ask_spare_room",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "话说，咱们船上还有空房间吗？",
+    "nextId": "kuxin_storage_room"
+  },
+  {
+    "id": "kuxin_storage_room",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "后厨倒是还有一个空置的小仓库，前段时间闹过老鼠，暂时清理出来了。",
+    "nextId": "aier_assign_chores"
+  },
+  {
+    "id": "aier_assign_chores",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "时间也不早了，先安顿一下吧。库辛，麻烦了。",
+    "nextId": "aier_assign_chores_tomorrow"
+  },
+  {
+    "id": "aier_assign_chores_tomorrow",
+    "type": "Dialogue",
+    "speaker": "艾尔亚尔",
+    "text": "不过我们这里不能吃白饭。明天开始，先做些杂活吧。",
+    "nextId": "inor_thanks"
+  },
+  {
+    "id": "inor_thanks",
+    "type": "Dialogue",
+    "speaker": "伊诺尔",
+    "text": "谢……谢谢！",
+    "nextId": "kuxin_lead_way"
+  },
+  {
+    "id": "kuxin_lead_way",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "哼，跟我走吧小鬼。",
+    "nextId": "kuxin_order_cleanup"
+  },
+  {
+    "id": "kuxin_order_cleanup",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "温生！清理一下那个木桶！",
+    "nextId": "wensheng_refuses_cleanup"
+  },
+  {
+    "id": "wensheng_refuses_cleanup",
+    "type": "Dialogue",
+    "speaker": "温生",
+    "text": "不！！我有洁癖的！！",
+    "nextId": "kuxin_room_intro"
+  },
+  {
+    "id": "kuxin_room_intro",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "就是这里了。还剩了些晚饭，你今晚先凑合一下吧。",
+    "illustrationId": "prologue.cabin.night",
+    "fishing": "Disable",
+    "nextId": "kuxin_room_warning"
+  },
+  {
+    "id": "kuxin_room_warning",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "还有，小鬼，半夜可别摸去后厨偷吃。",
+    "nextId": "kuxin_room_warning_bait"
+  },
+  {
+    "id": "kuxin_room_warning_bait",
+    "type": "Dialogue",
+    "speaker": "库辛",
+    "text": "要是让我发现少了什么，你就等着去做鱼饵吧。",
+    "nextId": "inor_settles_in"
+  },
+  {
+    "id": "inor_settles_in",
+    "type": "Narration",
+    "speaker": "",
+    "text": "库辛离开。伊诺尔换上准备好的干净衬衣，在临时床铺上躺下。",
+    "nextId": "inor_bed_feeling"
+  },
+  {
+    "id": "inor_bed_feeling",
+    "type": "Narration",
+    "speaker": "",
+    "text": "床铺很简陋，甚至有些硌身子。",
+    "nextId": "inor_can_stretch"
+  },
+  {
+    "id": "inor_can_stretch",
+    "type": "Narration",
+    "speaker": "",
+    "text": "但这是十几天来，他第一次不用蜷缩着躺下。",
+    "nextId": "inor_thought_alive"
+  },
+  {
+    "id": "inor_thought_alive",
+    "type": "Thought",
+    "speaker": "",
+    "text": "我竟然……真的活着逃出来了？",
+    "nextId": "inor_thought_ship"
+  },
+  {
+    "id": "inor_thought_ship",
+    "type": "Thought",
+    "speaker": "",
+    "text": "话说，这艘船究竟是做什么的？船长竟然是个灰目……",
+    "nextId": "inor_thought_not_pirates"
+  },
+  {
+    "id": "inor_thought_not_pirates",
+    "type": "Thought",
+    "speaker": "",
+    "text": "不过目前看来不是海盗。",
+    "nextId": "inor_thought_seagulls"
+  },
+  {
+    "id": "inor_thought_seagulls",
+    "type": "Thought",
+    "speaker": "",
+    "text": "不然我现在，应该已经被吊在船杆上喂海鸥了吧。",
+    "nextId": "inor_thought_pause_one"
+  },
+  {
+    "id": "inor_thought_pause_one",
+    "type": "Thought",
+    "speaker": "",
+    "text": "……….",
+    "nextId": "inor_thought_next"
+  },
+  {
+    "id": "inor_thought_next",
+    "type": "Thought",
+    "speaker": "",
+    "text": "可…接下来呢？",
+    "nextId": "inor_thought_continue"
+  },
+  {
+    "id": "inor_thought_continue",
+    "type": "Thought",
+    "speaker": "",
+    "text": "接下来……",
+    "nextId": "inor_thought_pause_two"
+  },
+  {
+    "id": "inor_thought_pause_two",
+    "type": "Thought",
+    "speaker": "",
+    "text": "……..",
+    "nextId": "inor_falls_asleep"
+  },
+  {
+    "id": "inor_falls_asleep",
+    "type": "Narration",
+    "speaker": "",
+    "text": "伊诺尔不知不觉中陷入了沉睡，画面渐暗。",
+    "nextId": "act1_morning_wakeup"
+  }
+]

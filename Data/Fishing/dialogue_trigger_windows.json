@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "windows": [
+    {
+      "id": "act1.trigger.ship_introduction",
+      "chapterId": "act_one",
+      "startId": "act1_aier_finances",
+      "endId": "act1_silence_after_ship_introduction",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.family_topic",
+      "chapterId": "act_one",
+      "startId": "act1_aier_three_thousand",
+      "endId": "act1_silence_after_family_topic",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.elf_age_topic",
+      "chapterId": "act_one",
+      "startId": "act1_inor_two_hundred",
+      "endId": "act1_silence_after_elf_age_topic",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.kuxin_lesson",
+      "chapterId": "act_one",
+      "startId": "act1_inor_uncertainty",
+      "endId": "act1_silence_after_kuxin_lesson",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.food_supply",
+      "chapterId": "act_one",
+      "startId": "act1_wensheng_eel",
+      "endId": "act1_silence_after_food_supply",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.kuxin_home",
+      "chapterId": "act_one",
+      "startId": "act1_inor_some_memory",
+      "endId": "act1_silence_after_kuxin_home_topic",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.kuxin_story",
+      "chapterId": "act_one",
+      "startId": "act1_inor_story_conclusion",
+      "endId": "act1_silence_after_kuxin_story",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.kuxin_retirement",
+      "chapterId": "act_one",
+      "startId": "act1_aier_appears",
+      "endId": "act1_silence_after_kuxin_retirement",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    },
+    {
+      "id": "act1.trigger.aier_origin",
+      "chapterId": "act_one",
+      "startId": "act1_kuxin_elves_at_sea",
+      "endId": "act1_silence_after_aier_origin",
+      "minDelaySeconds": 2,
+      "maxDelaySeconds": 9
+    }
+  ]
+}

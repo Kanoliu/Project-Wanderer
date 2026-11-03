@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Theme" path="res://Assets/Art/UI/dialogue/wanderer-theme.tres" id="1"]
+
+[ext_resource type="Script" path="res://Scripts/UI/BaseButton.cs" id="2"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/confirm-diamond.svg" id="3"]
+
+[node name="BaseButton" type="Button"]
+script = ExtResource("2")
+custom_minimum_size = Vector2(0, 56)
+offset_right = 520.0
+offset_bottom = 56.0
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme = ExtResource("1")
+text = "继续"
+alignment = 0
+autowrap_mode = 3
+
+
+[node name="ConfirmationMark" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 18.0
+offset_top = -6.0
+offset_right = 30.0
+offset_bottom = 6.0
+mouse_filter = 2
+texture = ExtResource("3")

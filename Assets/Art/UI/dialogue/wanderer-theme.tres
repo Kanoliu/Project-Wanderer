@@ -1,0 +1,140 @@
+[gd_resource type="Theme" load_steps=20 format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/dialogue-panel.svg" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/speaker-tag.svg" id="2"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/button-normal.svg" id="3"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/button-hover.svg" id="4"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/button-pressed.svg" id="5"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/button-disabled.svg" id="6"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/button-focus.svg" id="7"]
+
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/dialogue-header-tail.svg" id="8"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dialogue/dialogue-standalone.svg" id="9"]
+
+[sub_resource type="StyleBoxTexture" id="standalone"]
+texture = ExtResource("9")
+texture_margin_left = 28.0
+texture_margin_top = 28.0
+texture_margin_right = 28.0
+texture_margin_bottom = 28.0
+content_margin_left = 28.0
+content_margin_right = 28.0
+content_margin_top = 28.0
+content_margin_bottom = 28.0
+
+[sub_resource type="StyleBoxTexture" id="dialogue_panel"]
+texture = ExtResource("1")
+texture_margin_left = 28.0
+texture_margin_top = 28.0
+texture_margin_right = 28.0
+texture_margin_bottom = 28.0
+content_margin_left = 28.0
+content_margin_right = 28.0
+content_margin_top = 28.0
+content_margin_bottom = 28.0
+
+[sub_resource type="StyleBoxTexture" id="speaker_tag"]
+texture = ExtResource("2")
+texture_margin_left = 28.0
+texture_margin_top = 26.0
+texture_margin_right = 28.0
+texture_margin_bottom = 26.0
+content_margin_left = 44.0
+content_margin_right = 36.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="header_tail"]
+texture = ExtResource("8")
+texture_margin_left = 0.0
+texture_margin_top = 26.0
+texture_margin_right = 28.0
+texture_margin_bottom = 26.0
+[sub_resource type="StyleBoxTexture" id="button_normal"]
+texture = ExtResource("3")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 44.0
+content_margin_right = 24.0
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="button_hover"]
+texture = ExtResource("4")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 44.0
+content_margin_right = 24.0
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="button_pressed"]
+texture = ExtResource("5")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 44.0
+content_margin_right = 24.0
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="button_disabled"]
+texture = ExtResource("6")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 44.0
+content_margin_right = 24.0
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="button_focus"]
+texture = ExtResource("7")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 44.0
+content_margin_right = 24.0
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxEmpty" id="empty"]
+
+[resource]
+default_font_size = 26
+Label/colors/font_color = Color(0.820, 0.827, 0.749, 1)
+RichTextLabel/colors/default_color = Color(0.820, 0.827, 0.749, 1)
+RichTextLabel/font_sizes/normal_font_size = 26
+RichTextLabel/constants/line_separation = 4
+PanelContainer/styles/panel = SubResource("empty")
+DialogueBody/base_type = &"PanelContainer"
+DialogueBody/styles/panel = SubResource("dialogue_panel")
+SpeakerTag/base_type = &"Label"
+SpeakerTag/styles/normal = SubResource("speaker_tag")
+SpeakerTag/colors/font_color = Color(0.843, 0.718, 0.486, 1)
+Button/styles/normal = SubResource("button_normal")
+Button/styles/hover = SubResource("button_hover")
+Button/styles/pressed = SubResource("button_pressed")
+Button/styles/hover_pressed = SubResource("button_pressed")
+Button/styles/disabled = SubResource("button_disabled")
+Button/styles/focus = SubResource("button_focus")
+Button/font_sizes/font_size = 20
+Button/colors/font_color = Color(0.820, 0.827, 0.749, 1)
+Button/colors/font_hover_color = Color(0.843, 0.718, 0.486, 1)
+Button/colors/font_focus_color = Color(0.945, 0.831, 0.616, 1)
+Button/colors/font_pressed_color = Color(0.945, 0.831, 0.616, 1)
+Button/colors/font_disabled_color = Color(0.345, 0.396, 0.396, 1)
+
+
+DialogueHeaderTail/base_type = &"PanelContainer"
+DialogueHeaderTail/styles/panel = SubResource("header_tail")
+
+DialogueBodyStandalone/base_type = &"PanelContainer"
+DialogueBodyStandalone/styles/panel = SubResource("standalone")

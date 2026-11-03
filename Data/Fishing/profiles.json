@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "title": "Project Wanderer - 概念",
+      "url": "https://app.notion.com/p/3c2d19d72aa1804788fef8bc6e60a8fb?pvs=204"
+    }
+  ],
+  "biteProfiles": [
+    {
+      "id": "bite.probe",
+      "pattern": "Probe",
+      "description": "多次离散的小幅点动与停顿，真正下沉时才进入提竿窗口；核心是识别真假信号。"
+    },
+    {
+      "id": "bite.strike",
+      "pattern": "Strike",
+      "description": "前摇很短，浮漂突然明显下沉，成功窗口较短；核心是及时反应。"
+    },
+    {
+      "id": "bite.drag",
+      "pattern": "Drag",
+      "description": "试探阶段浮漂持续左右横移；真正咬钩时从当前位置斜向下沉并进入提竿窗口。核心是区分横移试探与斜向下沉信号。"
+    }
+  ],
+  "fightProfiles": [
+    {
+      "id": "fight.stable",
+      "pattern": "Stable",
+      "description": "稳定型基础手感；具体速度、转向与进度参数待首个正式鱼种验证。"
+    },
+    {
+      "id": "fight.active",
+      "pattern": "Active",
+      "description": "活跃型基础手感；具体速度、转向与进度参数待首个正式鱼种验证。"
+    },
+    {
+      "id": "fight.sprint",
+      "pattern": "Sprint",
+      "description": "冲刺型基础手感；具体冲刺频率、持续时间与进度参数待首个正式鱼种验证。"
+    },
+    {
+      "id": "fight.heavy",
+      "pattern": "Heavy",
+      "description": "沉重型基础手感；具体速度、方向偏好与进度参数待首个正式鱼种验证。"
+    }
+  ]
+}

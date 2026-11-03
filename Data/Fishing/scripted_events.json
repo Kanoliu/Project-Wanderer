@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "title": "Project Wanderer - 文本",
+      "url": "https://app.notion.com/p/3c2d19d72aa180388f5adf404c234f53?pvs=204"
+    }
+  ],
+  "events": [
+    {
+      "id": "act1.tutorial.first_catch",
+      "fishId": "fish.dou_diao",
+      "quantity": 1
+    }
+  ]
+}

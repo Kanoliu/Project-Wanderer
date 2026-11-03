@@ -1,0 +1,1614 @@
+[
+  {
+	"id": "act1_morning_wakeup",
+	"type": "Narration",
+	"speaker": "",
+	"text": "甲板上传来的争吵声，把伊诺尔从睡梦中吵醒。",
+	"illustrationId": "prologue.cabin.night",
+	"nextId": "act1_morning_remembers"
+  },
+  {
+	"id": "act1_morning_remembers",
+	"type": "Narration",
+	"speaker": "",
+	"text": "他睁开眼，愣了片刻，才想起自己已经不在昨天那片海里了。",
+	"nextId": "act1_morning_to_deck"
+  },
+  {
+	"id": "act1_morning_to_deck",
+	"type": "Narration",
+	"speaker": "",
+	"text": "伊诺尔在床沿坐了一会儿，揉了揉发沉的眼睛。",
+	"illustrationId": "act1.deck.morning",
+	"nextId": "act1_morning_opens_door"
+  },
+  {
+	"id": "act1_morning_opens_door",
+	"type": "Narration",
+	"speaker": "",
+	"text": "随后，他起身推开舱门。清晨的海风一下灌了进来。",
+	"nextId": "act1_wuzuona_unfair"
+  },
+  {
+	"id": "act1_wuzuona_unfair",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "不公平——我都连续晒三天太阳了！",
+	"nextId": "act1_wuzuona_legs"
+  },
+  {
+	"id": "act1_wuzuona_legs",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "天天守着鱼竿，坐得腿都快不是自己的了。",
+	"nextId": "act1_wuzuona_afternoon_shift"
+  },
+  {
+	"id": "act1_wuzuona_afternoon_shift",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "凭什么温生每次都能轮到下午的班？",
+	"nextId": "act1_wensheng_barrel"
+  },
+  {
+	"id": "act1_wensheng_barrel",
+	"type": "Dialogue",
+	"speaker": "温生",
+	"text": "哼，现在知道讲公平了。",
+	"nextId": "act1_wensheng_barrel_cleanup"
+  },
+  {
+	"id": "act1_wensheng_barrel_cleanup",
+	"type": "Dialogue",
+	"speaker": "温生",
+	"text": "昨晚收拾木桶时，怎么没见你这么大义凛然？",
+	"nextId": "act1_wuzuona_crabs"
+  },
+  {
+	"id": "act1_wuzuona_crabs",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "你还敢提昨晚？！是不是你收拾完食物，忘了关水舱盖？",
+	"nextId": "act1_wuzuona_crabs_kitchen"
+  },
+  {
+	"id": "act1_wuzuona_crabs_kitchen",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "今早厨房里爬了一地螃蟹，全是我一只一只捡回去的！",
+	"nextId": "act1_wuzuona_crabs_threat"
+  },
+  {
+	"id": "act1_wuzuona_crabs_threat",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "这要是让库辛看见，你一周内都别想在碗里看见肉。",
+	"nextId": "act1_wensheng_denial"
+  },
+  {
+	"id": "act1_wensheng_denial",
+	"type": "Dialogue",
+	"speaker": "温生",
+	"text": "不可能。我可不会犯这种低级错误。你这是诬陷，纯纯的诬陷。",
+	"nextId": "act1_yang_confession"
+  },
+  {
+	"id": "act1_yang_confession",
+	"type": "Dialogue",
+	"speaker": "阳",
+	"text": "呃……好像是我半夜找吃的时候忘记关了。",
+	"nextId": "act1_crew_silence"
+  },
+  {
+	"id": "act1_crew_silence",
+	"type": "Narration",
+	"speaker": "",
+	"text": "乌佐娜和温生同时沉默了。",
+	"nextId": "act1_aier_intervenes"
+  },
+  {
+	"id": "act1_aier_intervenes",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "哎……行了行了。钓鱼总得有人轮岗。",
+	"nextId": "act1_aier_food_shortage"
+  },
+  {
+	"id": "act1_aier_food_shortage",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "前阵子闹了鼠灾，船上没剩多少粮食，总得先撑到下次回港。",
+	"nextId": "act1_inor_coughs"
+  },
+  {
+	"id": "act1_inor_coughs",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "咳咳……",
+	"nextId": "act1_crew_notices_inor"
+  },
+  {
+	"id": "act1_crew_notices_inor",
+	"type": "Narration",
+	"speaker": "",
+	"text": "几个人这才注意到站在舱门口的伊诺尔。",
+	"nextId": "act1_aier_greeting"
+  },
+  {
+	"id": "act1_aier_greeting",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "哟，这是谁起来了？我还以为你昨晚已经被老鼠啃干净了。",
+	"nextId": "act1_aier_greeting_check"
+  },
+  {
+	"id": "act1_aier_greeting_check",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "正打算让乌佐娜过去看看呢。",
+	"nextId": "act1_inor_apology"
+  },
+  {
+	"id": "act1_inor_apology",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "抱歉……太久没有真正睡过一觉了。",
+	"nextId": "act1_inor_sees_rods"
+  },
+  {
+	"id": "act1_inor_sees_rods",
+	"type": "Narration",
+	"speaker": "",
+	"text": "伊诺尔看了一眼摆在甲板边的鱼竿。",
+	"nextId": "act1_inor_offers_help"
+  },
+  {
+	"id": "act1_inor_offers_help",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "你们……是在缺人手钓鱼吗？",
+	"nextId": "act1_aier_asks_try"
+  },
+  {
+	"id": "act1_aier_asks_try",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "怎么，你想试试？",
+	"nextId": "act1_inor_experience"
+  },
+  {
+	"id": "act1_inor_experience",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "我只干过拿棒槌敲死别人钓上来的鱼这种活。",
+	"nextId": "act1_inor_willing_to_learn"
+  },
+  {
+	"id": "act1_inor_willing_to_learn",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "不过……如果能帮上忙，我愿意学。",
+	"nextId": "act1_aier_assigns_shift"
+  },
+  {
+	"id": "act1_aier_assigns_shift",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "嗯……这倒是个不错的提议。这样吧，今天由我带你。",
+	"nextId": "act1_aier_sends_wuzuona"
+  },
+  {
+	"id": "act1_aier_sends_wuzuona",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "乌佐娜，你去问问船长那边还有没有什么要帮忙的。",
+	"nextId": "act1_wuzuona_escape"
+  },
+  {
+	"id": "act1_wuzuona_escape",
+	"type": "Dialogue",
+	"speaker": "乌佐娜",
+	"text": "没问题！新来的，我看好你哦——未来的“听潮翁”！",
+	"nextId": "act1_wuzuona_runs"
+  },
+  {
+	"id": "act1_wuzuona_runs",
+	"type": "Narration",
+	"speaker": "",
+	"text": "乌佐娜眼前一亮，生怕伊诺尔反悔似的，一溜烟跑掉了。",
+	"nextId": "act1_aier_to_platform"
+  },
+  {
+	"id": "act1_aier_to_platform",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "走吧。不是说想学吗？先带你去认认鱼竿。",
+	"nextId": "act1_silence_before_fishing_platform"
+  },
+  {
+	"id": "act1_silence_before_fishing_platform",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 5,
+	"nextId": "act1_platform_intro"
+  },
+  {
+	"id": "act1_platform_intro",
+	"type": "Narration",
+	"speaker": "",
+	"text": "船舷边向外搭着一小块木制鱼台，边缘钉着几处固定鱼竿的卡槽。",
+	"sceneId": "fishing.aelyar",
+	"nextId": "act1_platform_equipment"
+  },
+  {
+	"id": "act1_platform_equipment",
+	"type": "Narration",
+	"speaker": "",
+	"text": "两张矮凳并排摆在栏杆前，脚边堆着鱼线、旧木桶和装饵的小盒。",
+	"nextId": "act1_platform_aier_sits"
+  },
+  {
+	"id": "act1_platform_aier_sits",
+	"type": "Narration",
+	"speaker": "",
+	"text": "艾尔亚尔在靠船尾的位置坐下，把另一张凳子踢向伊诺尔。",
+	"nextId": "act1_aier_first_step"
+  },
+  {
+	"id": "act1_aier_first_step",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "没吃过猪肉，总见过猪跑吧？考考你，钓鱼的第一步是什么？",
+	"nextId": "act1_inor_cast_guess"
+  },
+  {
+	"id": "act1_inor_cast_guess",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "把……鱼竿甩出去？",
+	"nextId": "act1_aier_bait_lesson"
+  },
+  {
+	"id": "act1_aier_bait_lesson",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "首先，当然是把鱼饵挂上鱼钩。不同的鱼，爱吃的东西也不同。",
+	"nextId": "act1_aier_bait_examples"
+  },
+  {
+	"id": "act1_aier_bait_examples",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "豆鲷这种杂食小鱼几乎来者不拒。",
+	"nextId": "act1_aier_bait_carnivores"
+  },
+  {
+	"id": "act1_aier_bait_carnivores",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "青鲈这种肉食鱼，则更偏爱虾饵、虫饵之类。",
+	"nextId": "act1_tutorial_bait"
+  },
+  {
+	"id": "act1_tutorial_bait",
+	"type": "Narration",
+	"speaker": "",
+	"text": "【教程：打开饵料选择】",
+	"fishing": "Enable",
+	"tutorial": "SelectBait",
+	"nextId": "act1_aier_depth_lesson"
+  },
+  {
+	"id": "act1_aier_depth_lesson",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "另外，不同的鱼待的水层也不同。浅水鱼通常比中层鱼更容易上钩。",
+	"nextId": "act1_aier_depth_seabed"
+  },
+  {
+	"id": "act1_aier_depth_seabed",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "至于海底嘛……哼哼，能钓上来什么，可就由不得你了。",
+	"nextId": "act1_tutorial_depth"
+  },
+  {
+	"id": "act1_tutorial_depth",
+	"type": "Narration",
+	"speaker": "",
+	"text": "【教程：打开水层选择】",
+	"tutorial": "SelectDepth",
+	"nextId": "act1_inor_relics"
+  },
+  {
+	"id": "act1_inor_relics",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "我听说不少人从海里钓上过海遗物？应该能值不少钱吧？",
+	"nextId": "act1_aier_relic_warning"
+  },
+  {
+	"id": "act1_aier_relic_warning",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "呵呵，你以为这是好事？先不说那些海遗物到底值多少钱。",
+	"nextId": "act1_aier_relic_survivors"
+  },
+  {
+	"id": "act1_aier_relic_survivors",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "那些钓上来的人里，又有几个真能活着把东西带回岸上？",
+	"nextId": "act1_first_cast"
+  },
+  {
+	"id": "act1_first_cast",
+	"type": "Narration",
+	"speaker": "",
+	"text": "艾尔亚尔讽刺地笑了笑，把鱼饵甩了出去。\n【教程：抛竿与浮漂】",
+	"tutorial": "Cast",
+	"nextId": "act1_aier_most_important"
+  },
+  {
+	"id": "act1_aier_most_important",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "下一个问题。钓鱼最重要的是什么？",
+	"nextId": "act1_inor_patience"
+  },
+  {
+	"id": "act1_inor_patience",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "耐心？",
+	"nextId": "act1_aier_confidence"
+  },
+  {
+	"id": "act1_aier_confidence",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "还好嘛，我还以为你会回答“鱼”。不过不对。",
+	"nextId": "act1_aier_confidence_answer"
+  },
+  {
+	"id": "act1_aier_confidence_answer",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "最重要的是信心——永远相信浮漂下面有东西。",
+	"nextId": "act1_inor_no_bite"
+  },
+  {
+	"id": "act1_inor_no_bite",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "那要是一整天都没有鱼咬饵呢？",
+	"nextId": "act1_aier_wait_tomorrow"
+  },
+  {
+	"id": "act1_aier_wait_tomorrow",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "那就把这份相信留到第二天……啊，注意看。等一等……拉！",
+	"nextId": "act1_tutorial_first_catch"
+  },
+  {
+	"id": "act1_tutorial_first_catch",
+	"type": "Narration",
+	"speaker": "",
+	"text": "【教程：第一次咬饵与搏鱼；目标鱼为新手豆鲷】",
+	"tutorial": "FirstCatch",
+	"nextId": "act1_aier_catch_praise"
+  },
+  {
+	"id": "act1_aier_catch_praise",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "不错嘛。看来你那海草脑袋里，也不全是水。",
+	"nextId": "act1_inor_small_fish"
+  },
+  {
+	"id": "act1_inor_small_fish",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "这小东西连牙缝都填不满吧。",
+	"nextId": "act1_aier_wuzuona_secret"
+  },
+  {
+	"id": "act1_aier_wuzuona_secret",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "嘘……千万别让那个小龙女听见。",
+	"nextId": "act1_aier_wuzuona_first_catch"
+  },
+  {
+	"id": "act1_aier_wuzuona_first_catch",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "她第一次钓鱼，花了整整一天才钓上这么一只小东西。",
+	"nextId": "act1_aier_wuzuona_specimen"
+  },
+  {
+	"id": "act1_aier_wuzuona_specimen",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "她兴奋得差点把它做成标本，摆进船舱里。",
+	"nextId": "act1_silence_after_first_catch"
+  },
+  {
+	"id": "act1_silence_after_first_catch",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 5,
+	"nextId": "act1_ship_question"
+  },
+  {
+	"id": "act1_ship_question",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "话说，这艘船是做什么的？",
+	"nextId": "act1_aier_ship_intro"
+  },
+  {
+	"id": "act1_aier_ship_intro",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "哎呀！差点忘了，还没正式跟你介绍。欢迎来到三弦号。",
+	"nextId": "act1_aier_ship_job"
+  },
+  {
+	"id": "act1_aier_ship_job",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "我们是一艘捞宝船，现在正运着一批货去橡树港。",
+	"nextId": "act1_aier_ship_roles"
+  },
+  {
+	"id": "act1_aier_ship_roles",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "我是船上的大副。那个不怎么说话的大叔，就是我们的船长。",
+	"nextId": "act1_aier_ship_crew"
+  },
+  {
+	"id": "act1_aier_ship_crew",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "其他船员你大多见过了。以后轮班钓鱼时，自然会慢慢认识。",
+	"nextId": "act1_inor_odd_jobs"
+  },
+  {
+	"id": "act1_inor_odd_jobs",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "为什么捞宝船还要接运货这种杂活？",
+	"nextId": "act1_aier_finances"
+  },
+  {
+	"id": "act1_aier_finances",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "咳咳……你也看到了，我们又不是什么声名远扬的大组织。",
+	"nextId": "act1_aier_finances_salvage"
+  },
+  {
+	"id": "act1_aier_finances_salvage",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "说是捞宝船，大多数时候也就是沿着战场周边捡捡破烂。",
+	"nextId": "act1_aier_finances_jobs"
+  },
+  {
+	"id": "act1_aier_finances_jobs",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "船长又不方便公开露面，每次上岸，只能由我找些养家糊口的杂活。",
+	"nextId": "act1_captain_choice"
+  },
+  {
+	"id": "act1_captain_choice",
+	"type": "Choice",
+	"speaker": "",
+	"text": "",
+	"choices": [
+	  { "text": "船长他……", "targetId": "act1_captain_reply" },
+	  { "text": "听起来好辛苦。", "targetId": "act1_hard_reply" }
+	]
+  },
+  {
+	"id": "act1_captain_reply",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "船长的事，还是由他自己说比较好——如果你有办法撬开他那张嘴的话。",
+	"nextId": "act1_silence_after_ship_introduction"
+  },
+  {
+	"id": "act1_hard_reply",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "是啊，又当爹又当妈……没办法，谁叫上了这艘贼船呢。",
+	"nextId": "act1_silence_after_ship_introduction"
+  },
+  {
+	"id": "act1_silence_after_ship_introduction",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 5,
+	"nextId": "act1_aier_asks_family"
+  },
+  {
+	"id": "act1_aier_asks_family",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "聊聊你自己吧。这么年轻就出来打拼了？",
+	"nextId": "act1_inor_family"
+  },
+  {
+	"id": "act1_inor_family",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "嗯。我是家里的老大，下面有两个妹妹，还有一个刚出生的弟弟。",
+	"nextId": "act1_inor_family_salt_flat"
+  },
+  {
+	"id": "act1_inor_family_salt_flat",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "一年前，潮汐淹了我们赖以生存的盐滩，家里一下断了生计。",
+	"nextId": "act1_inor_family_work"
+  },
+  {
+	"id": "act1_inor_family_work",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "为了少添一双碗筷，我只能自己出来参……做工。",
+	"nextId": "act1_aier_children"
+  },
+  {
+	"id": "act1_aier_children",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "四个孩子？天哪。我始终不能理解你们人类为什么这么热衷生孩子。",
+	"nextId": "act1_aier_children_crew"
+  },
+  {
+	"id": "act1_aier_children_crew",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "光是船上这几个小鬼，就已经够让我头疼了。",
+	"nextId": "act1_aier_children_babies"
+  },
+  {
+	"id": "act1_aier_children_babies",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "这要再换成几个只会哇哇哭、随时随地尿床的小肉丸子……",
+	"nextId": "act1_aier_shudders"
+  },
+  {
+	"id": "act1_aier_shudders",
+	"type": "Narration",
+	"speaker": "",
+	"text": "艾尔亚尔不自觉地抖了抖身子。",
+	"nextId": "act1_inor_tongui"
+  },
+  {
+	"id": "act1_inor_tongui",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "那你更应该研究一下铜鬼的社会观念。",
+	"nextId": "act1_inor_tongui_nursery"
+  },
+  {
+	"id": "act1_inor_tongui_nursery",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "听说他们的护螅士，一人要同时照看数十个幼体。",
+	"nextId": "act1_aier_home"
+  },
+  {
+	"id": "act1_aier_home",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "算了吧。我对那种连脑子都不知道有没有的种族没兴趣。",
+	"nextId": "act1_aier_home_question"
+  },
+  {
+	"id": "act1_aier_home_question",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "那你想家吗？之后有什么打算？",
+	"nextId": "act1_aier_home_distance"
+  },
+  {
+	"id": "act1_aier_home_distance",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "这里离灰海少说也有几个月航程，我们可没法专程送你回去。",
+	"nextId": "act1_aier_home_noble"
+  },
+  {
+	"id": "act1_aier_home_noble",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "除非你现在改口，告诉我你其实是哪位贵族家的长子。",
+	"nextId": "act1_inor_unsure"
+  },
+  {
+	"id": "act1_inor_unsure",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "我……不知道。",
+	"nextId": "act1_aier_three_thousand"
+  },
+  {
+	"id": "act1_aier_three_thousand",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "那就先别想这么远了。作为救下你的报酬，你先替三弦号钓上三千条鱼吧。",
+	"nextId": "act1_inor_barrel_joke"
+  },
+  {
+	"id": "act1_inor_barrel_joke",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "……那个桶还在吗？",
+	"nextId": "act1_silence_after_family_topic"
+  },
+  {
+	"id": "act1_silence_after_family_topic",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 7.5,
+	"nextId": "act1_inor_elf_question"
+  },
+  {
+	"id": "act1_inor_elf_question",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "对了，我可以问你一个略显冒昧的问题吗？",
+	"nextId": "act1_inor_elf_rumor"
+  },
+  {
+	"id": "act1_inor_elf_rumor",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "灰海有种传闻，说精灵能通过吃尸体获取死者的记忆。",
+	"nextId": "act1_inor_elf_past_life"
+  },
+  {
+	"id": "act1_inor_elf_past_life",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "甚至还能追溯前世的知识。",
+	"nextId": "act1_aier_ambergris"
+  },
+  {
+	"id": "act1_aier_ambergris",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "哼，还有传闻说人类贵族喜欢把鲸类的呕吐物涂在身上吸引异性。",
+	"nextId": "act1_aier_ambergris_question"
+  },
+  {
+	"id": "act1_aier_ambergris_question",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "这难道也是真的？",
+	"nextId": "act1_inor_ambergris_truth"
+  },
+  {
+	"id": "act1_inor_ambergris_truth",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "……这好像还真是真的。",
+	"nextId": "act1_aier_age_setup"
+  },
+  {
+	"id": "act1_aier_age_setup",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "……我们精灵毕竟活得久，记性通常也比你们这些种族好得多。",
+	"nextId": "act1_aier_age_appearance"
+  },
+  {
+	"id": "act1_aier_age_appearance",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "就算看上去很年轻，也可能已经活了几十年。",
+	"nextId": "act1_aier_age_normal"
+  },
+  {
+	"id": "act1_aier_age_normal",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "知道得多一些，再正常不过。就比如我——",
+	"nextId": "act1_aier_age_guess"
+  },
+  {
+	"id": "act1_aier_age_guess",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "你猜猜看，我多少岁了？",
+	"nextId": "act1_inor_unsafe_question"
+  },
+  {
+	"id": "act1_inor_unsafe_question",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "……这似乎不是一个很安全的问题。尤其是我们才认识不久。",
+	"nextId": "act1_inor_unsafe_rank"
+  },
+  {
+	"id": "act1_inor_unsafe_rank",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "你是这艘船的二把手，我只是个哪天消失了也没人注意的流浪汉。",
+	"nextId": "act1_aier_insists"
+  },
+  {
+	"id": "act1_aier_insists",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "哎呀，随便猜一下嘛。你难道觉得大副我是那种小肚鸡肠的人？",
+	"nextId": "act1_inor_two_hundred"
+  },
+  {
+	"id": "act1_inor_two_hundred",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "嗯……两百？",
+	"nextId": "act1_rod_trembles"
+  },
+  {
+	"id": "act1_rod_trembles",
+	"type": "Narration",
+	"speaker": "",
+	"text": "艾尔亚尔瞬间停顿了一下，手中的鱼竿微微颤了颤。",
+	"nextId": "act1_inor_one_twenty"
+  },
+  {
+	"id": "act1_inor_one_twenty",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "哈哈……开个玩笑而已。一百……二十岁！",
+	"nextId": "act1_rod_breaks"
+  },
+  {
+	"id": "act1_rod_breaks",
+	"type": "Narration",
+	"speaker": "",
+	"text": "伊诺尔随即听见了一声清脆的木头断裂声。",
+	"nextId": "act1_silence_after_elf_age_topic"
+  },
+  {
+	"id": "act1_silence_after_elf_age_topic",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 5,
+	"nextId": "act1_morning_ends"
+  },
+  {
+	"id": "act1_morning_ends",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "上午就先到这里吧。看来今天收成还不错！你也去休息一下。",
+	"nextId": "act1_morning_ends_kuxin"
+  },
+  {
+	"id": "act1_morning_ends_kuxin",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "下午轮到库辛。那个糟老头子的脾气可没我这么好，看你表现了。",
+	"nextId": "act1_morning_ends_crabs"
+  },
+  {
+	"id": "act1_morning_ends_crabs",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "还有，记住——千万别跟他提早上的螃蟹。",
+	"nextId": "act1_silence_between_shifts"
+  },
+  {
+	"id": "act1_silence_between_shifts",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 7.5,
+	"nextId": "act1_afternoon_kuxin_opens"
+  },
+  {
+	"id": "act1_afternoon_kuxin_opens",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "听艾尔说，你上手很快？",
+	"sceneId": "fishing.kusin",
+	"nextId": "act1_inor_fishing_easy"
+  },
+  {
+	"id": "act1_inor_fishing_easy",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "比预想中简单不少。抛竿，收杆，然后一条鱼就上钩了。",
+	"nextId": "act1_kuxin_quiz"
+  },
+  {
+	"id": "act1_kuxin_quiz",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "哼，那我考考你。钓鱼最重要的是什么？",
+	"nextId": "act1_kuxin_quiz_choice"
+  },
+  {
+	"id": "act1_kuxin_quiz_choice",
+	"type": "Choice",
+	"speaker": "",
+	"text": "",
+	"choices": [
+	  { "text": "……耐心。", "targetId": "act1_kuxin_patience_reply" },
+	  { "text": "……信心。", "targetId": "act1_kuxin_confidence_reply" }
+	]
+  },
+  {
+	"id": "act1_kuxin_patience_reply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "还算凑合。你们这些年轻人，最缺的就是耐心。",
+	"nextId": "act1_kuxin_patience_wensheng"
+  },
+  {
+	"id": "act1_kuxin_patience_wensheng",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "像那个曳族小鬼，不是偷睡午觉，就是跟自己的尾巴发牢骚。",
+	"nextId": "act1_kuxin_patience_limit"
+  },
+  {
+	"id": "act1_kuxin_patience_limit",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "不过耐心这种东西，说到底，也只是让你多坐一会儿。",
+	"nextId": "act1_kuxin_method"
+  },
+  {
+	"id": "act1_kuxin_confidence_reply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "呵，这是艾尔教你的吧？",
+	"nextId": "act1_kuxin_confidence_aier"
+  },
+  {
+	"id": "act1_kuxin_confidence_aier",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "这个时代，很难遇见第二个像她一样天真的傻姑娘了。",
+	"nextId": "act1_kuxin_confidence_his_fish"
+  },
+  {
+	"id": "act1_kuxin_confidence_his_fish",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "那是她的鱼。换成我的鱼，你最好先做好空手回去的准备。",
+	"nextId": "act1_kuxin_method"
+  },
+  {
+	"id": "act1_kuxin_method",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "什么耐心、信心……这些品质，说到底，只是让你更容易熬过等待。",
+	"nextId": "act1_kuxin_method_knowledge"
+  },
+  {
+	"id": "act1_kuxin_method_knowledge",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "真正重要的，永远是你对这片海域的了解。",
+	"nextId": "act1_kuxin_method_habits"
+  },
+  {
+	"id": "act1_kuxin_method_habits",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "水下有什么，每种东西是什么习性，最好比你小情人的喜好还清楚。",
+	"nextId": "act1_kuxin_method_choice"
+  },
+  {
+	"id": "act1_kuxin_method_choice",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "从选好饵料、钓点和水深的那一刻起，结果就写得差不多了。",
+	"nextId": "act1_kuxin_method_waiting"
+  },
+  {
+	"id": "act1_kuxin_method_waiting",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "之后的等待，不过是留给你反省下一竿该怎么选。",
+	"nextId": "act1_kuxin_method_question"
+  },
+  {
+	"id": "act1_kuxin_method_question",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "比如我问你——这一竿，为什么用{当前饵料}？",
+	"nextId": "act1_inor_bait_answer"
+  },
+  {
+	"id": "act1_inor_bait_answer",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "因为{当前饵料}最容易挂在钩子上。",
+	"nextId": "act1_kuxin_disappointed"
+  },
+  {
+	"id": "act1_kuxin_disappointed",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "哼，果然还是个乳臭未干的小鬼。差点高看你了。",
+	"nextId": "act1_inor_uncertainty"
+  },
+  {
+	"id": "act1_inor_uncertainty",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "可很多时候，把一切都算得清清楚楚，只得到一个稳定的结果……",
+	"nextId": "act1_inor_uncertainty_boring"
+  },
+  {
+	"id": "act1_inor_uncertainty_boring",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "不会很无趣吗？反倒是把不确定留给大海。",
+	"nextId": "act1_inor_uncertainty_surprise"
+  },
+  {
+	"id": "act1_inor_uncertainty_surprise",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "等鱼上钩时看看会有什么惊喜，不是更值得享受？",
+	"nextId": "act1_kuxin_stability"
+  },
+  {
+	"id": "act1_kuxin_stability",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "哈哈。珍惜你现在还会期待惊喜的年纪吧。",
+	"nextId": "act1_kuxin_stability_value"
+  },
+  {
+	"id": "act1_kuxin_stability_value",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "再往后活几年，你终究会明白，确定的结果有多珍贵。",
+	"nextId": "act1_kuxin_stability_calm"
+  },
+  {
+	"id": "act1_kuxin_stability_calm",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "所谓平稳无趣的日子，也是很多人求都求不来的。",
+	"nextId": "act1_kuxin_stability_fish"
+  },
+  {
+	"id": "act1_kuxin_stability_fish",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "要是可以，我宁愿在这里连钓五十条青鲈。",
+	"nextId": "act1_kuxin_stability_toes"
+  },
+  {
+	"id": "act1_kuxin_stability_toes",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "也不想突然来条裂颌鲳，把我的脚趾头咬掉。",
+	"nextId": "act1_silence_after_kuxin_lesson"
+  },
+  {
+	"id": "act1_silence_after_kuxin_lesson",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 6,
+	"nextId": "act1_inor_food_supply"
+  },
+  {
+	"id": "act1_inor_food_supply",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "听说前段时间刚发生过鼠灾？那船上的粮食储备是什么情况？",
+	"nextId": "act1_kuxin_food_supply"
+  },
+  {
+	"id": "act1_kuxin_food_supply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "蔬菜谷物倒没受太大影响，肉基本没了。",
+	"nextId": "act1_kuxin_food_mice"
+  },
+  {
+	"id": "act1_kuxin_food_mice",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "那群天杀的庇鼠，咬穿封桶钻进去吃，还在熏肉上拉屎。",
+	"nextId": "act1_kuxin_food_fishing"
+  },
+  {
+	"id": "act1_kuxin_food_fishing",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "现在想吃肉，基本只能靠钓鱼。",
+	"nextId": "act1_kuxin_food_dinner"
+  },
+  {
+	"id": "act1_kuxin_food_dinner",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "也就是说，你今天钓上来什么，我们晚上就吃什么。",
+	"nextId": "act1_kuxin_mouse_question"
+  },
+  {
+	"id": "act1_kuxin_mouse_question",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "对了，你昨晚有没有听见什么动静？我总觉得还有漏网的庇鼠没抓干净。",
+	"nextId": "act1_inor_slept"
+  },
+  {
+	"id": "act1_inor_slept",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "我昨晚连饭都没来得及吃，就昏睡过去了。",
+	"nextId": "act1_kuxin_live_bait"
+  },
+  {
+	"id": "act1_kuxin_live_bait",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "储物仓里的倒是清干净了，但我不信一只都没跑出去。",
+	"nextId": "act1_kuxin_live_bait_clues"
+  },
+  {
+	"id": "act1_kuxin_live_bait_clues",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "今早厨房的水舱门被动过，地上也全是乱七八糟的水渍。",
+	"nextId": "act1_kuxin_live_bait_catch"
+  },
+  {
+	"id": "act1_kuxin_live_bait_catch",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "你要是碰见了，别给我放跑。抓活的。",
+	"nextId": "act1_kuxin_live_bait_shark"
+  },
+  {
+	"id": "act1_kuxin_live_bait_shark",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "我要拿它钓鲨鱼。",
+	"nextId": "act1_kuxin_dinner"
+  },
+  {
+	"id": "act1_kuxin_dinner",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "算上随你一起带来的那些洋葱，今晚就吃洋葱炖鱼吧。",
+	"nextId": "act1_wensheng_eel"
+  },
+  {
+	"id": "act1_wensheng_eel",
+	"type": "Dialogue",
+	"speaker": "温生",
+	"text": "今天钓到鳝了吗？前几天那锅炖鳝还挺好吃的。",
+	"nextId": "act1_kuxin_pea_mash"
+  },
+  {
+	"id": "act1_kuxin_pea_mash",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "想吃？想吃自己下水捞去。再多提一句要求，你今晚就只剩豌豆泥。",
+	"nextId": "act1_silence_after_food_supply"
+  },
+  {
+	"id": "act1_silence_after_food_supply",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 5,
+	"nextId": "act1_kuxin_gray_sea_food"
+  },
+  {
+	"id": "act1_kuxin_gray_sea_food",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "咳咳……你是灰海人吧？可惜船上食材紧缺。",
+	"nextId": "act1_kuxin_gray_sea_pie"
+  },
+  {
+	"id": "act1_kuxin_gray_sea_pie",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "不然，我还真想做一份豆鲷派给你尝尝。",
+	"nextId": "act1_kuxin_gray_sea_outsiders"
+  },
+  {
+	"id": "act1_kuxin_gray_sea_outsiders",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "船上这些外乡人，根本不懂这道菜的好。",
+	"nextId": "act1_inor_kuxin_home"
+  },
+  {
+	"id": "act1_inor_kuxin_home",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "你也是灰海人吗？看起来……你好像也很久没回过家乡了。",
+	"nextId": "act1_kuxin_home_reply"
+  },
+  {
+	"id": "act1_kuxin_home_reply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "家乡吗……呵呵。那个地方或许都已经不在了。",
+	"nextId": "act1_kuxin_home_young"
+  },
+  {
+	"id": "act1_kuxin_home_young",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "我离开的时候，比你现在还年轻。",
+	"nextId": "act1_kuxin_home_never_returned"
+  },
+  {
+	"id": "act1_kuxin_home_never_returned",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "在那之后，我就再没动过回去的念头。",
+	"nextId": "act1_kuxin_home_nostalgia"
+  },
+  {
+	"id": "act1_kuxin_home_nostalgia",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "毕竟除了几道特产，那里也没什么值得留念的。",
+	"nextId": "act1_kuxin_home_choice"
+  },
+  {
+	"id": "act1_kuxin_home_choice",
+	"type": "Choice",
+	"speaker": "",
+	"text": "",
+	"choices": [
+	  { "text": "你的家人呢？没有想过回去见见他们吗？", "targetId": "act1_kuxin_family_reply" },
+	  { "text": "那你有后悔过吗？后悔没有回去看看？", "targetId": "act1_kuxin_regret_reply" }
+	]
+  },
+  {
+	"id": "act1_kuxin_family_reply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "家人？咳咳……如果一个地方连家都算不上，那又哪来的家人呢。",
+	"nextId": "act1_inor_some_memory"
+  },
+  {
+	"id": "act1_kuxin_regret_reply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "如果不是你主动提起，我连做梦都不会梦回那个地方。",
+	"nextId": "act1_inor_some_memory"
+  },
+  {
+	"id": "act1_inor_some_memory",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "那里总归……还是有些值得怀念的东西吧？",
+	"nextId": "act1_kuxin_closes_home"
+  },
+  {
+	"id": "act1_kuxin_closes_home",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "行了，小鬼。别妄想从我这里再撬出什么了。",
+	"nextId": "act1_kuxin_closes_home_priorities"
+  },
+  {
+	"id": "act1_kuxin_closes_home_priorities",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "对你来说，钓鱼、回家——先考虑这两件事就够了。",
+	"nextId": "act1_silence_after_kuxin_home_topic"
+  },
+  {
+	"id": "act1_silence_after_kuxin_home_topic",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 7.5,
+	"nextId": "act1_kuxin_eel_challenge"
+  },
+  {
+	"id": "act1_kuxin_eel_challenge",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "不聊这些虚的了。来，给你个挑战——看看你能不能在晚饭前钓到一条柳叶鳝。",
+	"nextId": "act1_inor_eel_confusion"
+  },
+  {
+	"id": "act1_inor_eel_confusion",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "柳……啥？什么鳝？",
+	"nextId": "act1_kuxin_story_intro"
+  },
+  {
+	"id": "act1_kuxin_story_intro",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "这样吧，咳咳……我给你讲个故事。",
+	"nextId": "act1_kuxin_story_town"
+  },
+  {
+	"id": "act1_kuxin_story_town",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "多年以前，一个海边小镇上住着一个小男孩。男孩还没出生，父亲便离去了。",
+	"illustrationId": "act1.kuxin_story.coastal_town",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_town_stepfather"
+  },
+  {
+	"id": "act1_kuxin_story_town_stepfather",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "母亲后来改嫁给一名磨坊工人。男孩受尽排挤和打骂，总独自跑到海边。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_tidepool"
+  },
+  {
+	"id": "act1_kuxin_story_tidepool",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "一天半夜，醉酒回来的继父又打了男孩一顿。男孩一气之下夺门而出。",
+	"illustrationId": "act1.kuxin_story.tidepool",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_tidepool_eel"
+  },
+  {
+	"id": "act1_kuxin_story_tidepool_eel",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "天还没亮，潮水刚开始退去。沙滩水坑里，留下一只被困的柳叶鳝。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_clear_eel"
+  },
+  {
+	"id": "act1_kuxin_story_clear_eel",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "和大多数油绿色的柳叶鳝不同，这一只几乎透明，连脏器和细骨都依稀可见。",
+	"illustrationId": "act1.kuxin_story.clear_eel",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_clear_eel_home"
+  },
+  {
+	"id": "act1_kuxin_story_clear_eel_home",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "男孩把它装进随身的瓶子，偷偷带回了家。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_feeding"
+  },
+  {
+	"id": "act1_kuxin_story_feeding",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "他喂它厨房偷来的小虾米、晚饭剩下的米粒，还有田里捉来的蚂蚱。",
+	"illustrationId": "act1.kuxin_story.secret_friend",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_feeding_seagrass"
+  },
+  {
+	"id": "act1_kuxin_story_feeding_seagrass",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "可小鳝一样也不吃。最后，男孩从海边拔来一撮海草，它才终于开口。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_feeding_friend"
+  },
+  {
+	"id": "act1_kuxin_story_feeding_friend",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "柳叶鳝成了男孩唯一的朋友。每天夜里，他都躲在破屋里和小鳝说悄悄话。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_sleeve"
+  },
+  {
+	"id": "act1_kuxin_story_sleeve",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "“你这么光溜溜的，一定很冷吧。”",
+	"illustrationId": "act1.kuxin_story.shirt_sleeve",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_sleeve_wrap"
+  },
+  {
+	"id": "act1_kuxin_story_sleeve_wrap",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "男孩剪下唯一一件衬衫的袖口，想围住小鳝。可布圈一下便滑了下去。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_release"
+  },
+  {
+	"id": "act1_kuxin_story_release",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "后来，小鳝还是被继父发现了。愤怒的男人抓起瓶子就要往地上摔。",
+	"illustrationId": "act1.kuxin_story.release",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_release_sea"
+  },
+  {
+	"id": "act1_kuxin_story_release_sea",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "男孩拼命把它抢回来，连夜跑到海边，把柳叶鳝放回了大海。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_storm"
+  },
+  {
+	"id": "act1_kuxin_story_storm",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "许多年过去，男孩早已离开出生的岛屿，成了一名军舰上的弓箭手。",
+	"illustrationId": "act1.kuxin_story.storm",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_storm_wreck"
+  },
+  {
+	"id": "act1_kuxin_story_storm_wreck",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "一次风暴中，舰队几乎全军覆没。男孩随船只的碎片被卷进海里。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_white_ribbon"
+  },
+  {
+	"id": "act1_kuxin_story_white_ribbon",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "波涛之中，他隐约感觉有什么东西从下方托住了自己。",
+	"illustrationId": "act1.kuxin_story.white_ribbon",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_white_ribbon_vision"
+  },
+  {
+	"id": "act1_kuxin_story_white_ribbon_vision",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "恍惚睁眼，他仿佛看见一条白色丝带，在黑暗海水中环绕身旁。",
+	"pace": "Slow",
+	"nextId": "act1_kuxin_story_beach"
+  },
+  {
+	"id": "act1_kuxin_story_beach",
+	"type": "Monologue",
+	"speaker": "库辛",
+	"text": "等他再次醒来时，已经静静躺在一座小岛的海滩上。\n而这一切，似乎又只是一场梦。",
+	"illustrationId": "act1.kuxin_story.beach",
+	"pace": "Slow",
+	"nextId": "act1_inor_story_conclusion"
+  },
+  {
+	"id": "act1_inor_story_conclusion",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "所以……我的目标，是钓一条和船一样大的鱼？",
+	"nextId": "act1_kuxin_story_rebuttal"
+  },
+  {
+	"id": "act1_kuxin_story_rebuttal",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "你的目标，是先把脑子里残留的水倒干净。",
+	"nextId": "act1_silence_after_kuxin_story"
+  },
+  {
+	"id": "act1_silence_after_kuxin_story",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 10,
+	"nextId": "act1_inor_kuxin_health"
+  },
+  {
+	"id": "act1_inor_kuxin_health",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "你看起来有点着凉了。年纪这么大，身体不要紧吗？",
+	"nextId": "act1_kuxin_health_reply"
+  },
+  {
+	"id": "act1_kuxin_health_reply",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "着凉？只要我还能自己从床上坐起来，就说明这把骨头硬朗得很。",
+	"nextId": "act1_inor_retirement"
+  },
+  {
+	"id": "act1_inor_retirement",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "海上的状况这么多变。像你这样的老人家……",
+	"nextId": "act1_inor_retirement_question"
+  },
+  {
+	"id": "act1_inor_retirement_question",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "不该考虑找个安稳点的地方退休吗？",
+	"nextId": "act1_kuxin_retirement"
+  },
+  {
+	"id": "act1_kuxin_retirement",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "你以为我不想？要不是艾尔那个傻姑娘死缠烂打……",
+	"nextId": "act1_kuxin_retirement_dream"
+  },
+  {
+	"id": "act1_kuxin_retirement_dream",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "我现在应该正躺在某个篝火边的椅子上打瞌睡。",
+	"nextId": "act1_aier_appears"
+  },
+  {
+	"id": "act1_aier_appears",
+	"type": "Dialogue",
+	"speaker": "艾尔亚尔",
+	"text": "有人叫我吗？",
+	"nextId": "act1_kuxin_bad_cooking"
+  },
+  {
+	"id": "act1_kuxin_bad_cooking",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "这一船的人，连土豆和地瓜都分不清楚。",
+	"nextId": "act1_kuxin_bad_cooking_porridge"
+  },
+  {
+	"id": "act1_kuxin_bad_cooking_porridge",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "我遇见他们时，一大半的人刚吃完艾尔没煮熟的豆子粥。",
+	"nextId": "act1_kuxin_bad_cooking_sick"
+  },
+  {
+	"id": "act1_kuxin_bad_cooking_sick",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "他们连着拉了四天肚子。",
+	"nextId": "act1_kuxin_bad_cooking_deck"
+  },
+  {
+	"id": "act1_kuxin_bad_cooking_deck",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "那天我上船，甲板上全是半死不活的水手，还有一股散不掉的臭味。",
+	"nextId": "act1_silence_after_kuxin_retirement"
+  },
+  {
+	"id": "act1_silence_after_kuxin_retirement",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 6,
+	"nextId": "act1_inor_aier_young"
+  },
+  {
+	"id": "act1_inor_aier_young",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "说起艾尔小姐，她作为船上的大副，是不是有些太年轻了？",
+	"nextId": "act1_inor_aier_elf_standard"
+  },
+  {
+	"id": "act1_inor_aier_elf_standard",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "就算按精灵的标准来看……",
+	"nextId": "act1_kuxin_elves_at_sea"
+  },
+  {
+	"id": "act1_kuxin_elves_at_sea",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "你又在海上见过多少精灵？他们可是最讨厌海洋的种族之一。",
+	"nextId": "act1_kuxin_elves_night"
+  },
+  {
+	"id": "act1_kuxin_elves_night",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "对他们来说，海上的夜晚太难熬了。",
+	"nextId": "act1_kuxin_elves_vision"
+  },
+  {
+	"id": "act1_kuxin_elves_vision",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "精灵到了黑夜，视力几乎和盲人没什么区别。",
+	"nextId": "act1_kuxin_elves_hearing"
+  },
+  {
+	"id": "act1_kuxin_elves_hearing",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "偏偏对他们的听力而言，无休止的海浪声又吵得要命。",
+	"nextId": "act1_kuxin_ship_origin"
+  },
+  {
+	"id": "act1_kuxin_ship_origin",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "具体缘由我也不清楚。三弦号一开始，就是他们两个人启航的。",
+	"nextId": "act1_kuxin_ship_origin_details"
+  },
+  {
+	"id": "act1_kuxin_ship_origin_details",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "至于背后那些细枝末节，我一个糟老头子也懒得管。",
+	"nextId": "act1_silence_after_aier_origin"
+  },
+  {
+	"id": "act1_silence_after_aier_origin",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 6,
+	"nextId": "act1_eel_caught"
+  },
+  {
+	"id": "act1_eel_caught",
+	"type": "Dialogue",
+	"speaker": "伊诺尔",
+	"text": "比我想象中……小多了啊。",
+	"nextId": "act1_kuxin_eel_praise"
+  },
+  {
+	"id": "act1_kuxin_eel_praise",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "哼，还算有点悟性。不过别得意，小鬼。你要学的还多着呢。",
+	"nextId": "act1_wensheng_eel_cheer"
+  },
+  {
+	"id": "act1_wensheng_eel_cheer",
+	"type": "Dialogue",
+	"speaker": "温生",
+	"text": "哈哈，这是什么！不愧是我看好的人！",
+	"nextId": "act1_silence_after_eel_catch"
+  },
+  {
+	"id": "act1_silence_after_eel_catch",
+	"type": "Silence",
+	"speaker": "",
+	"text": "",
+	"durationSeconds": 5,
+	"nextId": "act1_afternoon_end"
+  },
+  {
+	"id": "act1_afternoon_end",
+	"type": "Dialogue",
+	"speaker": "库辛",
+	"text": "哼……收获还不错。今天就到这儿吧。把这些鱼提到厨房去，然后坐着等吃。",
+	"nextId": null
+  }
+]

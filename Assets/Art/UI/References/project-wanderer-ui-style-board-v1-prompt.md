@@ -1,0 +1,18 @@
+# Project Wanderer UI Style Board v1 — Generation Prompt
+
+Built-in image generation mode. The attached UI screenshot was used only as a reference for information hierarchy and restrained overlay density.
+
+```text
+Use case: ui-mockup
+Asset type: Project Wanderer game UI visual style guide and component showcase board, 1920x1080 landscape
+Primary request: Create an original, production-quality flat 2D UI style board for a nautical visual-novel and fishing game. Use the attached screenshot only as a reference for information hierarchy and restrained overlay density; do not copy its exact layout, silhouettes, icons, text, panel contours, or composition.
+Scene/backdrop: divide the canvas into three subtle vertical environmental test zones—bright misty sea, overcast blue-gray sea, and deep quiet night sea—kept abstract and low-detail so the UI remains the subject.
+Style/medium: flat 2D graphic interface, matte, planar, minimal shading, low-gloss, practical shipboard instrument language, quiet and durable rather than futuristic.
+Color palette: sea blue #739BA5, mist #8CABAE, slate #586565, dark slate #324549, glass #2D3E41, near-black #1D201E, deep teal #1B5F58, active teal #237E74, faded copper #927157, faded brass #D7B77C, focus ivory-brass #F1D49D, primary text #D1D3BF, muted text #9DA59B.
+Composition/framing: a clean design-system presentation. Main bottom dialogue box spanning roughly 82% width with connected but independently outlined speaker-name tab; separate vertical group of three choice buttons showing default, hover, and selected/focus states; compact corner status card for day/time/weather/wind; central fishing interaction panel showing fish tension range, depth selector, bait slot, catch progress; separate progress-bar samples; a small icon strip for weather, wind, hook, fish, bait, dialogue, confirm, warning. Include small color-token swatches and line/spacing samples. Maintain generous negative space and clear labels.
+Shape language: rectangular skeletons, crisp 45-degree chamfered corners, 2px main outlines, 1px dividers, sparse diamond nodes, one-sided tabs, no more than two asymmetrical features per major component. Thin warm ivory/faded-brass-colored lines. Deep teal represents functional/system state; pale brass represents current focus or interaction. Selected state must show at least two cues: brighter outline plus arrow/diamond and a slight 6px offset.
+Materials/textures: dark translucent planes (82–92% visual opacity), extremely subtle 1% salt-mist noise, soft restrained shadow, no realistic metal.
+Typography: clear humanist sans-serif. Use minimal short Chinese labels only, rendered legibly and exactly where possible: “对话框”, “伊南”, “选择”, “状态”, “第4日”, “上午 08:20”, “阴天”, “东风”, “钓鱼”, “张力”, “深度”, “鱼饵”, “收获进度”, “继续”. Body placeholder can use short clean horizontal lines if exact Chinese rendering is uncertain. Numbers should be narrow but not digital-clock styled.
+Constraints: coherent reusable component family; readable on all three backdrop zones; brass remains sparse; decoration never brighter or heavier than information; focus is brightest; icons readable at small size; clear safe margins; original Project Wanderer visual identity.
+Avoid: copying the reference UI, character art, ships, exact panel placement, exact iconography, cyberpunk HUD, neon cyan glow, scanlines, glitch, polished brass, metallic frames, bevels, embossing, luxurious gold, ornate nautical decoration, ropes, pirate crests, gears, large rounded corners, pill buttons, random damage, overly symmetric four-corner decoration, gradients that look glossy, watermark, branding.
+```

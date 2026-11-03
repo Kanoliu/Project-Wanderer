@@ -1,0 +1,340 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Fishing/BiteController.cs" id="bite"]
+[ext_resource type="Script" path="res://Scripts/Fishing/BobberView.cs" id="visual"]
+[ext_resource type="Script" path="res://Scripts/Fishing/WaterDrift.cs" id="drift"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/bobber-frame.svg" id="frame"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-base-v01.png" id="base"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/bobber-v01.png" id="bobber"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/ripple-ring-v01.png" id="ring"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/splash-shard-v01.png" id="splash"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-01-long-soft.png" id="water0"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-02-short-wedge.png" id="water1"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-03-double-peak.png" id="water2"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-04-offset-sliver.png" id="water3"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-05-bent-ribbon.png" id="water4"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-06-flat-shoal.png" id="water5"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-07-long-tail.png" id="water6"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-08-split-tip.png" id="water7"]
+
+[sub_resource type="AtlasTexture" id="bobber_atlas"]
+atlas = ExtResource("bobber")
+region = Rect2(401, 62, 222, 1394)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="ring_atlas"]
+atlas = ExtResource("ring")
+region = Rect2(115, 270, 1753, 270)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="splash_atlas"]
+atlas = ExtResource("splash")
+region = Rect2(546, 437, 184, 414)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water0_atlas"]
+atlas = ExtResource("water0")
+region = Rect2(94, 434, 1486, 75)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water1_atlas"]
+atlas = ExtResource("water1")
+region = Rect2(142, 296, 1887, 129)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water2_atlas"]
+atlas = ExtResource("water2")
+region = Rect2(96, 440, 1480, 53)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water3_atlas"]
+atlas = ExtResource("water3")
+region = Rect2(116, 383, 1630, 70)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water4_atlas"]
+atlas = ExtResource("water4")
+region = Rect2(103, 536, 1228, 58)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water5_atlas"]
+atlas = ExtResource("water5")
+region = Rect2(177, 270, 1852, 184)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water6_atlas"]
+atlas = ExtResource("water6")
+region = Rect2(74, 411, 1627, 82)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="water7_atlas"]
+atlas = ExtResource("water7")
+region = Rect2(132, 326, 1900, 76)
+filter_clip = true
+
+[node name="BobberHud" type="Control"]
+custom_minimum_size = Vector2(320, 230)
+layout_mode = 3
+offset_right = 440.0
+offset_bottom = 250.0
+mouse_filter = 2
+texture_filter = 2
+script = ExtResource("bite")
+
+[node name="Visual" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("visual")
+ReferenceWidth = 436.0
+BiteSinkDistance = 42.0
+IdleBobAmplitude = 1.3
+IdleTiltAmplitude = 0.025
+RippleDuration = 2.4
+
+[node name="Water" type="Control" parent="Visual"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 32.0
+offset_right = -2.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+
+[node name="Base" type="TextureRect" parent="Visual/Water"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("base")
+expand_mode = 1
+
+[node name="WaterDrift" type="Control" parent="Visual/Water"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("drift")
+Variants = Array[Texture2D]([SubResource("water0_atlas"), SubResource("water1_atlas"), SubResource("water2_atlas"), SubResource("water3_atlas"), SubResource("water4_atlas"), SubResource("water5_atlas"), SubResource("water6_atlas"), SubResource("water7_atlas")])
+WidthRange = Vector2(0.22, 0.42)
+SpeedRange = Vector2(0.014, 0.028)
+OpacityRange = Vector2(0.16, 0.30)
+LightTint = Color(1, 1, 1, 1)
+DarkTint = Color(0.48, 0.58, 0.62, 1)
+
+[node name="Streak1" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(1, 1, 1, 0.24)
+layout_mode = 0
+offset_left = -30.0
+offset_top = 13.0
+offset_right = 92.0
+offset_bottom = 20.0
+mouse_filter = 2
+texture = SubResource("water0_atlas")
+expand_mode = 1
+
+[node name="Streak2" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(0.48, 0.58, 0.62, 0.24)
+layout_mode = 0
+offset_left = 270.0
+offset_top = 33.0
+offset_right = 436.0
+offset_bottom = 44.0
+mouse_filter = 2
+texture = SubResource("water1_atlas")
+expand_mode = 1
+
+[node name="Streak3" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(1, 1, 1, 0.24)
+layout_mode = 0
+offset_left = 35.0
+offset_top = 58.0
+offset_right = 177.0
+offset_bottom = 64.0
+mouse_filter = 2
+texture = SubResource("water2_atlas")
+expand_mode = 1
+
+[node name="Streak4" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(0.48, 0.58, 0.62, 0.24)
+layout_mode = 0
+offset_left = 308.0
+offset_top = 80.0
+offset_right = 473.0
+offset_bottom = 87.0
+mouse_filter = 2
+texture = SubResource("water3_atlas")
+expand_mode = 1
+
+[node name="Streak5" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(1, 1, 1, 0.24)
+layout_mode = 0
+offset_left = -45.0
+offset_top = 102.0
+offset_right = 116.0
+offset_bottom = 110.0
+mouse_filter = 2
+texture = SubResource("water4_atlas")
+expand_mode = 1
+
+[node name="Streak6" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(0.48, 0.58, 0.62, 0.24)
+layout_mode = 0
+offset_left = 260.0
+offset_top = 132.0
+offset_right = 364.0
+offset_bottom = 142.0
+mouse_filter = 2
+texture = SubResource("water5_atlas")
+expand_mode = 1
+
+[node name="Streak7" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(1, 1, 1, 0.24)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 160.0
+offset_right = 177.0
+offset_bottom = 167.0
+mouse_filter = 2
+texture = SubResource("water6_atlas")
+expand_mode = 1
+
+[node name="Streak8" type="TextureRect" parent="Visual/Water/WaterDrift"]
+modulate = Color(0.48, 0.58, 0.62, 0.24)
+layout_mode = 0
+offset_left = 320.0
+offset_top = 180.0
+offset_right = 456.0
+offset_bottom = 186.0
+mouse_filter = 2
+texture = SubResource("water7_atlas")
+expand_mode = 1
+
+[node name="BobberClip" type="Control" parent="Visual/Water"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 0.68
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+
+[node name="FishingLine" type="Line2D" parent="Visual/Water/BobberClip"]
+points = PackedVector2Array(148, -4, 218, 56)
+width = 1.25
+default_color = Color(0.82, 0.827, 0.749, 0.55)
+antialiased = true
+
+[node name="BobberPivot" type="Control" parent="Visual/Water/BobberClip"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Bobber" type="TextureRect" parent="Visual/Water/BobberClip/BobberPivot"]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -76.0
+offset_right = 9.0
+offset_bottom = 37.0
+mouse_filter = 2
+texture = SubResource("bobber_atlas")
+expand_mode = 1
+
+[node name="Surface" type="Control" parent="Visual/Water"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.68
+anchor_right = 0.5
+anchor_bottom = 0.68
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RippleA" type="TextureRect" parent="Visual/Water/Surface"]
+modulate = Color(1, 1, 1, 0.38)
+layout_mode = 0
+offset_left = -34.0
+offset_top = -5.0
+offset_right = 34.0
+offset_bottom = 5.0
+pivot_offset = Vector2(34, 5)
+mouse_filter = 2
+texture = SubResource("ring_atlas")
+expand_mode = 1
+
+[node name="RippleB" type="TextureRect" parent="Visual/Water/Surface"]
+modulate = Color(1, 1, 1, 0.24)
+layout_mode = 0
+offset_left = -57.0
+offset_top = -8.0
+offset_right = 57.0
+offset_bottom = 8.0
+pivot_offset = Vector2(57, 8)
+mouse_filter = 2
+texture = SubResource("ring_atlas")
+expand_mode = 1
+
+[node name="Splash" type="CPUParticles2D" parent="Visual/Water/Surface"]
+emitting = false
+amount = 6
+lifetime = 0.48
+one_shot = true
+explosiveness = 1.0
+randomness = 0.25
+local_coords = false
+texture = SubResource("splash_atlas")
+direction = Vector2(0, -1)
+spread = 48.0
+gravity = Vector2(0, 145)
+initial_velocity_min = 34.0
+initial_velocity_max = 68.0
+angular_velocity_min = -70.0
+angular_velocity_max = 70.0
+scale_amount_min = 0.018
+scale_amount_max = 0.032
+color = Color(1, 1, 1, 0.8)
+
+[node name="Frame" type="NinePatchRect" parent="Visual"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("frame")
+patch_margin_left = 88
+patch_margin_top = 32
+patch_margin_right = 24
+patch_margin_bottom = 24
+
+[node name="PhaseLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+mouse_filter = 2
+
+[node name="DebugLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+mouse_filter = 2
+
