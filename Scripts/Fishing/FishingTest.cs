@@ -1,381 +1,143 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
+/// <summary>Direct movement testing: no bait selection, random fish draw or bite gate.</summary>
 public partial class FishingTest : Control
 {
-	private enum FishingState
-	{
-		Preparation,
-		Waiting,
-		Bite,
-		Fight,
-		Result
-	}
+    private static readonly (string Id, string Name)[] Presets = {
+        ("fight.stable", "01 · 温和 / Gentle"),
+        ("fight.active", "02 · 活跃 / Active"),
+        ("fight.sprint", "03 · 冲刺 / Sprint")
+    };
 
-	private FishingDataStore _dataStore = null!;
-	private Label _stateLabel = null!;
-	private Label _instructionLabel = null!;
-	private Control _setupPanel = null!;
-	private OptionButton _baitPicker = null!;
-	private OptionButton _depthPicker = null!;
-	private Label _candidateLabel = null!;
-	private Button _castButton = null!;
-	private Label _catchInfoLabel = null!;
-	private BiteController _biteController = null!;
-	private FightController _fightController = null!;
-	private Control _resultPanel = null!;
-	private Label _resultLabel = null!;
-	private Label _resultReason = null!;
-	private Button _restartButton = null!;
+    private readonly List<FightProfileDefinition> _profiles = new();
+    private Control _setup;
+    private OptionButton _presetPicker;
+    private SpinBox _seedPicker;
+    private Label _parameters;
+    private Label _status;
+    private Button _start;
+    private Button _retry;
+    private Button _back;
+    private FightController _fight;
+    private FishMovementSettings _lastSettings;
+    private string _lastName;
+    private int _lastSeed;
+    private double _elapsed;
+    private bool _running;
 
-	private readonly List<FishingBaitDefinition> _baitOptions = new();
-	private readonly List<FishingDepthDefinition> _depthOptions = new();
-	private FishingState _state;
-	private FishingEventRequest _activeRequest = new();
-	private FishDefinition _activeFish = null!;
+    public override void _Ready()
+    {
+        _setup = GetNode<Control>("Page/Stack/SetupPanel");
+        _presetPicker = GetNode<OptionButton>("Page/Stack/SetupPanel/Margin/Options/PresetPicker");
+        _seedPicker = GetNode<SpinBox>("Page/Stack/SetupPanel/Margin/Options/SeedRow/SeedPicker");
+        _parameters = GetNode<Label>("Page/Stack/SetupPanel/Margin/Options/Parameters");
+        _start = GetNode<Button>("Page/Stack/SetupPanel/Margin/Options/StartButton");
+        _status = GetNode<Label>("Page/Stack/Status");
+        _fight = GetNode<FightController>("Page/Stack/FightController");
+        _retry = GetNode<Button>("Page/Stack/Actions/RetryButton");
+        _back = GetNode<Button>("Page/Stack/Actions/BackButton");
 
-	public override void _Ready()
-	{
-		_dataStore = GetNode<FishingDataStore>("/root/FishingDataStore");
-		_stateLabel = GetNode<Label>("Page/Stack/StateLabel");
-		_instructionLabel = GetNode<Label>("Page/Stack/InstructionLabel");
-		_setupPanel = GetNode<Control>("Page/Stack/SetupPanel");
-		_baitPicker = GetNode<OptionButton>(
-			"Page/Stack/SetupPanel/SetupMargin/SetupStack/BaitRow/BaitPicker"
-		);
-		_depthPicker = GetNode<OptionButton>(
-			"Page/Stack/SetupPanel/SetupMargin/SetupStack/DepthRow/DepthPicker"
-		);
-		_candidateLabel = GetNode<Label>(
-			"Page/Stack/SetupPanel/SetupMargin/SetupStack/CandidateLabel"
-		);
-		_castButton = GetNode<Button>(
-			"Page/Stack/SetupPanel/SetupMargin/SetupStack/CastButton"
-		);
-		_catchInfoLabel = GetNode<Label>("Page/Stack/CatchInfoLabel");
-		_biteController = GetNode<BiteController>("Page/Stack/BiteController");
-		_fightController = GetNode<FightController>("Page/Stack/FightController");
-		_resultPanel = GetNode<Control>("Page/Stack/ResultPanel");
-		_resultLabel = GetNode<Label>(
-			"Page/Stack/ResultPanel/ResultStack/ResultLabel"
-		);
-		_resultReason = GetNode<Label>(
-			"Page/Stack/ResultPanel/ResultStack/ResultReason"
-		);
-		_restartButton = GetNode<Button>(
-			"Page/Stack/ResultPanel/ResultStack/RestartButton"
-		);
+        _presetPicker.ItemSelected += OnPresetSelected;
+        _start.Pressed += StartSelected;
+        _retry.Pressed += Retry;
+        _back.Pressed += ShowSetup;
+        _fight.FightResolved += OnFightResolved;
 
-		_baitPicker.ItemSelected += OnSetupChanged;
-		_depthPicker.ItemSelected += OnSetupChanged;
-		_castButton.Pressed += BeginFishing;
-		_biteController.BiteStarted += OnBiteStarted;
-		_biteController.BiteResolved += OnBiteResolved;
-		_fightController.FightResolved += OnFightResolved;
-		_restartButton.Pressed += ShowPreparation;
+        var data = GetNode<FishingDataStore>("/root/FishingDataStore");
+        foreach (var preset in Presets)
+        {
+            if (data.IsLoaded && data.TryGetFightProfile(preset.Id, out var profile))
+            {
+                _profiles.Add(profile);
+                _presetPicker.AddItem(preset.Name);
+            }
+        }
+        if (_profiles.Count != Presets.Length)
+        {
+            _start.Disabled = true;
+            _presetPicker.Disabled = true;
+            _status.Text = "测试配置加载失败：需要 fight.stable、fight.active 和 fight.sprint。请检查 Output。";
+            return;
+        }
+        _presetPicker.Select(0);
+        OnPresetSelected(0);
+        ShowSetup();
+    }
 
-		PopulateSetupOptions();
-		ShowPreparation();
-	}
+    public override void _Process(double delta)
+    {
+        if (!_running) return;
+        _elapsed += delta;
+        string tracking = _fight.FishInsideBox ? "框内 · 绿色" : "框外 · 珊瑚红";
+        string visibility = _fight.FishIsDiving ? "潜水中：继续预测鱼的位置" : "鱼可见";
+        _status.Text = $"{_lastName}  |  {_elapsed:0.0}s  |  {tracking}  |  {visibility}  |  Seed {_lastSeed}";
+    }
 
-	private void PopulateSetupOptions()
-	{
-		_baitPicker.Clear();
-		_depthPicker.Clear();
-		_baitOptions.Clear();
-		_depthOptions.Clear();
+    private void OnPresetSelected(long index)
+    {
+        if (index < 0 || index >= _profiles.Count) return;
+        var m = _profiles[(int)index].Movement;
+        _parameters.Text =
+            $"巡游速度 {m.CruiseSpeed:0.00}    速度变化 ±{m.SpeedVariation:P0}    加速度 {m.Acceleration:0.00}\n" +
+            $"转向 {m.MaxTurnRate:0}°/s    决策间隔 {m.SteeringInterval:0.00}s    游移角度 ±{m.WanderAngle:0}°    避边距离 {m.EdgeAvoidanceDistance:P0}\n" +
+            $"冲刺速度 ×{m.BurstSpeedMultiplier:0.0}    持续 {m.BurstDuration:0.00}s    间隔 {m.BurstInterval:0.0}s    冲刺转向 {m.BurstTurnRate:0}°/s\n" +
+            $"潜水频率 {m.DiveRate:0.0}/min    潜水时长 {m.DiveDuration:0.0}s\n" +
+            $"避框强度 {m.AvoidanceStrength:0.00}    反应延迟 {m.ReactionDelay:0.00}s    逆向冲刺转向概率 {m.BurstCounterTurnChance:P0}";
+    }
 
-		if (!_dataStore.IsLoaded)
-		{
-			_candidateLabel.Text =
-				"钓鱼数据加载失败，请检查 Godot Output 中的校验错误。";
-			_castButton.Disabled = true;
-			return;
-		}
+    private void StartSelected()
+    {
+        int index = _presetPicker.Selected;
+        if (_running || index < 0 || index >= _profiles.Count) return;
+        _lastSettings = _profiles[index].Movement.Copy();
+        _lastName = _presetPicker.GetItemText(index);
+        _lastSeed = (int)_seedPicker.Value;
+        BeginFight();
+    }
 
-		_baitOptions.AddRange(_dataStore.Baits.OrderBy(bait => bait.Id));
-		_depthOptions.AddRange(
-			_dataStore.Depths.OrderBy(depth => (int)depth.Value)
-		);
+    private void BeginFight()
+    {
+        _fight.ResetFight();
+        _setup.Visible = false;
+        _retry.Visible = false;
+        _back.Visible = true;
+        _back.Text = "停止并选择配置 / Stop & choose preset";
+        _fight.Visible = true;
+        _elapsed = 0;
+        _running = true;
+        // Let containers lay out the newly visible panel before reading its size.
+        CallDeferred(nameof(StartLaidOutFight));
+    }
 
-		foreach (FishingBaitDefinition bait in _baitOptions)
-		{
-			_baitPicker.AddItem(bait.DisplayName);
-		}
+    private void StartLaidOutFight()
+    {
+        if (_running) _fight.StartFight(_lastSettings, _lastSeed);
+    }
 
-		foreach (FishingDepthDefinition depth in _depthOptions)
-		{
-			_depthPicker.AddItem(depth.DisplayName);
-		}
+    private void Retry()
+    {
+        if (!_running && _lastSettings != null) BeginFight();
+    }
 
-		if (_baitOptions.Count > 0)
-		{
-			_baitPicker.Select(0);
-		}
+    private void OnFightResolved(bool caught)
+    {
+        _running = false;
+        _status.Text = $"{(caught ? "钓获成功" : "鱼已逃脱")}  |  {_lastName}  |  {_elapsed:0.0}s  |  Seed {_lastSeed}";
+        _retry.Visible = true;
+        _back.Text = "选择其他配置 / Choose preset";
+        _retry.GrabFocus();
+    }
 
-		if (_depthOptions.Count > 0)
-		{
-			_depthPicker.Select(0);
-		}
-	}
-
-	private void ShowPreparation()
-	{
-		_biteController.ResetAttempt();
-		_fightController.ResetFight();
-		_activeRequest = new FishingEventRequest();
-		_activeFish = null!;
-		_setupPanel.Visible = true;
-		_catchInfoLabel.Visible = false;
-		_biteController.Visible = false;
-		_fightController.Visible = false;
-		_resultPanel.Visible = false;
-		SetState(FishingState.Preparation);
-		UpdateCandidatePreview();
-
-		if (!_castButton.Disabled)
-		{
-			_castButton.GrabFocus();
-		}
-	}
-
-	private void OnSetupChanged(long _index)
-	{
-		if (_state == FishingState.Preparation)
-		{
-			UpdateCandidatePreview();
-		}
-	}
-
-	private void UpdateCandidatePreview()
-	{
-		if (!TryGetSelectedSetup(out FishingSetup setup))
-		{
-			_candidateLabel.Text = "没有可用的鱼饵或水层数据。";
-			_castButton.Disabled = true;
-			return;
-		}
-
-		IReadOnlyList<FishingCatchCandidate> candidates =
-			_dataStore.GetCatchCandidates(setup);
-		_castButton.Disabled = candidates.Count == 0;
-
-		if (candidates.Count == 0)
-		{
-			_candidateLabel.Text =
-				"候选池为空：当前水层没有会咬该饵的鱼。";
-			return;
-		}
-
-		_candidateLabel.Text =
-			$"候选池（{candidates.Count}）：\n" +
-			string.Join(
-				"　",
-				candidates.Select(candidate =>
-					$"{candidate.Fish.DisplayName}" +
-					$"〔{GetDifficultyName(candidate.Fish.CatchDifficulty)}" +
-					$"，权重 {candidate.Weight}〕"
-				)
-			);
-	}
-
-	private bool TryGetSelectedSetup(out FishingSetup setup)
-	{
-		setup = new FishingSetup();
-		int baitIndex = _baitPicker.Selected;
-		int depthIndex = _depthPicker.Selected;
-
-		if (baitIndex < 0 || baitIndex >= _baitOptions.Count ||
-			depthIndex < 0 || depthIndex >= _depthOptions.Count)
-		{
-			return false;
-		}
-
-		setup.BaitId = _baitOptions[baitIndex].Id;
-		setup.Depth = _depthOptions[depthIndex].Value;
-		return true;
-	}
-
-	private void BeginFishing()
-	{
-		if (!TryGetSelectedSetup(out FishingSetup setup))
-		{
-			return;
-		}
-
-		_activeRequest = _dataStore.CreateEventRequest(
-			"test.natural_catch",
-			setup
-		);
-
-		if (string.IsNullOrWhiteSpace(_activeRequest.FishId) ||
-			!_dataStore.TryGetFish(
-				_activeRequest.BaseFishId,
-				out _activeFish))
-		{
-			_candidateLabel.Text = "候选池无法生成有效钓鱼请求。";
-			_castButton.Disabled = true;
-			return;
-		}
-
-		_setupPanel.Visible = false;
-		_resultPanel.Visible = false;
-		_fightController.Visible = false;
-		_biteController.Visible = true;
-		_catchInfoLabel.Visible = true;
-		_catchInfoLabel.Text =
-			$"测试可见抽取结果：{GetCatchDisplayName()} · " +
-			$"{GetDifficultyName(_activeFish.CatchDifficulty)} · " +
-			GetPatternName(_activeRequest.BitePattern);
-		SetState(FishingState.Waiting);
-		_biteController.StartAttempt(_activeRequest.BitePattern);
-	}
-
-	private void OnBiteStarted()
-	{
-		if (_state == FishingState.Waiting)
-		{
-			SetState(FishingState.Bite);
-		}
-	}
-
-	private void OnBiteResolved(int resultValue)
-	{
-		BiteController.BiteResult result =
-			(BiteController.BiteResult)resultValue;
-
-		switch (result)
-		{
-			case BiteController.BiteResult.Early:
-				ShowResult(false, "MISS_EARLY — 提竿过早。");
-				break;
-
-			case BiteController.BiteResult.Hooked:
-				StartFight();
-				break;
-
-			case BiteController.BiteResult.Late:
-				ShowResult(false, "MISS_LATE — 鱼已经松口。");
-				break;
-		}
-	}
-
-	private void StartFight()
-	{
-		_biteController.Visible = false;
-		_fightController.Visible = true;
-		_resultPanel.Visible = false;
-		SetState(FishingState.Fight);
-		_fightController.StartFight();
-	}
-
-	private void OnFightResolved(bool caught)
-	{
-		ShowResult(
-			caught,
-			caught
-				? "SUCCESS — 钓获已入手。"
-				: "FAIL — 鱼挣脱了钓线。"
-		);
-	}
-
-	private void ShowResult(bool caught, string reason)
-	{
-		_biteController.ResetAttempt();
-		_fightController.ResetFight();
-		_setupPanel.Visible = false;
-		_catchInfoLabel.Visible = false;
-		_biteController.Visible = false;
-		_fightController.Visible = false;
-		_resultPanel.Visible = true;
-		_resultLabel.Text = caught
-			? $"钓获：{GetCatchDisplayName()}"
-			: $"逃脱：{GetCatchDisplayName()}";
-		_resultReason.Text =
-			$"{reason}\n基础鱼种：{_activeFish.DisplayName} · " +
-			$"难度：{GetDifficultyName(_activeFish.CatchDifficulty)} · " +
-			$"咬钩：{GetPatternName(_activeRequest.BitePattern)}" +
-			(_activeRequest.IsSpecialVariant ? "\n★ 本次为特殊个体" : "");
-		SetState(FishingState.Result);
-		_restartButton.GrabFocus();
-	}
-
-	private void SetState(FishingState state)
-	{
-		_state = state;
-		_stateLabel.Text = state switch
-		{
-			FishingState.Preparation => "阶段：准备 / PREPARATION",
-			FishingState.Waiting => "阶段：等待咬钩 / WAITING",
-			FishingState.Bite => "阶段：咬钩 / BITE",
-			FishingState.Fight => "阶段：搏鱼 / FIGHT",
-			FishingState.Result => "阶段：结算 / RESULT",
-			_ => state.ToString()
-		};
-
-		_instructionLabel.Text = state switch
-		{
-			FishingState.Preparation =>
-				"选择鱼饵与水层；候选池严格取两项条件的交集。",
-			FishingState.Waiting =>
-				"观察浮漂。咬钩信号出现前按 Space 会判定为过早。",
-			FishingState.Bite => GetBiteInstruction(),
-			FishingState.Fight =>
-				"使用 WASD 或方向键移动捕捉区域，让鱼留在区域内。",
-			FishingState.Result =>
-				"查看抽取与操作结果，然后返回准备阶段继续测试。",
-			_ => string.Empty
-		};
-	}
-
-	private string GetCatchDisplayName()
-	{
-		if (_activeRequest.IsSpecialVariant &&
-			_dataStore.TryGetVariant(
-				_activeRequest.FishId,
-				out FishVariantDefinition variant))
-		{
-			return $"{variant.DisplayName}（特殊个体）";
-		}
-
-		return _activeFish?.DisplayName ?? _activeRequest.FishId;
-	}
-
-	private string GetBiteInstruction()
-	{
-		return _activeRequest.BitePattern switch
-		{
-			FishBitePattern.Probe =>
-				"忽略零散点动，浮漂真正垂直下沉时按 Space。",
-			FishBitePattern.Strike =>
-				"准备快速反应，浮漂突然下沉后立即按 Space。",
-			FishBitePattern.Drag =>
-				"忽略横向游走，浮漂开始斜向下沉时按 Space。",
-			_ => string.Empty
-		};
-	}
-
-	private static string GetPatternName(FishBitePattern pattern)
-	{
-		return pattern switch
-		{
-			FishBitePattern.Probe => "试探型 / Probe",
-			FishBitePattern.Strike => "猛咬型 / Strike",
-			FishBitePattern.Drag => "拖饵型 / Drag",
-			_ => pattern.ToString()
-		};
-	}
-
-	private static string GetDifficultyName(FishCatchDifficulty difficulty)
-	{
-		return difficulty switch
-		{
-			FishCatchDifficulty.Low => "低难度",
-			FishCatchDifficulty.Medium => "中难度",
-			FishCatchDifficulty.High => "高难度",
-			_ => difficulty.ToString()
-		};
-	}
+    private void ShowSetup()
+    {
+        _running = false;
+        _fight.ResetFight();
+        _fight.Visible = false;
+        _setup.Visible = true;
+        _retry.Visible = false;
+        _back.Visible = false;
+        _status.Text = "选择参数配置后直接开始搏鱼。绿色 = 框内；珊瑚红 = 框外，潜水时同样有效。";
+        _start.GrabFocus();
+    }
 }

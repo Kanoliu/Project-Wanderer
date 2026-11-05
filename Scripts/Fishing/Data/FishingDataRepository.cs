@@ -196,6 +196,8 @@ public sealed class FishingDataRepository : IFishingDataRepository
 				request.BitePattern = biteProfile.Pattern;
 			}
 
+			if (TryGetFish(definition.FishId, out FishDefinition scriptedFish))
+				ApplyFightProfile(request, scriptedFish);
 			return request;
 		}
 
@@ -237,7 +239,17 @@ public sealed class FishingDataRepository : IFishingDataRepository
 			request.BitePattern = biteProfile.Pattern;
 		}
 
+		ApplyFightProfile(request, fish);
 		return request;
+	}
+
+	private void ApplyFightProfile(FishingEventRequest request, FishDefinition fish)
+	{
+		if (TryGetFightProfile(fish.FightProfileId, out FightProfileDefinition profile))
+		{
+			request.FightProfileId = profile.Id;
+			request.FightMovement = profile.Movement.Copy();
+		}
 	}
 
 	private static FishDefinition SelectWeightedFish(
@@ -783,6 +795,12 @@ public sealed class FishingDataRepository : IFishingDataRepository
 			{
 				continue;
 			}
+
+			if (profile.Movement == null)
+				errors.Add($"Fight profile {profile.Id} is missing movement settings.");
+			else
+				foreach (string error in profile.Movement.ValidationErrors())
+					errors.Add($"Fight profile {profile.Id}: {error}");
 
 			if (!profilesById.TryAdd(profile.Id, profile))
 			{

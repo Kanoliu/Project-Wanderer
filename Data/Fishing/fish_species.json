@@ -28,6 +28,7 @@
       "description": "最常见的海鱼之一。体色通常呈灰色，但在阳光直射下，鳞片会泛出幽幽青光。雄性会以背鳍的大小吸引配偶。作为常见食用鱼，青鲈肉质普通且刺多，民间多用于炖汤或火烤。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.probe",
+      "fightProfileId": "fight.stable",
       "availability": { "baitIds": ["bait.chao_gen_chong", "bait.hai_xia", "bait.yu_qie"], "depthIds": ["depth.shallow", "depth.middle"] },
       "variants": [
         { "id": "fish.qing_guan_lu", "displayName": "青冠鲈", "description": "少数雄性青鲈会长出异常宽大的背鳍，从头后一直延伸至背部，形似高耸的鸡冠。", "occurrenceWeight": 1 }
@@ -38,6 +39,7 @@
       "description": "常见的小型海鱼，体型很小，通常成群活动。由于个头不足以作为主食，并不太受渔民欢迎；一些地区会将其整条油炸，当作下酒菜。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.probe",
+      "fightProfileId": "fight.stable",
       "availability": { "baitIds": ["bait.chao_gen_chong", "bait.hai_xia", "bait.fu_xu"], "depthIds": ["depth.shallow", "depth.middle"] },
       "variants": [
         { "id": "fish.da_dou_diao", "displayName": "大豆鲷", "description": "豆鲷群中偶尔会出现体型明显更大的成熟雄鱼，体色呈橙色，繁殖季时常活动在鱼群中央。", "occurrenceWeight": 1 }
@@ -48,6 +50,7 @@
       "description": "一种头部长有长刺的远洋鱼。性情暴躁，受到惊扰时甚至会主动冲撞小艇。体型大、出肉多，但肉质普通，许多海员会将其吊在船尾腌制、风干或熏制。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.strike",
+      "fightProfileId": "fight.sprint",
       "availability": { "baitIds": ["bait.chao_gen_chong", "bait.hai_xia", "bait.yu_qie"], "depthIds": ["depth.shallow", "depth.middle", "depth.deep"] },
       "variants": [
         { "id": "fish.lian_qiang_yu", "displayName": "镰枪鱼", "description": "少见的樱枪鱼异化种，头部长刺向后弯曲成镰状。其作用至今没有明确解释，看起来反而不如普通樱枪鱼适合冲撞。", "occurrenceWeight": 1 }
@@ -58,6 +61,7 @@
       "description": "一种夜行鱼类，深夜时常浮到海面，通过短暂跃出水面辅助呼吸。跃起后会以很低的角度连续擦过水面，发出数声急促的拍水声。早年的水手在黑暗中看不清鱼身，只能看见远处接连溅起的白色浪花，误以为有海鬼在朝船只打水漂，因此得名。并非常见的食用鱼。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.drag",
+      "fightProfileId": "fight.active",
       "availability": { "baitIds": ["bait.chao_gen_chong", "bait.fu_xu"], "depthIds": ["depth.shallow"] },
       "variants": [
         { "id": "fish.gui_fei_piao", "displayName": "鬼飞漂", "description": "鬼漂中的特化个体，尾鳍力量远强于普通个体，能够连续拍击水面数十次，滑出极远的距离；其口腔也明显大于普通鬼漂。", "occurrenceWeight": 1 }
@@ -68,6 +72,7 @@
       "description": "一种贴伏在海底生活的比目鱼，体表斑纹与礁岩十分相似，静止时很难被发现。肉质鲜嫩，常被用来炖汤。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.probe",
+      "fightProfileId": "fight.heavy",
       "availability": { "baitIds": ["bait.chao_gen_chong", "bait.hai_xia"], "depthIds": ["depth.deep"] },
       "variants": [
         { "id": "fish.shan_ta", "displayName": "珊鳎", "description": "少数岩鳎会被珊瑚幼体误认为礁岩并附着其上。随着时间推移，珊瑚甚至可能生长到比鱼本身更大。", "occurrenceWeight": 1 }
@@ -78,6 +83,7 @@
       "description": "分布极广的鱿鱼，受到惊吓时会喷出靛蓝色的墨汁。相比食用，其墨汁作为蓝色染料的价值更受重视。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.strike",
+      "fightProfileId": "fight.stable",
       "availability": { "baitIds": ["bait.hai_xia", "bait.yu_qie", "bait.fu_xu"], "depthIds": ["depth.middle", "depth.deep"] },
       "variants": [
         { "id": "fish.zi_dian_you", "displayName": "紫靛鱿", "description": "极为稀有的靛鱿变种，喷出的墨汁呈紫色。一只活体的价值甚至足以换取一艘小型双桅帆船。", "occurrenceWeight": 1 }
@@ -88,6 +94,7 @@
       "description": "身体宽而扁平，习惯保持水平姿态游动。繁殖季时，幼鱼会吸附在成鱼背部随其一同行动，因此得名“负子鱼”。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.drag",
+      "fightProfileId": "fight.active",
       "availability": { "baitIds": ["bait.chao_gen_chong", "bait.hai_xia", "bait.fu_xu"], "depthIds": ["depth.shallow", "depth.middle"] },
       "variants": [
         { "id": "fish.fu_zi_yu_brood", "displayName": "负子鱼（负子版）", "description": "背负着数量异常多幼鱼的个体，钓起时往往连同幼鱼一起离水。", "occurrenceWeight": 1 }
@@ -98,6 +105,7 @@
       "description": "一种完全没有视觉的大型鳗鱼，通常藏身于海底洞穴，很少被捕获。肉质极为鲜美，曾被灰目帝国皇室视为最高级的食材之一。",
       "catchDifficulty": "High",
       "biteProfileId": "bite.drag",
+      "fightProfileId": "fight.heavy",
       "availability": { "baitIds": ["bait.hai_xia"], "depthIds": ["depth.deep"] },
       "variants": [
         { "id": "fish.bai_mu_mang_man", "displayName": "百目盲鳗", "description": "极少见的盲鳗个体，体表布满形似眼睛的环状花纹，但本身依然没有任何视力。", "occurrenceWeight": 1 }
@@ -108,6 +116,7 @@
       "description": "一种小型掠食性鲨鱼，食谱极广，几乎什么都吃。肉质略带酸味，并不适合作为食用鱼。",
       "catchDifficulty": "High",
       "biteProfileId": "bite.strike",
+      "fightProfileId": "fight.sprint",
       "availability": { "baitIds": ["bait.yu_qie"], "depthIds": ["depth.middle", "depth.deep"] },
       "variants": [
         { "id": "fish.bai_hua_you_sha", "displayName": "白化鼬鲨", "description": "鼬鲨中极少见的白化个体，通体呈灰白色。", "occurrenceWeight": 1 }
@@ -118,6 +127,7 @@
       "description": "一种杂食性海蟹，长有两对足和两对钳。小钳负责进食和抓握，大钳则用于抵御捕食者。性情固执暴躁，大钳一旦夹住东西便很少主动松开，因此经常连同鱼饵一起被渔民钓上来。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.drag",
+      "fightProfileId": "fight.heavy",
       "availability": { "baitIds": ["bait.hai_xia", "bait.yu_qie"], "depthIds": ["depth.deep"] },
       "variants": [
         { "id": "fish.bing_men_shen_xie", "displayName": "兵门神蟹", "description": "门神蟹中的变异个体，一只大钳进一步增大，另一只则变成近似盾牌的形状护在身前。但它似乎并没有发展出与之匹配的攻击方式，行动反而显得更加笨拙。", "occurrenceWeight": 1 }
@@ -128,6 +138,7 @@
       "description": "一种身体扁平、呈流线型的草食性鳝鱼，平时活动于中层水域。休息时会贴伏在海底，细长的身体看起来就像一片水生植物的叶子。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.probe",
+      "fightProfileId": "fight.active",
       "availability": { "baitIds": ["bait.fu_xu"], "depthIds": ["depth.middle", "depth.deep"] },
       "variants": [
         { "id": "fish.you_ye_shan", "displayName": "幽叶鳝", "description": "柳叶鳝中的变异个体，原本墨绿色的身体近乎完全透明，可以清楚看见体内的骨骼与脏器。", "occurrenceWeight": 1 }
@@ -138,6 +149,7 @@
       "description": "一种能够自行繁殖的鱼类，每次会产下大量鱼卵，却无法靠自身将卵播散出去。因此，它们与一种被称作“护士虾”的小型虾类形成了奇特的共生关系。护士虾常年攀附在袋鱼身上，到了繁殖期便会替它将鱼卵逐一取下、播散——期间也会顺便吃掉一部分。因此，钓上来的袋鱼身上通常还会附带一只护士虾。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.probe",
+      "fightProfileId": "fight.active",
       "availability": { "baitIds": ["bait.hai_xia", "bait.fu_xu"], "depthIds": ["depth.shallow", "depth.middle"] },
       "variants": [
         { "id": "fish.dai_yu_no_shrimp", "displayName": "袋鱼（无虾）", "description": "因某种原因没有护士虾与之共生的个体，无法正常清理鱼卵，身上通常挂满了未被播散的卵。", "occurrenceWeight": 1 }
@@ -148,6 +160,7 @@
       "description": "一种罕见的浮絮食软体生物，常随漂浮藻群一同在浅层与中层缓慢漂流。身体半透明，内部可见橙红色的细密脉络，背部长有数片宽大的膜状鳍叶，张开时像被海风撑起的小帆，因此得名“霞帆蛞”。它会用口部缓慢啃食浮絮，也会将碎小的浮絮卷附在身体表面作为伪装。由于外形艳丽醒目，常被舟洲沿海的孩童误认成漂在海上的花。",
       "catchDifficulty": "High",
       "biteProfileId": "bite.probe",
+      "fightProfileId": "fight.heavy",
       "availability": { "baitIds": ["bait.fu_xu"], "depthIds": ["depth.shallow", "depth.middle"] },
       "variants": [
         { "id": "fish.hong_fan_kuo", "displayName": "虹帆蛞", "description": "极少数霞帆蛞的背膜会异常增生，形成多层重叠的宽大帆叶，边缘呈现近乎虹彩的渐变色。阳光穿过膜叶时，会在水下映出像油彩一样流动的斑斓光纹，远看仿佛一小团漂浮的晚霞。", "occurrenceWeight": 1 }
@@ -158,6 +171,7 @@
       "description": "一种活动于浅层与中层的肉食性鱼类。头部宽而扁，嘴角向后延伸得异常夸张，闭口时也能看见两侧深深的裂缝。它们很少追逐健康鱼群，更喜欢在船只、浮木和鱼群附近徘徊，抢食受伤个体、腐肉和被丢弃的鱼块。进食时上下颌能向两侧大幅张开，吞下与头部等宽的肉块。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.strike",
+      "fightProfileId": "fight.active",
       "availability": { "baitIds": ["bait.yu_qie"], "depthIds": ["depth.shallow", "depth.middle"] },
       "variants": [
         { "id": "fish.san_he_chang", "displayName": "伞颌鲳", "description": "极少数裂颌鲳的口腔两侧会长出大片柔韧的膜质组织。张嘴时，这些膜会随着上下颌一同展开，使整个头部像一把突然撑开的圆伞。它们通常从下方向漂浮的肉块猛冲，在接近目标的一瞬间将巨口完全展开，把周围的海水和食物一并吞入。完全张口时，几乎看不出原本鱼头的轮廓，只剩下一圈巨大的肉质“伞口”。", "occurrenceWeight": 1 }

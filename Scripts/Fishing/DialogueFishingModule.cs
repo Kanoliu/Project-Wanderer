@@ -35,6 +35,7 @@ public partial class DialogueFishingModule : Control
 	private string _activeFishId = "";
 	private bool _activeIsSpecialVariant;
 	private int _activeQuantity = 1;
+	private FishMovementSettings _activeFightMovement = new();
 	private FishingResult _lastResult = new();
 	private FishingTutorialStep _activeTutorialStep =
 		FishingTutorialStep.None;
@@ -223,6 +224,7 @@ public partial class DialogueFishingModule : Control
 		_activeFishId = request.FishId ?? "";
 		_activeIsSpecialVariant = request.IsSpecialVariant;
 		_activeQuantity = request.Quantity;
+		_activeFightMovement = request.FightMovement;
 		_lastResult = new FishingResult
 		{
 			EventId = _activeEventId,
@@ -447,7 +449,7 @@ public partial class DialogueFishingModule : Control
 				SetInteractionBlocking(true);
 				_hud.Visible = false;
 				_fightOverlay.Visible = true;
-				_fightController.StartFight();
+				_fightController.StartFight(_activeFightMovement);
 
 				if (_activeTutorialStep ==
 					FishingTutorialStep.FirstCatch)

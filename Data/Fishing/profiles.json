@@ -27,22 +27,54 @@
     {
       "id": "fight.stable",
       "pattern": "Stable",
-      "description": "稳定型基础手感；具体速度、转向与进度参数待首个正式鱼种验证。"
+      "description": "宽弧巡游、温和加速，偶尔短距离冲刺。",
+      "movement": {
+        "cruiseSpeed": 0.36, "speedVariation": 0.12, "acceleration": 0.65,
+        "maxTurnRate": 85, "steeringInterval": 1.1, "wanderAngle": 35,
+        "edgeAvoidanceDistance": 0.14, "burstSpeedMultiplier": 1.5,
+        "burstDuration": 0.65, "burstInterval": 6, "burstTurnRate": 70,
+        "diveRate": 2, "diveDuration": 2,
+        "avoidanceStrength": 0.25, "reactionDelay": 0.22, "burstCounterTurnChance": 0.25
+      }
     },
     {
       "id": "fight.active",
       "pattern": "Active",
-      "description": "活跃型基础手感；具体速度、转向与进度参数待首个正式鱼种验证。"
+      "description": "短弧游动、频繁变向，间歇逆向加速逃逸。",
+      "movement": {
+        "cruiseSpeed": 0.44, "speedVariation": 0.18, "acceleration": 1.0,
+        "maxTurnRate": 155, "steeringInterval": 0.7, "wanderAngle": 65,
+        "edgeAvoidanceDistance": 0.14, "burstSpeedMultiplier": 1.8,
+        "burstDuration": 0.55, "burstInterval": 3.5, "burstTurnRate": 160,
+        "diveRate": 3, "diveDuration": 2.5,
+        "avoidanceStrength": 0.35, "reactionDelay": 0.16, "burstCounterTurnChance": 0.5
+      }
     },
     {
       "id": "fight.sprint",
       "pattern": "Sprint",
-      "description": "冲刺型基础手感；具体冲刺频率、持续时间与进度参数待首个正式鱼种验证。"
+      "description": "高速定向冲刺，冲刺时可针对上一帧收线区运动转向。",
+      "movement": {
+        "cruiseSpeed": 0.46, "speedVariation": 0.15, "acceleration": 1.4,
+        "maxTurnRate": 130, "steeringInterval": 0.9, "wanderAngle": 45,
+        "edgeAvoidanceDistance": 0.18, "burstSpeedMultiplier": 2.2,
+        "burstDuration": 0.9, "burstInterval": 4.5, "burstTurnRate": 160,
+        "diveRate": 4, "diveDuration": 2.5,
+        "avoidanceStrength": 0.4, "reactionDelay": 0.12, "burstCounterTurnChance": 0.7
+      }
     },
     {
       "id": "fight.heavy",
       "pattern": "Heavy",
-      "description": "沉重型基础手感；具体速度、方向偏好与进度参数待首个正式鱼种验证。"
+      "description": "低转向率的长距离游动，持续加速与较长潜水。",
+      "movement": {
+        "cruiseSpeed": 0.40, "speedVariation": 0.1, "acceleration": 0.75,
+        "maxTurnRate": 65, "steeringInterval": 1.3, "wanderAngle": 30,
+        "edgeAvoidanceDistance": 0.18, "burstSpeedMultiplier": 2.0,
+        "burstDuration": 1.2, "burstInterval": 5.5, "burstTurnRate": 85,
+        "diveRate": 3, "diveDuration": 3,
+        "avoidanceStrength": 0.3, "reactionDelay": 0.25, "burstCounterTurnChance": 0.4
+      }
     }
   ]
 }

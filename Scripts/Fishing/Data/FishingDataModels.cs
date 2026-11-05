@@ -108,6 +108,7 @@ public class FightProfileDefinition
 	public string Id { get; set; } = "";
 	public FishFightPattern Pattern { get; set; }
 	public string Description { get; set; } = "";
+	public FishMovementSettings Movement { get; set; } = new();
 }
 
 public class FishingEventDefinition
@@ -126,6 +127,8 @@ public class FishingEventRequest
 	public int Quantity { get; set; } = 1;
 	public FishBitePattern BitePattern { get; set; } =
 		FishBitePattern.Probe;
+	public string FightProfileId { get; set; } = "";
+	public FishMovementSettings FightMovement { get; set; } = new();
 }
 
 public class FishCatalogDocument
