@@ -1,0 +1,311 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Scripts/Fishing/FightController.cs" id="controller"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/FishSpine.tscn" id="fish_spine"]
+[ext_resource type="Theme" path="res://Assets/Art/UI/fishing-fight/fight-theme.tres" id="theme"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-fight/fight-shell.svg" id="shell"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/FightWater.tscn" id="water"]
+
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/splash-shard-v01.png" id="shard"]
+
+[ext_resource type="Script" path="res://Scripts/Fishing/SwimRipples.cs" id="ripples"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/ripple-ring-v01.png" id="ring"]
+
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-fight/water-mask.svg" id="water_mask"]
+
+[sub_resource type="StyleBoxTexture" id="water_mask_style"]
+texture = ExtResource("water_mask")
+texture_margin_left = 28.0
+texture_margin_top = 28.0
+texture_margin_right = 28.0
+texture_margin_bottom = 28.0
+
+[sub_resource type="StyleBoxFlat" id="meter_rail"]
+bg_color = Color(0.114, 0.125, 0.118, 0.94)
+border_width_left = 1
+border_color = Color(0.843, 0.718, 0.486, 0.45)
+
+[sub_resource type="AtlasTexture" id="ring_atlas"]
+atlas = ExtResource("ring")
+region = Rect2(115, 270, 1753, 270)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shard_atlas"]
+atlas = ExtResource("shard")
+region = Rect2(546, 437, 184, 414)
+filter_clip = true
+
+[sub_resource type="Gradient" id="particle_gradient"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(0.72, 0.81, 0.77, 0.55, 0.65, 0.78, 0.76, 0.35, 0.55, 0.72, 0.72, 0)
+
+[node name="FightHud" type="Control"]
+custom_minimum_size = Vector2(856, 368.5)
+layout_mode = 3
+offset_right = 856.0
+offset_bottom = 368.5
+mouse_filter = 2
+texture_filter = 2
+theme = ExtResource("theme")
+script = ExtResource("controller")
+CatchAreaSpeed = 220.0
+
+[node name="Shell" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -62.0
+offset_bottom = -16.0
+texture = ExtResource("shell")
+patch_margin_left = 72
+patch_margin_top = 28
+patch_margin_right = 72
+patch_margin_bottom = 28
+
+[node name="FishingArea" type="Panel" parent="."]
+clip_children = 1
+theme_override_styles/panel = SubResource("water_mask_style")
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = -78.0
+offset_bottom = -28.0
+clip_contents = true
+mouse_filter = 2
+
+[node name="WaterSurface" parent="FishingArea" instance=ExtResource("water")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+
+[node name="CatchArea" type="Panel" parent="FishingArea"]
+z_index = 5
+layout_mode = 0
+offset_left = 320.0
+offset_top = 118.25
+offset_right = 430.0
+offset_bottom = 194.25
+mouse_filter = 2
+
+[node name="Reticle" type="Control" parent="FishingArea/CatchArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+
+[node name="TL" type="Control" parent="FishingArea/CatchArea/Reticle"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_right = 0.0
+anchor_top = 0.0
+anchor_bottom = 0.0
+mouse_filter = 2
+
+[node name="Corner" type="Line2D" parent="FishingArea/CatchArea/Reticle/TL"]
+points = PackedVector2Array(0, 10, 0, 0, 10, 0)
+width = 1.5
+default_color = Color(1, 1, 1, 1)
+
+[node name="TR" type="Control" parent="FishingArea/CatchArea/Reticle"]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_top = 0.0
+anchor_bottom = 0.0
+mouse_filter = 2
+
+[node name="Corner" type="Line2D" parent="FishingArea/CatchArea/Reticle/TR"]
+points = PackedVector2Array(-10, 0, 0, 0, 0, 10)
+width = 1.5
+default_color = Color(1, 1, 1, 1)
+
+[node name="BL" type="Control" parent="FishingArea/CatchArea/Reticle"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_right = 0.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Corner" type="Line2D" parent="FishingArea/CatchArea/Reticle/BL"]
+points = PackedVector2Array(0, -10, 0, 0, 10, 0)
+width = 1.5
+default_color = Color(1, 1, 1, 1)
+
+[node name="BR" type="Control" parent="FishingArea/CatchArea/Reticle"]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Corner" type="Line2D" parent="FishingArea/CatchArea/Reticle/BR"]
+points = PackedVector2Array(-10, 0, 0, 0, 0, -10)
+width = 1.5
+default_color = Color(1, 1, 1, 1)
+
+[node name="FishCursor" type="Control" parent="FishingArea"]
+z_index = 2
+layout_mode = 0
+offset_left = 363.0
+offset_top = 144.25
+offset_right = 387.0
+offset_bottom = 168.25
+mouse_filter = 2
+
+[node name="Appearance" parent="FishingArea/FishCursor" instance=ExtResource("fish_spine")]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 12.0
+mouse_filter = 2
+
+[node name="DiveParticles" type="CPUParticles2D" parent="FishingArea"]
+z_index = 4
+position = Vector2(375, 156.25)
+emitting = false
+amount = 9
+lifetime = 0.42
+one_shot = true
+explosiveness = 1.0
+randomness = 0.35
+local_coords = false
+texture = SubResource("shard_atlas")
+emission_shape = 1
+emission_sphere_radius = 10.0
+direction = Vector2(0, -1)
+spread = 100.0
+gravity = Vector2(0, -3)
+initial_velocity_min = 6.0
+initial_velocity_max = 18.0
+damping_min = 4.0
+damping_max = 8.0
+scale_amount_min = 0.007
+scale_amount_max = 0.014
+color_ramp = SubResource("particle_gradient")
+
+[node name="WaterVeil" type="ColorRect" parent="FishingArea"]
+z_index = 3
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.28, 0.42, 0.44, 0.10)
+
+[node name="MeterRail" type="Panel" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -36.0
+offset_top = 12.0
+offset_right = -4.0
+offset_bottom = -12.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("meter_rail")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_top = 28.0
+offset_right = -12.0
+offset_bottom = -28.0
+mouse_filter = 2
+fill_mode = 3
+value = 35.0
+show_percentage = false
+
+[node name="UpperLink" type="ColorRect" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -62.0
+offset_top = 0.0
+offset_right = -36.0
+offset_bottom = 1.0
+mouse_filter = 2
+color = Color(0.843, 0.718, 0.486, 0.6)
+
+[node name="SwimRipples" type="Control" parent="FishingArea"]
+z_index = 3
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("ripples")
+MinimumTravel = 36.0
+TurnThreshold = 0.85
+AccelerationThreshold = 80.0
+MinimumGap = 0.65
+Lifetime = 1.25
+Expansion = Vector2(0.6, 1.65)
+[node name="Ring1" type="TextureRect" parent="FishingArea/SwimRipples"]
+visible = false
+modulate = Color(1, 1, 1, 0.62)
+layout_mode = 0
+offset_left = 343.0
+offset_top = 146.25
+offset_right = 407.0
+offset_bottom = 166.25
+pivot_offset = Vector2(32, 10)
+mouse_filter = 2
+texture = SubResource("ring_atlas")
+expand_mode = 1
+
+[node name="Ring2" type="TextureRect" parent="FishingArea/SwimRipples"]
+visible = false
+modulate = Color(1, 1, 1, 0.62)
+layout_mode = 0
+offset_left = 343.0
+offset_top = 146.25
+offset_right = 407.0
+offset_bottom = 166.25
+pivot_offset = Vector2(32, 10)
+mouse_filter = 2
+texture = SubResource("ring_atlas")
+expand_mode = 1
+
+[node name="Ring3" type="TextureRect" parent="FishingArea/SwimRipples"]
+visible = false
+modulate = Color(1, 1, 1, 0.62)
+layout_mode = 0
+offset_left = 343.0
+offset_top = 146.25
+offset_right = 407.0
+offset_bottom = 166.25
+pivot_offset = Vector2(32, 10)
+mouse_filter = 2
+texture = SubResource("ring_atlas")
+expand_mode = 1
+
+[node name="InsideMark" type="Control" parent="FishingArea/CatchArea"]
+layout_mode = 0
+mouse_filter = 2
+
+[node name="LockPoint" type="Polygon2D" parent="FishingArea/CatchArea/InsideMark"]
+position = Vector2(55, -3)
+polygon = PackedVector2Array(0, -3, 3, 0, 0, 3, -3, 0)
+color = Color(0.55, 0.73, 0.65, 0.8)

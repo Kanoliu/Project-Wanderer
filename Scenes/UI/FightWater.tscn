@@ -1,0 +1,177 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Scripts/Fishing/WaterDrift.cs" id="drift"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-base-v01.png" id="base"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-01-long-soft.png" id="s0"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-02-short-wedge.png" id="s1"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-03-double-peak.png" id="s2"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-04-offset-sliver.png" id="s3"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-05-bent-ribbon.png" id="s4"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-06-flat-shoal.png" id="s5"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-07-long-tail.png" id="s6"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-08-split-tip.png" id="s7"]
+
+[sub_resource type="AtlasTexture" id="a0"]
+atlas = ExtResource("s0")
+region = Rect2(94, 434, 1486, 75)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a1"]
+atlas = ExtResource("s1")
+region = Rect2(142, 296, 1887, 129)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a2"]
+atlas = ExtResource("s2")
+region = Rect2(96, 440, 1480, 53)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a3"]
+atlas = ExtResource("s3")
+region = Rect2(116, 383, 1630, 70)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a4"]
+atlas = ExtResource("s4")
+region = Rect2(103, 536, 1228, 58)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a5"]
+atlas = ExtResource("s5")
+region = Rect2(177, 270, 1852, 184)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a6"]
+atlas = ExtResource("s6")
+region = Rect2(74, 411, 1627, 82)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="a7"]
+atlas = ExtResource("s7")
+region = Rect2(132, 326, 1900, 76)
+filter_clip = true
+
+[node name="WaterSurface" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+clip_contents = true
+
+[node name="Base" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("base")
+expand_mode = 1
+modulate = Color(0.79, 0.83, 0.83, 1)
+
+[node name="WaterDrift" type="Control" parent="."]
+z_index = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("drift")
+Variants = Array[Texture2D]([SubResource("a0"), SubResource("a1"), SubResource("a2"), SubResource("a3"), SubResource("a4"), SubResource("a5"), SubResource("a6"), SubResource("a7")])
+WidthRange = Vector2(0.18, 0.35)
+SpeedRange = Vector2(0.009, 0.018)
+OpacityRange = Vector2(0.10, 0.19)
+
+[node name="Streak1" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 17.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a0")
+expand_mode = 1
+
+[node name="Streak2" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 40.0
+offset_right = 520.0
+offset_bottom = 47.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a1")
+expand_mode = 1
+
+[node name="Streak3" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 70.0
+offset_right = 180.0
+offset_bottom = 77.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a2")
+expand_mode = 1
+
+[node name="Streak4" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 100.0
+offset_right = 520.0
+offset_bottom = 107.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a3")
+expand_mode = 1
+
+[node name="Streak5" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 130.0
+offset_right = 180.0
+offset_bottom = 137.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a4")
+expand_mode = 1
+
+[node name="Streak6" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 160.0
+offset_right = 520.0
+offset_bottom = 167.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a5")
+expand_mode = 1
+
+[node name="Streak7" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 190.0
+offset_right = 180.0
+offset_bottom = 197.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a6")
+expand_mode = 1
+
+[node name="Streak8" type="TextureRect" parent="WaterDrift"]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 220.0
+offset_right = 520.0
+offset_bottom = 227.0
+modulate = Color(1, 1, 1, 0.18)
+mouse_filter = 2
+texture = SubResource("a7")
+expand_mode = 1
+

@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Numerics;
+using System.IO;
+using System.Text.Json.Nodes;
 
 internal static class Program
 {
@@ -18,14 +20,63 @@ internal static class Program
     private static void Tick(FishMovementSimulation fish, float dt, Vector2 box) =>
         fish.Step(dt, Bounds, FishSize, box, BoxSize);
 
-    public static void Main()
+    public static void Main(string[] args)
     {
         Require(FishingDataRepository.TryLoad(out var repository, out var errors), string.Join("\n", errors));
+        CheckLossTierLoading();
+        CheckGlobalGainLoading();
         foreach (var species in repository.Fish)
         {
             Require(repository.TryGetFightProfile(species.FightProfileId, out var profile), $"No movement profile: {species.Id}");
             Require(!profile.Movement.ValidationErrors().Any(), $"Invalid profile: {profile.Id}");
         }
+        Require(repository.FightProfiles.Count == repository.Fish.Count, "Only species should own fight configurations");
+        Require(repository.SpecialVariantMultiplier == 1.15f, "Unified special strength changed");
+        Require(!repository.TryGetFightProfile("fight.active", out _) &&
+            !repository.TryGetFightProfile("fight.agile", out _) &&
+            !repository.TryGetFightProfile("fight.sprint", out _), "Removed test tiers still exist");
+        var baseline = new FishMovementSettings();
+        Require(baseline.CruiseSpeed == .44f && baseline.Acceleration == 1f, "Original active movement floor changed");
+        var seenFish = new System.Collections.Generic.HashSet<string>();
+        foreach (var bait in repository.Baits)
+        foreach (var depth in repository.Depths)
+        for (int seed = 0; seed < 500; seed++)
+        {
+            var request = repository.CreateEventRequest("test.all_fish",
+                new FishingSetup { BaitId = bait.Id, Depth = depth.Value }, new Random(seed));
+            if (string.IsNullOrEmpty(request.BaseFishId)) continue;
+            seenFish.Add(request.FishId);
+            repository.TryGetFish(request.BaseFishId, out var species);
+            string expected = species.FightProfileId;
+            if (request.IsSpecialVariant)
+            {
+                Require(repository.TryGetVariant(request.FishId, out _), "Variant lost");
+            }
+            Require(request.FightProfileId == expected, "Variant/species profile propagation failed");
+            repository.TryGetFightProfile(expected, out var profile);
+            float strength = request.IsSpecialVariant ? repository.SpecialVariantMultiplier : 1f;
+            Require(request.FightGainRate == repository.ProgressGainRate / repository.ProgressCapacityMultiplier &&
+                request.FightLossRate == repository.GetBaseProgressLossRate(profile.LossDifficulty.Value) * strength / repository.ProgressCapacityMultiplier,
+                "Encounter lost species gain/loss rates");
+            Require(repository.GetBaseProgressLossRate(profile.LossDifficulty.Value) >= .08f,
+                "Loss tier is easier than the original active floor");
+            Require(request.FightMovement.CruiseSpeed == profile.Movement.CruiseSpeed * strength &&
+                request.FightMovement.MaxTurnRate == profile.Movement.MaxTurnRate * strength &&
+                request.FightMovement.Acceleration == profile.Movement.Acceleration * strength &&
+                request.FightMovement.BurstTurnRate == profile.Movement.BurstTurnRate * strength,
+                "Special form did not use the unified movement multiplier");
+            Require(request.FightMovement.BurstDuration == profile.Movement.BurstDuration &&
+                request.FightMovement.DiveRate == profile.Movement.DiveRate &&
+                request.FightMovement.AvoidanceStrength == profile.Movement.AvoidanceStrength &&
+                request.FightMovement.BurstCounterTurnChance == profile.Movement.BurstCounterTurnChance,
+                "Special form changed its species behaviour");
+            Require(repository.TryGetBiteProfile(species.BiteProfileId, out var bite) &&
+                request.BitePattern == bite.Pattern, "Species/variant lost its bite pattern");
+            request.FightMovement.CruiseSpeed = 99;
+            Require(profile.Movement.CruiseSpeed != 99, "Variant request mutated shared settings");
+        }
+        Require(seenFish.Count == repository.Fish.Sum(f => 1 + f.Variants.Length), "Not every species/variant was exercised");
+        Console.WriteLine($"PASS: {seenFish.Count} fish forms propagate movement and progress rates through natural requests");
         var setup = new FishingSetup { BaitId = "bait.chao_gen_chong", Depth = FishingDepth.Shallow };
         foreach (string eventId in new[] { "act1.tutorial.first_catch", "test.natural_catch" })
         {
@@ -39,7 +90,10 @@ internal static class Program
         }
         Console.WriteLine("PASS: real catalog validation and scripted/natural request profile propagation");
 
-        foreach (var profile in repository.FightProfiles)
+        var movementProfiles = repository.Fish.SelectMany(species => new[] {
+            repository.CreateFightProfile(species.Id), repository.CreateFightProfile(species.Id, true)
+        }).ToArray();
+        foreach (var profile in movementProfiles)
         foreach (float dt in new[] { 1f / 30, 1f / 60, 1f / 144 })
         for (int seed = 0; seed < 5; seed++)
         {
@@ -54,7 +108,7 @@ internal static class Program
                 Require(MathF.Abs(fish.Speed - before) <= profile.Movement.Acceleration * dt + 0.00001f, "Acceleration limit exceeded");
             }
         }
-        Console.WriteLine("PASS: four profiles stay bounded and respect acceleration at 30/60/144 FPS over 60 seconds");
+        Console.WriteLine($"PASS: {movementProfiles.Length} derived forms stay bounded and respect acceleration at 30/60/144 FPS over 60 seconds");
 
         var settings = new FishMovementSettings { DiveRate = 60, DiveDuration = 0.4f };
         var a = new FishMovementSimulation(settings, 42, Bounds * 0.5f);
@@ -150,6 +204,76 @@ internal static class Program
         Console.WriteLine("PASS: event disabling and counter-turns use previous-frame motion, with stationary fallback");
         Require(new FishMovementSettings { DiveRate = float.NaN }.ValidationErrors().Any(), "NaN accepted");
         Require(new FishMovementSettings { Acceleration = 0 }.ValidationErrors().Any(), "Zero acceleration accepted");
+        MovementFeelChecks.Run(repository, Require, args.Length == 2
+            ? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(args[1]), "movement-feel.json") : null);
         Console.WriteLine($"All {_checks:N0} assertions passed.");
+        if (args.Length == 2 && args[0] == "--balance-report") BalanceChecks.Run(repository, args[1]);
+    }
+
+    private static void CheckLossTierLoading()
+    {
+        // Only alter the copied test fixture under bin/, never the project's authoritative JSON.
+        string path = Path.Combine(AppContext.BaseDirectory, "Data/Fishing/profiles.json");
+        string original = File.ReadAllText(path);
+        try
+        {
+            foreach (string failure in new[] { "missing", "duplicate", "reversed", "missing_assignment" })
+            {
+                var data = JsonNode.Parse(original);
+                var tiers = data["progressLossTiers"].AsArray();
+                if (failure == "missing") tiers.RemoveAt(2);
+                if (failure == "duplicate") tiers.Add(tiers[0].DeepClone());
+                if (failure == "reversed") tiers[2]["lossRate"] = .01f;
+                if (failure == "missing_assignment") data["fightProfiles"][0].AsObject().Remove("lossDifficulty");
+                File.WriteAllText(path, data.ToJsonString());
+                Require(!FishingDataRepository.TryLoad(out _, out _), $"Invalid loss-tier configuration accepted: {failure}");
+            }
+            var overrideData = JsonNode.Parse(original);
+            overrideData["fightProfiles"][0]["lossDifficulty"] = "High";
+            File.WriteAllText(path, overrideData.ToJsonString());
+            Require(FishingDataRepository.TryLoad(out var overrideRepository, out var errors), string.Join("\n", errors));
+            Require(overrideRepository.TryGetFish("fish.qing_lu", out var fish) && fish.CatchDifficulty == FishCatchDifficulty.Low,
+                "Changing loss tier changed encounter rarity");
+            Require(overrideRepository.CreateFightProfile(fish.Id).LossRate ==
+                overrideRepository.GetBaseProgressLossRate(FishCatchDifficulty.High) / overrideRepository.ProgressCapacityMultiplier,
+                "Per-species loss-tier override did not reach the fight");
+        }
+        finally { File.WriteAllText(path, original); }
+        Console.WriteLine("PASS: missing/duplicate/reversed loss tiers rejected; per-species loss tier is independent of encounter rarity");
+    }
+
+    private static void CheckGlobalGainLoading()
+    {
+        string path = Path.Combine(AppContext.BaseDirectory, "Data/Fishing/profiles.json");
+        string original = File.ReadAllText(path);
+        try
+        {
+            foreach (float? invalid in new float?[] { null, 0, -0.1f, 1.1f })
+            {
+                var data = JsonNode.Parse(original);
+                if (invalid.HasValue) data["progressGainRate"] = invalid.Value;
+                else data.AsObject().Remove("progressGainRate");
+                File.WriteAllText(path, data.ToJsonString());
+                Require(!FishingDataRepository.TryLoad(out _, out _), "Missing/invalid global gain accepted");
+            }
+            var changed = JsonNode.Parse(original);
+            changed["progressGainRate"] = .2f;
+            File.WriteAllText(path, changed.ToJsonString());
+            Require(FishingDataRepository.TryLoad(out var repository, out var errors), string.Join("\n", errors));
+            foreach (var species in repository.Fish)
+            {
+                var standard = repository.CreateFightProfile(species.Id);
+                var special = repository.CreateFightProfile(species.Id, true);
+                Require(standard.GainRate == .2f / repository.ProgressCapacityMultiplier && special.GainRate == standard.GainRate,
+                    "Shared gain did not reach every species and special form");
+                Require(special.LossRate > standard.LossRate, "Uniform gain removed the special-form loss modifier");
+            }
+            Require(repository.CreateEventRequest("act1.tutorial.first_catch").FightGainRate == .2f / repository.ProgressCapacityMultiplier,
+                "Scripted encounter lost the global gain");
+            Require(repository.CreateEventRequest("test.empty").FightGainRate == .2f / repository.ProgressCapacityMultiplier,
+                "Fallback encounter lost the global gain");
+        }
+        finally { File.WriteAllText(path, original); }
+        Console.WriteLine("PASS: one global gain applies to every species, special form, scripted and fallback encounter");
     }
 }

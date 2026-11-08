@@ -34,6 +34,7 @@ public sealed class FishingDataRepository : IFishingDataRepository
 	private readonly Dictionary<string, BiteProfileDefinition> _biteById;
 	private readonly Dictionary<string, FightProfileDefinition> _fightById;
 	private readonly Dictionary<string, FishingEventDefinition> _eventsById;
+	private readonly Dictionary<FishCatchDifficulty, float> _progressLossRates;
 
 	private FishingDataRepository(
 		Dictionary<string, FishDefinition> fishById,
@@ -45,7 +46,11 @@ public sealed class FishingDataRepository : IFishingDataRepository
 		int standardFormWeight,
 		Dictionary<string, BiteProfileDefinition> biteById,
 		Dictionary<string, FightProfileDefinition> fightById,
-		Dictionary<string, FishingEventDefinition> eventsById)
+		Dictionary<string, FishingEventDefinition> eventsById,
+		float specialVariantMultiplier,
+		float progressCapacityMultiplier,
+		Dictionary<FishCatchDifficulty, float> progressLossRates,
+		float progressGainRate)
 	{
 		_fishById = fishById;
 		_variantsById = variantsById;
@@ -57,6 +62,38 @@ public sealed class FishingDataRepository : IFishingDataRepository
 		_biteById = biteById;
 		_fightById = fightById;
 		_eventsById = eventsById;
+		SpecialVariantMultiplier = specialVariantMultiplier;
+		ProgressCapacityMultiplier = progressCapacityMultiplier;
+		_progressLossRates = progressLossRates;
+		ProgressGainRate = progressGainRate;
+	}
+
+	public float SpecialVariantMultiplier { get; }
+	public float ProgressCapacityMultiplier { get; }
+	public float ProgressGainRate { get; }
+	public float GetBaseProgressLossRate(FishCatchDifficulty difficulty) => _progressLossRates[difficulty];
+
+	// One shared rule for natural encounters and the per-species test screen.
+	public FightProfileDefinition CreateFightProfile(string baseFishId, bool isSpecialVariant = false)
+	{
+		if (!TryGetFish(baseFishId, out var fish) ||
+			!TryGetFightProfile(fish.FightProfileId, out var basis)) return null;
+		float strength = isSpecialVariant ? SpecialVariantMultiplier : 1f;
+		var movement = basis.Movement.Copy();
+		movement.CruiseSpeed *= strength;
+		movement.Acceleration *= strength;
+		movement.MaxTurnRate *= strength;
+		movement.BurstTurnRate *= strength;
+		return new FightProfileDefinition
+		{
+			Id = basis.Id,
+			Pattern = basis.Pattern,
+			Description = basis.Description,
+			Movement = movement,
+			GainRate = ProgressGainRate / ProgressCapacityMultiplier,
+			LossDifficulty = basis.LossDifficulty,
+			LossRate = GetBaseProgressLossRate(basis.LossDifficulty.Value) * strength / ProgressCapacityMultiplier
+		};
 	}
 
 	public IReadOnlyCollection<FishDefinition> Fish => _fishById.Values;
@@ -79,7 +116,11 @@ public sealed class FishingDataRepository : IFishingDataRepository
 		0,
 		new Dictionary<string, BiteProfileDefinition>(StringComparer.Ordinal),
 		new Dictionary<string, FightProfileDefinition>(StringComparer.Ordinal),
-		new Dictionary<string, FishingEventDefinition>(StringComparer.Ordinal)
+		new Dictionary<string, FishingEventDefinition>(StringComparer.Ordinal),
+		1.15f,
+		2.5f,
+		new Dictionary<FishCatchDifficulty, float>(),
+		0.16f
 	);
 
 	public bool TryGetFish(string id, out FishDefinition fish)
@@ -212,7 +253,8 @@ public sealed class FishingDataRepository : IFishingDataRepository
 
 		return new FishingEventRequest
 		{
-			EventId = eventId ?? ""
+			EventId = eventId ?? "",
+			FightGainRate = ProgressGainRate / ProgressCapacityMultiplier
 		};
 	}
 
@@ -245,10 +287,13 @@ public sealed class FishingDataRepository : IFishingDataRepository
 
 	private void ApplyFightProfile(FishingEventRequest request, FishDefinition fish)
 	{
-		if (TryGetFightProfile(fish.FightProfileId, out FightProfileDefinition profile))
+		var profile = CreateFightProfile(fish.Id, request.IsSpecialVariant);
+		if (profile != null)
 		{
 			request.FightProfileId = profile.Id;
 			request.FightMovement = profile.Movement.Copy();
+			request.FightGainRate = profile.GainRate;
+			request.FightLossRate = profile.LossRate;
 		}
 	}
 
@@ -341,6 +386,34 @@ public sealed class FishingDataRepository : IFishingDataRepository
 				ScriptedEventsPath,
 				validationErrors
 			);
+		if (!float.IsFinite(profilesDocument.SpecialVariantMultiplier) ||
+			profilesDocument.SpecialVariantMultiplier < 1 || profilesDocument.SpecialVariantMultiplier > 2)
+			validationErrors.Add("specialVariantMultiplier 必须在 [1, 2] 范围内。");
+		if (!float.IsFinite(profilesDocument.ProgressCapacityMultiplier) ||
+			profilesDocument.ProgressCapacityMultiplier < 1 || profilesDocument.ProgressCapacityMultiplier > 10)
+			validationErrors.Add("progressCapacityMultiplier 必须在 [1, 10] 范围内。");
+		if (!float.IsFinite(profilesDocument.ProgressGainRate) ||
+			profilesDocument.ProgressGainRate <= 0 || profilesDocument.ProgressGainRate > 1)
+			validationErrors.Add("progressGainRate 必须存在且在 (0, 1] 范围内。");
+		var progressLossRates = new Dictionary<FishCatchDifficulty, float>();
+		foreach (var tier in profilesDocument.ProgressLossTiers ?? Array.Empty<ProgressLossTierDefinition>())
+		{
+			if (tier == null || !Enum.IsDefined(tier.Difficulty) ||
+				!float.IsFinite(tier.LossRate) || tier.LossRate <= 0 || tier.LossRate > 1)
+			{
+				validationErrors.Add("progressLossTiers 必须包含有效难度和 (0, 1] 的 lossRate。");
+				continue;
+			}
+			if (!progressLossRates.TryAdd(tier.Difficulty, tier.LossRate))
+				validationErrors.Add($"重复的进度掉落档位：{tier.Difficulty}");
+		}
+		foreach (var difficulty in Enum.GetValues<FishCatchDifficulty>())
+			if (!progressLossRates.ContainsKey(difficulty))
+				validationErrors.Add($"缺少进度掉落档位：{difficulty}");
+		if (progressLossRates.Count == 3 &&
+			!(progressLossRates[FishCatchDifficulty.Low] < progressLossRates[FishCatchDifficulty.Medium] &&
+			  progressLossRates[FishCatchDifficulty.Medium] < progressLossRates[FishCatchDifficulty.High]))
+			validationErrors.Add("进度掉落速度必须满足：简单 < 中等 < 困难。");
 
 		Dictionary<string, FishDefinition> fishById =
 			new(StringComparer.Ordinal);
@@ -435,7 +508,11 @@ public sealed class FishingDataRepository : IFishingDataRepository
 			fishDocument.SelectionRules.StandardFormWeight,
 			biteById,
 			fightById,
-			eventsById
+			eventsById,
+			profilesDocument.SpecialVariantMultiplier,
+			profilesDocument.ProgressCapacityMultiplier,
+			progressLossRates,
+			profilesDocument.ProgressGainRate
 		);
 		errors = Array.Empty<string>();
 		return true;
@@ -801,6 +878,8 @@ public sealed class FishingDataRepository : IFishingDataRepository
 			else
 				foreach (string error in profile.Movement.ValidationErrors())
 					errors.Add($"Fight profile {profile.Id}: {error}");
+			if (!profile.LossDifficulty.HasValue || !Enum.IsDefined(profile.LossDifficulty.Value))
+				errors.Add($"Fight profile {profile.Id}: lossDifficulty must be Low, Medium or High.");
 
 			if (!profilesById.TryAdd(profile.Id, profile))
 			{
@@ -838,7 +917,7 @@ public sealed class FishingDataRepository : IFishingDataRepository
 				);
 			}
 
-			if (!string.IsNullOrWhiteSpace(definition.FightProfileId) &&
+			if (string.IsNullOrWhiteSpace(definition.FightProfileId) ||
 				!fightProfiles.ContainsKey(definition.FightProfileId))
 			{
 				errors.Add(

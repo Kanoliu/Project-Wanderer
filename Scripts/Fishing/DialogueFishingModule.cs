@@ -36,6 +36,8 @@ public partial class DialogueFishingModule : Control
 	private bool _activeIsSpecialVariant;
 	private int _activeQuantity = 1;
 	private FishMovementSettings _activeFightMovement = new();
+	private float _activeFightGainRate = 0.32f;
+	private float _activeFightLossRate = 0.08f;
 	private FishingResult _lastResult = new();
 	private FishingTutorialStep _activeTutorialStep =
 		FishingTutorialStep.None;
@@ -197,10 +199,7 @@ public partial class DialogueFishingModule : Control
 	public bool TriggerFishingEvent(string eventId)
 	{
 		return TriggerFishingEvent(
-			new FishingEventRequest
-			{
-				EventId = eventId
-			}
+			GetNode<FishingDataStore>("/root/FishingDataStore").CreateEventRequest(eventId)
 		);
 	}
 
@@ -225,6 +224,8 @@ public partial class DialogueFishingModule : Control
 		_activeIsSpecialVariant = request.IsSpecialVariant;
 		_activeQuantity = request.Quantity;
 		_activeFightMovement = request.FightMovement;
+		_activeFightGainRate = request.FightGainRate;
+		_activeFightLossRate = request.FightLossRate;
 		_lastResult = new FishingResult
 		{
 			EventId = _activeEventId,
@@ -449,7 +450,8 @@ public partial class DialogueFishingModule : Control
 				SetInteractionBlocking(true);
 				_hud.Visible = false;
 				_fightOverlay.Visible = true;
-				_fightController.StartFight(_activeFightMovement);
+				_fightController.StartFight(_activeFightMovement,
+					gainRate: _activeFightGainRate, lossRate: _activeFightLossRate);
 
 				if (_activeTutorialStep ==
 					FishingTutorialStep.FirstCatch)
@@ -458,8 +460,8 @@ public partial class DialogueFishingModule : Control
 					_firstCatchPausedForFightPrompt = true;
 					_tutorialTitle.Text = "第六步：搏鱼";
 					_tutorialBody.Text =
-						"使用方向键或 WASD 移动青色捕捉区域，" +
-						"尽量让橙色鱼标保持在区域内，直到进度填满。";
+						"使用方向键或 WASD 移动收线区，" +
+						"让浅色鱼影保持在其中，直到进度填满。鱼潜入水下时仍会继续游动。";
 					_tutorialConfirmButton.Text = "开始搏鱼（Space）";
 					_tutorialOverlay.Visible = true;
 					_tutorialConfirmButton.GrabFocus();

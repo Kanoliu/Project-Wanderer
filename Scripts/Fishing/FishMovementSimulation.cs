@@ -24,6 +24,10 @@ public sealed class FishMovementSimulation
     private float _diveRemaining;
     private float _untilDive;
     private float _elapsed;
+    private float _pauseRemaining;
+    private float _untilPause;
+    private float _wallSpeedLimit = float.PositiveInfinity;
+    private const float VisualPadding = 0.07f;
 
     public Vector2 Position { get; private set; }
     public float Speed { get; private set; }
@@ -33,6 +37,9 @@ public sealed class FishMovementSimulation
     public int BurstCount { get; private set; }
     public int CounterTurnCount { get; private set; }
     public Vector2 LastCounterDirection { get; private set; }
+    public int BoundaryCorrectionCount { get; private set; }
+    public float FirstDiveDelay { get; }
+    public bool IsResting => _pauseRemaining > 0;
 
     public FishMovementSimulation(FishMovementSettings settings, int seed, Vector2 position)
     {
@@ -46,6 +53,8 @@ public sealed class FishMovementSimulation
         Speed = _targetCruiseSpeed = _settings.CruiseSpeed;
         _untilBurst = Jitter(_settings.BurstInterval);
         _untilDive = NextDiveDelay();
+        FirstDiveDelay = _untilDive;
+        _untilPause = _settings.PauseInterval > 0 ? Jitter(_settings.PauseInterval) : float.PositiveInfinity;
     }
 
     /// <param name="bounds">Available top-left travel area after subtracting fish size, in normalized units.</param>
@@ -71,9 +80,14 @@ public sealed class FishMovementSimulation
                 _observedBox = _boxHistory.Dequeue();
             UpdateEvents(dt);
             UpdateSteering(dt, bounds, fishSize);
-            float targetSpeed = _targetCruiseSpeed * (IsBursting ? _settings.BurstSpeedMultiplier : 1);
+            float targetSpeed = IsResting ? _settings.CruiseSpeed * 0.08f
+                : _targetCruiseSpeed * (IsBursting ? _settings.BurstSpeedMultiplier : 1);
+            targetSpeed = MathF.Min(targetSpeed, _wallSpeedLimit);
             Speed = Approach(Speed, targetSpeed, _settings.Acceleration * dt);
-            Position = Vector2.Clamp(Position + Direction(_heading) * Speed * dt, Vector2.Zero, bounds);
+            Vector2 padding = Vector2.Min(new Vector2(VisualPadding), bounds * 0.25f);
+            Vector2 next = Position + Direction(_heading) * Speed * dt;
+            Position = Vector2.Clamp(next, padding, bounds - padding);
+            if (Vector2.DistanceSquared(next, Position) > 0.00000001f) BoundaryCorrectionCount++;
         }
         // Used only by the next frame's burst: never counter the player's current-frame input.
         _previousBoxVelocity = (boxPosition - _lastBoxPosition) / delta;
@@ -82,8 +96,18 @@ public sealed class FishMovementSimulation
 
     private void UpdateEvents(float dt)
     {
+        if (IsResting) _pauseRemaining = MathF.Max(0, _pauseRemaining - dt);
+        else if (_settings.PauseInterval > 0 && _settings.PauseDuration > 0)
+        {
+            _untilPause -= dt;
+            if (_untilPause <= 0 && !IsBursting)
+            {
+                _pauseRemaining = Jitter(_settings.PauseDuration);
+                _untilPause = Jitter(_settings.PauseInterval);
+            }
+        }
         if (_burstRemaining > 0) _burstRemaining = MathF.Max(0, _burstRemaining - dt);
-        else if (_settings.BurstInterval > 0 && _settings.BurstDuration > 0)
+        else if (!IsResting && _settings.BurstInterval > 0 && _settings.BurstDuration > 0)
         {
             _untilBurst -= dt;
             if (_untilBurst <= 0)
@@ -124,7 +148,12 @@ public sealed class FishMovementSimulation
             _steeringRemaining = Jitter(_settings.SteeringInterval);
             _targetCruiseSpeed = _settings.CruiseSpeed * (1 + Range(-1, 1) * _settings.SpeedVariation);
             float wander = _heading + Range(-1, 1) * _settings.WanderAngle * DegreesToRadians;
+            if (_settings.ReversalChance > 0 && _random.NextDouble() < _settings.ReversalChance)
+                wander = _heading + MathF.PI + Range(-20, 20) * DegreesToRadians;
             Vector2 intention = Direction(wander);
+            if (_settings.HorizontalBias > 0)
+                intention = Vector2.Lerp(intention,
+                    new Vector2(intention.X >= 0 ? 1 : -1, intention.Y * 0.12f), _settings.HorizontalBias);
             Vector2 center = Position + fishSize * 0.5f;
             Vector2 boxMin = _observedBox.Center - _observedBox.Size * 0.5f;
             Vector2 boxMax = boxMin + _observedBox.Size;
@@ -149,28 +178,43 @@ public sealed class FishMovementSimulation
                 _targetHeading = MathF.Atan2(intention.Y, intention.X);
         }
 
-        // Curved, anticipatory edge steering. Clamping is only a containment safety net.
-        float margin = MathF.Max(0.02f, _settings.EdgeAvoidanceDistance);
-        Vector2 forward = Position + Direction(_heading) * Speed * 0.3f;
+        // Turn before the visual silhouette reaches the wall, accounting for speed and turn radius.
+        Vector2 padding = Vector2.Min(new Vector2(VisualPadding), bounds * 0.25f);
+        float edgeTurnRate = MathF.Max(300, IsBursting ? _settings.BurstTurnRate : _settings.MaxTurnRate);
+        float radius = Speed / (edgeTurnRate * DegreesToRadians);
+        float margin = MathF.Max(_settings.EdgeAvoidanceDistance, radius * 1.3f + 0.06f);
+        Vector2 forward = Position + Direction(_heading) * Speed * 0.35f;
         Vector2 edge = new(
-            MathF.Max(0, margin - forward.X) - MathF.Max(0, forward.X - (bounds.X - margin)),
-            MathF.Max(0, margin - forward.Y) - MathF.Max(0, forward.Y - (bounds.Y - margin)));
+            MathF.Max(0, padding.X + margin - forward.X) - MathF.Max(0, forward.X - (bounds.X - padding.X - margin)),
+            MathF.Max(0, padding.Y + margin - forward.Y) - MathF.Max(0, forward.Y - (bounds.Y - padding.Y - margin)));
         float desired = _targetHeading;
         bool avoidingEdge = edge.LengthSquared() > 0.000001f;
         if (avoidingEdge)
         {
-            Vector2 intention = Direction(desired) + edge / margin * 3;
-            desired = MathF.Atan2(intention.Y, intention.X);
+            desired = MathF.Atan2(edge.Y, edge.X);
+            _targetHeading = desired; // Do not immediately resume an intention pointing into the same wall.
         }
         float turnRate = IsBursting ? _settings.BurstTurnRate : _settings.MaxTurnRate;
-        if (avoidingEdge) turnRate = MathF.Max(turnRate, 240); // Edge safety outranks burst commitment.
+        if (avoidingEdge) turnRate = edgeTurnRate;
         float difference = MathF.IEEERemainder(desired - _heading, MathF.Tau);
         _heading = MathF.IEEERemainder(_heading + Math.Clamp(difference,
             -turnRate * DegreesToRadians * dt, turnRate * DegreesToRadians * dt), MathF.Tau);
+        Vector2 direction = Direction(_heading);
+        float distance = float.PositiveInfinity;
+        if (MathF.Abs(direction.X) > 0.001f)
+            distance = MathF.Min(distance, (direction.X > 0 ? bounds.X - padding.X - Position.X : padding.X - Position.X) / direction.X);
+        if (MathF.Abs(direction.Y) > 0.001f)
+            distance = MathF.Min(distance, (direction.Y > 0 ? bounds.Y - padding.Y - Position.Y : padding.Y - Position.Y) / direction.Y);
+        _wallSpeedLimit = MathF.Sqrt(2 * _settings.Acceleration * MathF.Max(0, distance - 0.02f));
     }
 
-    private float NextDiveDelay() => _settings.DiveRate <= 0 ? float.PositiveInfinity
-        : (float)(-Math.Log(1 - _diveRandom.NextDouble()) * 60 / _settings.DiveRate);
+    private float NextDiveDelay()
+    {
+        if (_settings.DiveRate <= 0) return float.PositiveInfinity;
+        float mean = 60 / _settings.DiveRate;
+        float minimum = MathF.Min(_settings.DiveMinDelay, mean * 0.75f);
+        return minimum + (float)(-Math.Log(1 - _diveRandom.NextDouble()) * (mean - minimum));
+    }
     private float Range(float min, float max) => min + (max - min) * (float)_random.NextDouble();
     private float Jitter(float value) => value * Range(0.7f, 1.3f);
     private static Vector2 Direction(float angle) => new(MathF.Cos(angle), MathF.Sin(angle));

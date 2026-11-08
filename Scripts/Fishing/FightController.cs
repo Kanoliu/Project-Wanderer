@@ -5,9 +5,10 @@ public partial class FightController : Control
 	[Signal]
 	public delegate void FightResolvedEventHandler(bool caught);
 
-	[Export] public float CatchAreaSpeed { get; set; } = 245.0f;
+	[Export] public float CatchAreaSpeed { get; set; } = 220.0f;
 	[Export] public float GainRate { get; set; } = 0.32f;
 	[Export] public float LossRate { get; set; } = 0.08f;
+	[Export] public float FeedbackSeconds { get; set; } = 0.12f;
 
 	private const float InitialProgress = 0.35f;
 
@@ -15,9 +16,18 @@ public partial class FightController : Control
 	private Control _fishCursor = null!;
 	private Control _catchArea = null!;
 	private ProgressBar _progressBar = null!;
-	private Label _progressLabel = null!;
 	private FishMovementSimulation _movement;
-	private StyleBoxFlat _catchAreaStyle;
+	private StyleBox _insideStyle;
+	private StyleBox _outsideStyle;
+	private StyleBoxFlat _feedbackStyle;
+	private float _feedbackAmount;
+	private SwimRipples _ripples;
+	private FishDiveVisual _fishVisual;
+	private Control _insideMark;
+	private Control _reticle;
+	private CpuParticles2D _diveParticles;
+	private bool _wasDiving;
+	private WaterDrift _waterDrift;
 	public int MovementSeed { get; private set; }
 	public bool FishInsideBox { get; private set; }
 	public bool FishIsDiving => _movement?.IsDiving ?? false;
@@ -30,11 +40,17 @@ public partial class FightController : Control
 		_fishCursor = GetNode<Control>("FishingArea/FishCursor");
 		_catchArea = GetNode<Control>("FishingArea/CatchArea");
 		_progressBar = GetNode<ProgressBar>("ProgressBar");
-		_progressLabel = GetNode<Label>("ProgressLabel");
-		// Each controller owns its colour feedback; never mutate shared scene resources.
-		_catchAreaStyle = _catchArea.GetThemeStylebox("panel").Duplicate() as StyleBoxFlat;
-		if (_catchAreaStyle != null)
-			_catchArea.AddThemeStyleboxOverride("panel", _catchAreaStyle);
+		_insideStyle = _catchArea.GetThemeStylebox("inside", "FightCatch");
+		_outsideStyle = _catchArea.GetThemeStylebox("outside", "FightCatch");
+		_feedbackStyle = (StyleBoxFlat)_outsideStyle.Duplicate();
+		_catchArea.AddThemeStyleboxOverride("panel", _feedbackStyle);
+		_ripples = GetNode<SwimRipples>("FishingArea/SwimRipples");
+		_fishVisual = GetNode<FishDiveVisual>("FishingArea/FishCursor/Appearance");
+		_insideMark = GetNode<Control>("FishingArea/CatchArea/InsideMark");
+		_reticle = GetNode<Control>("FishingArea/CatchArea/Reticle");
+		_diveParticles = GetNode<CpuParticles2D>("FishingArea/DiveParticles");
+		_waterDrift = GetNode<WaterDrift>("FishingArea/WaterSurface/WaterDrift");
+		_waterDrift.SetPaused(true);
 		SetProcess(false);
 	}
 
@@ -49,10 +65,16 @@ public partial class FightController : Control
 		MoveCatchArea(frameDelta);
 		MoveFish(frameDelta);
 		UpdateProgress(frameDelta);
+		_feedbackAmount = Mathf.MoveToward(_feedbackAmount, FishInsideBox ? 1 : 0,
+			frameDelta / Mathf.Max(0.01f, FeedbackSeconds));
+		ApplyCatchStyle();
 	}
 
-	public void StartFight(FishMovementSettings settings = null, int? seed = null)
+	public void StartFight(FishMovementSettings settings = null, int? seed = null,
+		float? gainRate = null, float? lossRate = null)
 	{
+		if (gainRate.HasValue) GainRate = gainRate.Value;
+		if (lossRate.HasValue) LossRate = lossRate.Value;
 		_progress = InitialProgress;
 		_fightActive = true;
 		_fishCursor.Position = (_fishingArea.Size - _fishCursor.Size) * 0.5f;
@@ -62,7 +84,13 @@ public partial class FightController : Control
 		_movement = new FishMovementSimulation(settings, MovementSeed,
 			ToNumerics(_fishCursor.Position / scale));
 		_fishCursor.Visible = true;
+		_fishVisual.ResetVisual();
+		ResetDiveParticles();
+		_ripples.ResetRipples();
+		_waterDrift.SetPaused(false);
 		UpdateCatchFeedback();
+		_feedbackAmount = FishInsideBox ? 1 : 0;
+		ApplyCatchStyle();
 		UpdateProgressDisplay();
 		SetProcess(true);
 	}
@@ -73,6 +101,10 @@ public partial class FightController : Control
 		_progress = InitialProgress;
 		_movement = null;
 		if (IsInstanceValid(_fishCursor)) _fishCursor.Visible = true;
+		if (IsInstanceValid(_fishVisual)) _fishVisual.ResetVisual();
+		if (IsInstanceValid(_waterDrift)) _waterDrift.SetPaused(true);
+		if (IsInstanceValid(_diveParticles)) ResetDiveParticles();
+		if (IsInstanceValid(_ripples)) _ripples.ResetRipples();
 		SetProcess(false);
 
 		if (IsInstanceValid(_progressBar))
@@ -86,6 +118,8 @@ public partial class FightController : Control
 		if (_fightActive)
 		{
 			SetProcess(false);
+			_waterDrift.SetPaused(true);
+			_diveParticles.SpeedScale = 0;
 		}
 	}
 
@@ -94,6 +128,8 @@ public partial class FightController : Control
 		if (_fightActive)
 		{
 			SetProcess(true);
+			_waterDrift.SetPaused(false);
+			_diveParticles.SpeedScale = 1;
 		}
 	}
 
@@ -114,13 +150,24 @@ public partial class FightController : Control
 
 	private void MoveFish(float delta)
 	{
+		Vector2 previous = _fishCursor.Position;
 		float scale = MovementScale();
 		_movement.Step(delta,
 			ToNumerics((_fishingArea.Size - _fishCursor.Size) / scale),
 			ToNumerics(_fishCursor.Size / scale),
 			ToNumerics(_catchArea.Position / scale), ToNumerics(_catchArea.Size / scale));
 		_fishCursor.Position = new Vector2(_movement.Position.X, _movement.Position.Y) * scale;
-		_fishCursor.Visible = !_movement.IsDiving;
+		if (_movement.IsDiving && !_wasDiving)
+		{
+			// Emit once at the entry point; never track the hidden fish with particles.
+			_diveParticles.Position = _fishCursor.Position + _fishCursor.Size * 0.5f;
+			_diveParticles.Restart();
+			_diveParticles.Emitting = true;
+		}
+		_wasDiving = _movement.IsDiving;
+		_fishVisual.Advance(_movement.IsDiving, _fishCursor.Position - previous, delta);
+		_ripples.Advance(_fishCursor.Position + _fishCursor.Size * 0.5f,
+			!_movement.IsDiving && _fishVisual.Modulate.A > 0.75f, delta);
 	}
 
 	private float MovementScale() => Mathf.Max(1, Mathf.Min(_fishingArea.Size.X, _fishingArea.Size.Y));
@@ -148,13 +195,18 @@ public partial class FightController : Control
 		Vector2 fishCenter = _fishCursor.Position + _fishCursor.Size * 0.5f;
 		Rect2 catchBounds = new(_catchArea.Position, _catchArea.Size);
 		FishInsideBox = catchBounds.HasPoint(fishCenter);
-		if (_catchAreaStyle == null) return;
-		_catchAreaStyle.BorderColor = FishInsideBox
-			? new Color(0.30f, 0.90f, 0.60f, 1)
-			: new Color(0.92f, 0.43f, 0.36f, 1);
-		_catchAreaStyle.BgColor = FishInsideBox
-			? new Color(0.15f, 0.65f, 0.40f, 0.23f)
-			: new Color(0.70f, 0.23f, 0.18f, 0.16f);
+		_insideMark.Visible = FishInsideBox;
+	}
+
+	private void ApplyCatchStyle()
+	{
+		var inside = (StyleBoxFlat)_insideStyle;
+		var outside = (StyleBoxFlat)_outsideStyle;
+		_feedbackStyle.BorderColor = outside.BorderColor.Lerp(inside.BorderColor, _feedbackAmount);
+		_feedbackStyle.BgColor = outside.BgColor.Lerp(inside.BgColor, _feedbackAmount);
+		_reticle.Modulate = _feedbackStyle.BorderColor;
+		int width = Mathf.RoundToInt(Mathf.Lerp(outside.BorderWidthLeft, inside.BorderWidthLeft, _feedbackAmount));
+		_feedbackStyle.SetBorderWidthAll(width);
 	}
 
 	private void ResolveFight(bool caught)
@@ -166,6 +218,10 @@ public partial class FightController : Control
 
 		_fightActive = false;
 		_fishCursor.Visible = true;
+		_fishVisual.ResetVisual();
+		ResetDiveParticles();
+		_ripples.ResetRipples();
+		_waterDrift.SetPaused(true);
 		SetProcess(false);
 		EmitSignal(SignalName.FightResolved, caught);
 	}
@@ -183,6 +239,13 @@ public partial class FightController : Control
 	{
 		float percent = _progress * 100.0f;
 		_progressBar.Value = percent;
-		_progressLabel.Text = $"收竿进度：{percent:0}%";
+	}
+
+	private void ResetDiveParticles()
+	{
+		_wasDiving = false;
+		_diveParticles.SpeedScale = 1;
+		_diveParticles.Restart();
+		_diveParticles.Emitting = false;
 	}
 }

@@ -7,6 +7,11 @@ public partial class FishingDataStore : Node, IFishingDataRepository
 		FishingDataRepository.Empty;
 
 	public bool IsLoaded { get; private set; }
+	public float SpecialVariantMultiplier => _repository.SpecialVariantMultiplier;
+	public float ProgressCapacityMultiplier => _repository.ProgressCapacityMultiplier;
+	public float ProgressGainRate => _repository.ProgressGainRate;
+	public FightProfileDefinition CreateFightProfile(string baseFishId, bool isSpecialVariant = false) =>
+		_repository.CreateFightProfile(baseFishId, isSpecialVariant);
 	public IReadOnlyCollection<FishDefinition> Fish => _repository.Fish;
 	public IReadOnlyCollection<FishingBaitDefinition> Baits => _repository.Baits;
 	public IReadOnlyCollection<FishingDepthDefinition> Depths => _repository.Depths;

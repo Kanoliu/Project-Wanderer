@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "designCanvas": [
+    1920,
+    1080
+  ],
+  "rendering": "flat SVG; labels and content remain Godot nodes",
+  "assets": [
+    {
+      "file": "panel-large.svg",
+      "size": [
+        128,
+        128
+      ],
+      "stretchMargins": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "role": "Preparation and settlement resizable base; content is separate."
+    },
+    {
+      "file": "panel-card.svg",
+      "size": [
+        128,
+        128
+      ],
+      "stretchMargins": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "role": "Request, catch and voyage cards."
+    },
+    {
+      "file": "panel-inset.svg",
+      "size": [
+        96,
+        96
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Catch row and neutral inset."
+    },
+    {
+      "file": "title-tab.svg",
+      "size": [
+        226,
+        50
+      ],
+      "stretchMargins": [
+        28,
+        24,
+        28,
+        24
+      ],
+      "role": "Use fixed 50px height; overlay upper-left panel edge; label separately."
+    },
+    {
+      "file": "button-normal.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Button skin; keep diamond fixed; label separate. Focus also requires brighter outline."
+    },
+    {
+      "file": "button-hover.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Button skin; keep diamond fixed; label separate. Focus also requires brighter outline."
+    },
+    {
+      "file": "button-focus.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Button skin; keep diamond fixed; label separate. Focus also requires brighter outline."
+    },
+    {
+      "file": "button-pressed.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Button skin; keep diamond fixed; label separate. Focus also requires brighter outline."
+    },
+    {
+      "file": "button-disabled.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Button skin; keep diamond fixed; label separate. Focus also requires brighter outline."
+    },
+    {
+      "file": "bait-slot-normal.svg",
+      "size": [
+        96,
+        96
+      ],
+      "stretchMargins": [
+        22,
+        22,
+        22,
+        22
+      ],
+      "role": "Bait slot; bait glyph separate."
+    },
+    {
+      "file": "bait-slot-selected.svg",
+      "size": [
+        96,
+        96
+      ],
+      "stretchMargins": [
+        22,
+        22,
+        22,
+        22
+      ],
+      "role": "Bait slot; bait glyph separate."
+    },
+    {
+      "file": "notification-default.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "role": "Toast skin. Stable left marker; text and close button separate."
+    },
+    {
+      "file": "notification-success.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "role": "Toast skin. Stable left marker; text and close button separate."
+    },
+    {
+      "file": "notification-relationship.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "role": "Toast skin. Stable left marker; text and close button separate."
+    },
+    {
+      "file": "notification-warning.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "role": "Toast skin. Stable left marker; text and close button separate."
+    },
+    {
+      "file": "progress-track.svg",
+      "size": [
+        64,
+        16
+      ],
+      "stretchMargins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "role": "16px progress track; no text or percentage."
+    },
+    {
+      "file": "progress-fill.svg",
+      "size": [
+        32,
+        12
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Clip to progress width; plain rectangular functional teal fill."
+    },
+    {
+      "file": "selection-diamond.svg",
+      "size": [
+        12,
+        12
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed size focus marker; do not nine-slice."
+    }
+  ]
+}

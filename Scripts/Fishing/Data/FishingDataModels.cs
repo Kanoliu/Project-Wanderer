@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 public enum FishCatchDifficulty
 {
@@ -109,6 +110,19 @@ public class FightProfileDefinition
 	public FishFightPattern Pattern { get; set; }
 	public string Description { get; set; } = "";
 	public FishMovementSettings Movement { get; set; } = new();
+	// Resolved from the global growth parameter; species and variants cannot override it.
+	[JsonIgnore]
+	public float GainRate { get; set; } = 0.32f;
+	public FishCatchDifficulty? LossDifficulty { get; set; }
+	// Resolved per encounter from the shared difficulty table, not a per-species JSON number.
+	[JsonIgnore]
+	public float LossRate { get; set; } = 0.08f;
+}
+
+public class ProgressLossTierDefinition
+{
+	public FishCatchDifficulty Difficulty { get; set; }
+	public float LossRate { get; set; }
 }
 
 public class FishingEventDefinition
@@ -129,6 +143,8 @@ public class FishingEventRequest
 		FishBitePattern.Probe;
 	public string FightProfileId { get; set; } = "";
 	public FishMovementSettings FightMovement { get; set; } = new();
+	public float FightGainRate { get; set; } = 0.32f;
+	public float FightLossRate { get; set; } = 0.08f;
 }
 
 public class FishCatalogDocument
@@ -148,6 +164,10 @@ public class FishCatalogDocument
 public class FishingProfilesDocument
 {
 	public int SchemaVersion { get; set; } = 1;
+	public float SpecialVariantMultiplier { get; set; } = 1.15f;
+	public float ProgressCapacityMultiplier { get; set; } = 2.5f;
+	public float ProgressGainRate { get; set; }
+	public ProgressLossTierDefinition[] ProgressLossTiers { get; set; } = Array.Empty<ProgressLossTierDefinition>();
 	public FishingSourceReference[] Sources { get; set; } =
 		Array.Empty<FishingSourceReference>();
 	public BiteProfileDefinition[] BiteProfiles { get; set; } =

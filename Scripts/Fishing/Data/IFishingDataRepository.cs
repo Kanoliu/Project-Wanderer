@@ -8,6 +8,10 @@ public interface IFishingDataRepository
 	IReadOnlyCollection<BiteProfileDefinition> BiteProfiles { get; }
 	IReadOnlyCollection<FightProfileDefinition> FightProfiles { get; }
 	IReadOnlyCollection<FishingEventDefinition> ScriptedEvents { get; }
+	float SpecialVariantMultiplier { get; }
+	float ProgressCapacityMultiplier { get; }
+	float ProgressGainRate { get; }
+	FightProfileDefinition CreateFightProfile(string baseFishId, bool isSpecialVariant = false);
 
 	bool TryGetFish(string id, out FishDefinition fish);
 	bool TryGetVariant(string id, out FishVariantDefinition variant);

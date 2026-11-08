@@ -1,0 +1,24 @@
+[gd_resource type="Theme" format=3 uid="uid://c5atnj52x3u8w"]
+
+[sub_resource type="StyleBoxFlat" id="inside"]
+bg_color = Color(0.137, 0.494, 0.455, 0)
+border_color = Color(0.55, 0.73, 0.65, 1)
+
+[sub_resource type="StyleBoxFlat" id="outside"]
+bg_color = Color(0.72, 0.47, 0.41, 0)
+border_color = Color(0.67, 0.68, 0.61, 0.65)
+
+[sub_resource type="StyleBoxFlat" id="track"]
+bg_color = Color(0.196, 0.271, 0.286, 1)
+
+[sub_resource type="StyleBoxFlat" id="fill"]
+bg_color = Color(0.137, 0.494, 0.455, 1)
+
+[resource]
+default_font_size = 20
+FightCatch/styles/inside = SubResource("inside")
+FightCatch/styles/outside = SubResource("outside")
+Label/colors/font_color = Color(0.82, 0.827, 0.749, 1)
+Panel/styles/panel = SubResource("inside")
+ProgressBar/styles/background = SubResource("track")
+ProgressBar/styles/fill = SubResource("fill")

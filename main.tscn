@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://btngvxyjl44dn"]
 
-[ext_resource type="Script" uid="uid://c4r20epu3d5sp" path="res://Main.cs" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://c4r20epu3d5sp" path="res://Scripts/Core/Main.cs" id="1_ig7tw"]
 [ext_resource type="PackedScene" path="res://Scenes/EpigraphText.tscn" id="2_epigraph"]
 [ext_resource type="PackedScene" path="res://Scenes/DialogueFishingModule.tscn" id="3_fishing"]
 

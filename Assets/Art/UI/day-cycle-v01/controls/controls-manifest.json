@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "designCanvas": [
+    1920,
+    1080
+  ],
+  "assets": [
+    {
+      "file": "choice-normal.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Dialogue choice background; use separate selection-diamond.svg for focus/pressed. Labels remain scene nodes."
+    },
+    {
+      "file": "choice-hover.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Dialogue choice background; use separate selection-diamond.svg for focus/pressed. Labels remain scene nodes."
+    },
+    {
+      "file": "choice-focus.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Dialogue choice background; use separate selection-diamond.svg for focus/pressed. Labels remain scene nodes."
+    },
+    {
+      "file": "choice-pressed.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Dialogue choice background; use separate selection-diamond.svg for focus/pressed. Labels remain scene nodes."
+    },
+    {
+      "file": "choice-disabled.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Dialogue choice background; use separate selection-diamond.svg for focus/pressed. Labels remain scene nodes."
+    },
+    {
+      "file": "segment-normal.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Depth or mutually exclusive option; selected uses diamond and brighter border."
+    },
+    {
+      "file": "segment-selected.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Depth or mutually exclusive option; selected uses diamond and brighter border."
+    },
+    {
+      "file": "segment-disabled.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        16,
+        16
+      ],
+      "role": "Depth or mutually exclusive option; selected uses diamond and brighter border."
+    },
+    {
+      "file": "dropdown-normal.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        40,
+        16
+      ],
+      "role": "Dropdown header; reserve 40px on right for arrow."
+    },
+    {
+      "file": "dropdown-focus.svg",
+      "size": [
+        128,
+        64
+      ],
+      "stretchMargins": [
+        28,
+        16,
+        40,
+        16
+      ],
+      "role": "Dropdown header; reserve 40px on right for arrow."
+    },
+    {
+      "file": "dropdown-popup.svg",
+      "size": [
+        128,
+        128
+      ],
+      "stretchMargins": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "role": "Popup shell; list rows are separate controls."
+    },
+    {
+      "file": "checkbox-normal.svg",
+      "size": [
+        32,
+        32
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed 32px; checked uses a check shape. Focus adds corner marks."
+    },
+    {
+      "file": "checkbox-selected.svg",
+      "size": [
+        32,
+        32
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed 32px; checked uses a check shape. Focus adds corner marks."
+    },
+    {
+      "file": "checkbox-focus.svg",
+      "size": [
+        32,
+        32
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed 32px; checked uses a check shape. Focus adds corner marks."
+    },
+    {
+      "file": "checkbox-disabled.svg",
+      "size": [
+        32,
+        32
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed 32px; checked uses a check shape. Focus adds corner marks."
+    },
+    {
+      "file": "radio-normal.svg",
+      "size": [
+        40,
+        40
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed diamond-shaped radio; selected has a filled center."
+    },
+    {
+      "file": "radio-selected.svg",
+      "size": [
+        40,
+        40
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed diamond-shaped radio; selected has a filled center."
+    },
+    {
+      "file": "radio-focus.svg",
+      "size": [
+        40,
+        40
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed diamond-shaped radio; selected has a filled center."
+    },
+    {
+      "file": "radio-disabled.svg",
+      "size": [
+        40,
+        40
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed diamond-shaped radio; selected has a filled center."
+    },
+    {
+      "file": "toggle-off.svg",
+      "size": [
+        88,
+        40
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed angular toggle; knob position communicates state independently of color."
+    },
+    {
+      "file": "toggle-on.svg",
+      "size": [
+        88,
+        40
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed angular toggle; knob position communicates state independently of color."
+    },
+    {
+      "file": "slider-track.svg",
+      "size": [
+        64,
+        12
+      ],
+      "stretchMargins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "role": "Stretch horizontally; preserve 12px height."
+    },
+    {
+      "file": "slider-fill.svg",
+      "size": [
+        32,
+        8
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Horizontal functional fill."
+    },
+    {
+      "file": "slider-thumb.svg",
+      "size": [
+        24,
+        28
+      ],
+      "stretchMargins": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "role": "Fixed square-ended thumb."
+    },
+    {
+      "file": "scrollbar-track.svg",
+      "size": [
+        12,
+        48
+      ],
+      "stretchMargins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "role": "Vertical scroll track; no pill ends."
+    },
+    {
+      "file": "scrollbar-thumb.svg",
+      "size": [
+        12,
+        32
+      ],
+      "stretchMargins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "role": "Vertical rectangular thumb."
+    }
+  ],
+  "sharedAssets": [
+    "../button-normal.svg",
+    "../button-hover.svg",
+    "../button-focus.svg",
+    "../button-pressed.svg",
+    "../button-disabled.svg",
+    "../bait-slot-normal.svg",
+    "../bait-slot-selected.svg",
+    "../selection-diamond.svg"
+  ]
+}
