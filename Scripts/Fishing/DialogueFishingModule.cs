@@ -15,7 +15,6 @@ public partial class DialogueFishingModule : Control
 	private FightController _fightController = null!;
 	private Control _resultOverlay = null!;
 	private Label _resultLabel = null!;
-	private Label _resultReason = null!;
 	private Button _continueButton = null!;
 	private Control _tutorialOverlay = null!;
 	private Label _tutorialTitle = null!;
@@ -49,6 +48,7 @@ public partial class DialogueFishingModule : Control
 	private bool _firstCatchPausedForFightPrompt;
 
 	public bool IsEventActive => _eventActive;
+	public bool IsFishingEnabled => _fishingEnabled;
 
 	public override void _Ready()
 	{
@@ -63,9 +63,6 @@ public partial class DialogueFishingModule : Control
 		_resultOverlay = GetNode<Control>("ResultOverlay");
 		_resultLabel = GetNode<Label>(
 			"ResultOverlay/ResultFrame/ResultStack/ResultLabel"
-		);
-		_resultReason = GetNode<Label>(
-			"ResultOverlay/ResultFrame/ResultStack/ResultReason"
 		);
 		_continueButton = GetNode<Button>(
 			"ResultOverlay/ResultFrame/ResultStack/ContinueButton"
@@ -441,8 +438,7 @@ public partial class DialogueFishingModule : Control
 					FishingResult.CreateFailure(
 						_activeEventId,
 						FishingOutcome.MissedEarly
-					),
-					"MISS_EARLY — You lifted too soon."
+					)
 				);
 				break;
 
@@ -485,8 +481,7 @@ public partial class DialogueFishingModule : Control
 					FishingResult.CreateFailure(
 						_activeEventId,
 						FishingOutcome.MissedLate
-					),
-					"MISS_LATE — The fish let go."
+					)
 				);
 				break;
 		}
@@ -507,15 +502,10 @@ public partial class DialogueFishingModule : Control
 				FishingOutcome.Escaped
 			);
 
-		ShowResult(
-			result,
-			caught
-				? "SUCCESS — Return to the conversation."
-				: "FAIL — The line went slack."
-		);
+		ShowResult(result);
 	}
 
-	private void ShowResult(FishingResult result, string reason)
+	private void ShowResult(FishingResult result)
 	{
 		SetInteractionBlocking(true);
 		_biteController.ResetAttempt();
@@ -526,7 +516,6 @@ public partial class DialogueFishingModule : Control
 		_resultVisible = true;
 		_lastResult = result;
 		_resultLabel.Text = result.Caught ? "成功收竿" : "鱼挣脱了";
-		_resultReason.Text = reason;
 		_continueButton.GrabFocus();
 	}
 

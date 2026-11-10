@@ -1,6 +1,7 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://Scripts/Fishing/WaterDrift.cs" id="drift"]
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-base-v01.png" id="base"]
+[ext_resource type="Shader" path="res://Assets/Art/UI/fishing-fight/fight-water-background.gdshader" id="background_shader"]
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-01-long-soft.png" id="s0"]
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-02-short-wedge.png" id="s1"]
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-03-double-peak.png" id="s2"]
@@ -9,6 +10,10 @@
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-06-flat-shoal.png" id="s5"]
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-07-long-tail.png" id="s6"]
 [ext_resource type="Texture2D" path="res://Assets/Art/UI/fishing-bobber/water-streaks/water-streak-08-split-tip.png" id="s7"]
+
+[sub_resource type="ShaderMaterial" id="background_material"]
+shader = ExtResource("background_shader")
+shader_parameter/panel_opacity = 0.96
 
 [sub_resource type="AtlasTexture" id="a0"]
 atlas = ExtResource("s0")
@@ -61,6 +66,7 @@ mouse_filter = 2
 clip_contents = true
 
 [node name="Base" type="TextureRect" parent="."]
+material = SubResource("background_material")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -34,6 +34,8 @@ public partial class Main : Control
 	private Control _storyStage;
 	private TextureRect _previousIllustration;
 	private TextureRect _currentIllustration;
+	private Control _fishingStage;
+	private Control _fishingCompanion;
 	private Tween _illustrationTween;
 	private string _currentIllustrationId = string.Empty;
 	private Control _epigraphText;
@@ -85,6 +87,9 @@ public partial class Main : Control
 			GetNode<TextureRect>("StoryStage/Previous");
 		_currentIllustration =
 			GetNode<TextureRect>("StoryStage/Current");
+		_fishingStage = GetNode<Control>("StoryStage/FishingStage");
+		_fishingCompanion =
+			_fishingStage.GetNode<Control>("Composition/Canvas/Aelyar");
 		_epigraphText =
 			GetNode<Control>("EpigraphText");
 
@@ -345,6 +350,8 @@ public partial class Main : Control
 
 	private void ShowIllustration(string illustrationId)
 	{
+		_fishingStage.Visible = false;
+
 		if (_currentIllustrationId == illustrationId &&
 			_storyStage.Visible)
 		{
@@ -403,10 +410,14 @@ public partial class Main : Control
 			return;
 		}
 
-		// Fishing now shares the same full-resolution stage as dialogue.
-		// Character staging will be added as independent HD cutouts rather
-		// than reviving the removed sprite sheet scene.
 		ShowIllustration("act1.deck.morning");
+		_fishingStage.Visible = true;
+		// Only the companion with an existing approved visual reference is staged.
+		_fishingCompanion.Visible = sceneId == "fishing.aelyar";
+		if (!_fishingModule.IsFishingEnabled)
+		{
+			_fishingModule.SetFishingEnabled(true);
+		}
 	}
 
 	private void ConfigureFishingTriggerWindows()
@@ -844,7 +855,6 @@ public partial class Main : Control
 	private void OnFishingInteractionBlockingChanged(bool blocking)
 	{
 		_fishingEventBlocking = blocking;
-		GetNode<Control>("VoyageStatus").Visible = !blocking;
 	}
 
 	private void OnFishingTutorialStepFinished(

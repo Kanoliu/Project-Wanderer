@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://ccvt30p7pt2pq"]
+
+[ext_resource type="Texture2D" uid="uid://tlnw15rc7lue" path="res://Assets/Art/Backgrounds/fishing-deck-morning-v01.png" id="1_deck"]
+[ext_resource type="Texture2D" uid="uid://b16yamlyvfsnw" path="res://Assets/Art/Characters/fishing-v01/enor-seated-barrel-rear-v01.png" id="2_enor"]
+[ext_resource type="Texture2D" uid="uid://benk6kc6imika" path="res://Assets/Art/Characters/fishing-v01/aelyar-seated-stool-rear-v01.png" id="3_aelyar"]
+[ext_resource type="Texture2D" uid="uid://dfdc3y1gbk7om" path="res://Assets/Art/Characters/fishing-v01/enor-fishing-rod-v01.svg" id="4_enor_rod"]
+[ext_resource type="Texture2D" uid="uid://bu20crw53dgd7" path="res://Assets/Art/Characters/fishing-v01/aelyar-fishing-rod-v01.svg" id="5_aelyar_rod"]
+
+[node name="FishingStage" type="Control" unique_id=2051563556]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Matte" type="ColorRect" parent="." unique_id=1129057804]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.025, 0.038, 0.04, 1)
+
+[node name="Composition" type="AspectRatioContainer" parent="." unique_id=20246684]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+ratio = 1.7777778
+
+[node name="Canvas" type="Control" parent="Composition" unique_id=1076136618]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Deck" type="TextureRect" parent="Composition/Canvas" unique_id=1215317451]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_deck")
+expand_mode = 1
+
+[node name="EnorRod" type="TextureRect" parent="Composition/Canvas" unique_id=1136964525]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0403125
+anchor_top = 0.010740741
+anchor_right = 1.0796875
+anchor_bottom = 0.89074075
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_enor_rod")
+expand_mode = 1
+
+[node name="Enor" type="TextureRect" parent="Composition/Canvas" unique_id=1301146780]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2379375
+anchor_top = 0.36622223
+anchor_right = 0.4339375
+anchor_bottom = 0.8888889
+mouse_filter = 2
+texture = ExtResource("2_enor")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Aelyar" type="Control" parent="Composition/Canvas" unique_id=1297201263]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Rod" type="TextureRect" parent="Composition/Canvas/Aelyar" unique_id=108631015]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0689375
+anchor_top = 0.010740741
+anchor_right = 1.0510625
+anchor_bottom = 0.89074075
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_aelyar_rod")
+expand_mode = 1
+
+[node name="Seated" type="TextureRect" parent="Composition/Canvas/Aelyar" unique_id=166179810]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.47064584
+anchor_top = 0.3351111
+anchor_right = 0.6783125
+anchor_bottom = 0.8888889
+mouse_filter = 2
+texture = ExtResource("3_aelyar")
+expand_mode = 1
+stretch_mode = 5

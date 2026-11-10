@@ -9,7 +9,7 @@ bg_color = Color(0.72, 0.47, 0.41, 0)
 border_color = Color(0.67, 0.68, 0.61, 0.65)
 
 [sub_resource type="StyleBoxFlat" id="track"]
-bg_color = Color(0.196, 0.271, 0.286, 1)
+bg_color = Color(0.196, 0.271, 0.286, 0.96)
 
 [sub_resource type="StyleBoxFlat" id="fill"]
 bg_color = Color(0.137, 0.494, 0.455, 1)
