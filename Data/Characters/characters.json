@@ -1,0 +1,10 @@
+[
+  { "id": "character.inor", "displayName": "伊诺尔" },
+  { "id": "character.baheda", "displayName": "巴赫炟", "initialRelationship": 0 },
+  { "id": "character.aelyar", "displayName": "艾尔亚尔", "initialRelationship": 0 },
+  { "id": "character.kusin", "displayName": "库辛", "initialRelationship": 0 },
+  { "id": "character.wuzuona", "displayName": "乌佐娜", "initialRelationship": 0 },
+  { "id": "character.yang", "displayName": "阳", "initialRelationship": 0 },
+  { "id": "character.wensheng", "displayName": "温生", "initialRelationship": 0 },
+  { "id": "character.qiaqia", "displayName": "恰恰", "initialRelationship": 0 }
+]

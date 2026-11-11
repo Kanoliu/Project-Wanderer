@@ -6,7 +6,8 @@ public enum DialogueLineType
 	Monologue,
 	Silence,
 	Epigraph,
-	Choice
+	Choice,
+	FishingTutorial
 }
 
 public enum DialoguePace

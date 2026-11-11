@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public partial class DialogueFishingModule : Control
 {
+	private const string FirstCatchEventId = "act1.tutorial.first_catch";
+
 	public event Action<FishingResult> FishingEventFinished;
 	public event Action<bool> FishingInteractionBlockingChanged;
 	public event Action<FishingTutorialStep, FishingSetup>
@@ -17,7 +19,6 @@ public partial class DialogueFishingModule : Control
 	private Label _resultLabel = null!;
 	private Button _continueButton = null!;
 	private Control _tutorialOverlay = null!;
-	private Label _tutorialTitle = null!;
 	private Label _tutorialBody = null!;
 	private Control _tutorialBaitRow = null!;
 	private OptionButton _tutorialBaitPicker = null!;
@@ -42,6 +43,7 @@ public partial class DialogueFishingModule : Control
 		FishingTutorialStep.None;
 	private FishingSetup _tutorialSetup = new();
 	private IFishingDataRepository _tutorialDataRepository;
+	private FishDefinition _tutorialFish;
 	private readonly List<FishingBaitDefinition> _tutorialBaits = new();
 	private readonly List<FishingDepthDefinition> _tutorialDepths = new();
 	private bool _firstCatchPausedForHookPrompt;
@@ -68,30 +70,27 @@ public partial class DialogueFishingModule : Control
 			"ResultOverlay/ResultFrame/ResultStack/ContinueButton"
 		);
 		_tutorialOverlay = GetNode<Control>("TutorialOverlay");
-		_tutorialTitle = GetNode<Label>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/TutorialTitle"
-		);
 		_tutorialBody = GetNode<Label>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/TutorialBody"
+			"TutorialOverlay/TutorialFrame/TutorialStack/TutorialBody"
 		);
 		_tutorialBaitRow = GetNode<Control>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/BaitRow"
+			"TutorialOverlay/TutorialFrame/TutorialStack/BaitRow"
 		);
 		_tutorialBaitPicker = GetNode<OptionButton>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/BaitRow/BaitPicker"
+			"TutorialOverlay/TutorialFrame/TutorialStack/BaitRow/BaitPicker"
 		);
 		_tutorialDepthRow = GetNode<Control>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/DepthRow"
+			"TutorialOverlay/TutorialFrame/TutorialStack/DepthRow"
 		);
 		_tutorialDepthPicker = GetNode<OptionButton>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/DepthRow/DepthPicker"
+			"TutorialOverlay/TutorialFrame/TutorialStack/DepthRow/DepthPicker"
 		);
 		_tutorialConfirmButton = GetNode<Button>(
-			"TutorialOverlay/TutorialFrame/TutorialMargin/TutorialStack/TutorialConfirmButton"
+			"TutorialOverlay/TutorialFrame/TutorialStack/TutorialConfirmButton"
 		);
 
 		_biteController.BiteResolved += OnBiteResolved;
-		_biteController.BiteStarted += OnBiteStarted;
+		_biteController.HookWindowHeld += OnHookWindowHeld;
 		_fightController.FightResolved += OnFightResolved;
 		_continueButton.Pressed += CompleteEvent;
 		_tutorialConfirmButton.Pressed += ConfirmTutorialStep;
@@ -148,7 +147,9 @@ public partial class DialogueFishingModule : Control
 			_eventActive ||
 			_activeTutorialStep != FishingTutorialStep.None ||
 			step == FishingTutorialStep.None ||
-			dataRepository == null)
+			dataRepository == null ||
+			!dataRepository.TryGetScriptedEvent(FirstCatchEventId, out var tutorialEvent) ||
+			!dataRepository.TryGetFish(tutorialEvent.FishId, out _tutorialFish))
 		{
 			return false;
 		}
@@ -156,41 +157,34 @@ public partial class DialogueFishingModule : Control
 		_activeTutorialStep = step;
 		_tutorialSetup = CopySetup(setup);
 		_tutorialDataRepository = dataRepository;
-		Visible = true;
-		_tutorialOverlay.Visible = true;
+		_hud.Hide();
 		_tutorialBaitRow.Visible = false;
 		_tutorialDepthRow.Visible = false;
-		_tutorialConfirmButton.Text = "确认";
 
 		switch (step)
 		{
 			case FishingTutorialStep.SelectBait:
 				ConfigureBaitTutorial();
-				break;
+				return true;
 
 			case FishingTutorialStep.SelectDepth:
 				ConfigureDepthTutorial();
-				break;
+				return true;
 
 			case FishingTutorialStep.Cast:
-				_tutorialTitle.Text = "第三步：抛竿";
-				_tutorialBody.Text =
-					"按 Space 或点击下方按钮抛出鱼竿。抛竿后，" +
-					"右上角的浮漂窗口会显示水面下的动静。";
-				_tutorialConfirmButton.Text = "抛竿（Space）";
-				break;
+				ShowTutorialPrompt("抛竿 · 空格");
+				return true;
 
 			case FishingTutorialStep.FirstCatch:
-				_tutorialTitle.Text = "第四步：观察浮漂";
-				_tutorialBody.Text =
-					"开始后先观察浮漂。零散点动只是试探；" +
-					"等浮漂真正沉入水中，再按 Space 提竿。";
-				_tutorialConfirmButton.Text = "开始第一次钓鱼（Space）";
+				if (StartFirstCatchTutorial())
+				{
+					return true;
+				}
 				break;
 		}
 
-		_tutorialConfirmButton.GrabFocus();
-		return true;
+		CancelTutorialStep();
+		return false;
 	}
 
 	public bool TriggerFishingEvent(string eventId)
@@ -201,6 +195,11 @@ public partial class DialogueFishingModule : Control
 	}
 
 	public bool TriggerFishingEvent(FishingEventRequest request)
+	{
+		return StartFishingEvent(request, false);
+	}
+
+	private bool StartFishingEvent(FishingEventRequest request, bool firstCatch)
 	{
 		if (!_fishingEnabled ||
 			_eventActive ||
@@ -231,16 +230,12 @@ public partial class DialogueFishingModule : Control
 		_hud.Visible = true;
 		_fightOverlay.Visible = false;
 		_resultOverlay.Visible = false;
-		_biteController.StartAttempt(request.BitePattern);
+		_biteController.StartAttempt(request.BitePattern, firstCatch);
 		return true;
 	}
 
 	private void ConfigureBaitTutorial()
 	{
-		_tutorialTitle.Text = "第一步：选择鱼饵";
-		_tutorialBody.Text =
-			"不同鱼种偏好的食物不同。先选择一种鱼饵，" +
-			"之后可以根据目标鱼调整。";
 		_tutorialBaitRow.Visible = true;
 		_tutorialBaitPicker.Clear();
 		_tutorialBaits.Clear();
@@ -250,6 +245,11 @@ public partial class DialogueFishingModule : Control
 		foreach (FishingBaitDefinition bait in
 			_tutorialDataRepository.Baits)
 		{
+			if (Array.IndexOf(_tutorialFish.Availability.BaitIds, bait.Id) < 0)
+			{
+				continue;
+			}
+
 			if (bait.Id == _tutorialSetup.BaitId)
 			{
 				selectedIndex = _tutorialBaits.Count;
@@ -263,14 +263,13 @@ public partial class DialogueFishingModule : Control
 		{
 			_tutorialBaitPicker.Select(selectedIndex);
 		}
+
+		ShowTutorialPrompt("挂上鱼饵");
+		_tutorialBaitPicker.GrabFocus();
 	}
 
 	private void ConfigureDepthTutorial()
 	{
-		_tutorialTitle.Text = "第二步：选择水层";
-		_tutorialBody.Text =
-			"不同鱼种活动在不同水层。浅层更容易观察，" +
-			"中层和深层则可能出现不同的鱼。";
 		_tutorialDepthRow.Visible = true;
 		_tutorialDepthPicker.Clear();
 		_tutorialDepths.Clear();
@@ -280,6 +279,11 @@ public partial class DialogueFishingModule : Control
 		foreach (FishingDepthDefinition depth in
 			_tutorialDataRepository.Depths)
 		{
+			if (Array.IndexOf(_tutorialFish.Availability.DepthIds, depth.Id) < 0)
+			{
+				continue;
+			}
+
 			if (depth.Value == _tutorialSetup.Depth)
 			{
 				selectedIndex = _tutorialDepths.Count;
@@ -293,6 +297,9 @@ public partial class DialogueFishingModule : Control
 		{
 			_tutorialDepthPicker.Select(selectedIndex);
 		}
+
+		ShowTutorialPrompt("设定水层");
+		_tutorialDepthPicker.GrabFocus();
 	}
 
 	private void ConfirmTutorialStep()
@@ -322,7 +329,6 @@ public partial class DialogueFishingModule : Control
 				break;
 
 			case FishingTutorialStep.Cast:
-				_biteController.ShowIdle("浮漂已入水，等待鱼靠近……");
 				CompleteTutorialStep();
 				break;
 
@@ -332,6 +338,7 @@ public partial class DialogueFishingModule : Control
 					_firstCatchPausedForHookPrompt = false;
 					_tutorialOverlay.Visible = false;
 					_biteController.ResumeAttempt();
+					_biteController.Hook();
 				}
 				else if (_firstCatchPausedForFightPrompt)
 				{
@@ -339,32 +346,23 @@ public partial class DialogueFishingModule : Control
 					_tutorialOverlay.Visible = false;
 					_fightController.ResumeFight();
 				}
-				else
-				{
-					StartFirstCatchTutorial();
-				}
 				break;
 		}
 	}
 
-	private void StartFirstCatchTutorial()
+	private bool StartFirstCatchTutorial()
 	{
-		_tutorialOverlay.Visible = false;
-
 		FishingEventRequest request =
 			_tutorialDataRepository.CreateEventRequest(
-				"act1.tutorial.first_catch",
+				FirstCatchEventId,
 				_tutorialSetup
 			);
-
-		if (TriggerFishingEvent(request))
-		{
-			return;
-		}
-
-		_tutorialOverlay.Visible = true;
-		_tutorialBody.Text =
-			"钓鱼流程暂时无法启动，请再次尝试。";
+		// The first fight teaches tracking before introducing bursts and dives.
+		request.FightMovement.CruiseSpeed *= 0.55f;
+		request.FightMovement.BurstDuration = 0.0f;
+		request.FightMovement.DiveRate = 0.0f;
+		request.FightGainRate = 0.20f;
+		return StartFishingEvent(request, true);
 	}
 
 	private void CompleteTutorialStep()
@@ -375,6 +373,7 @@ public partial class DialogueFishingModule : Control
 		_firstCatchPausedForHookPrompt = false;
 		_firstCatchPausedForFightPrompt = false;
 		_tutorialDataRepository = null;
+		_tutorialFish = null;
 		_tutorialOverlay.Visible = false;
 		TutorialStepFinished?.Invoke(completedStep, completedSetup);
 	}
@@ -385,6 +384,7 @@ public partial class DialogueFishingModule : Control
 		_firstCatchPausedForHookPrompt = false;
 		_firstCatchPausedForFightPrompt = false;
 		_tutorialDataRepository = null;
+		_tutorialFish = null;
 
 		if (IsInstanceValid(_tutorialOverlay))
 		{
@@ -392,22 +392,19 @@ public partial class DialogueFishingModule : Control
 		}
 	}
 
-	private void OnBiteStarted()
+	private void ShowTutorialPrompt(string action, string hint = "")
 	{
-		if (_activeTutorialStep != FishingTutorialStep.FirstCatch)
-		{
-			return;
-		}
-
-		_biteController.PauseAttempt();
-		_firstCatchPausedForHookPrompt = true;
-		_tutorialTitle.Text = "第五步：辨认咬钩信号";
-		_tutorialBody.Text =
-			"接下来浮漂会先出现几次轻微点动。不要急着提竿；" +
-			"只有当它真正向下沉时，才按 Space。";
-		_tutorialConfirmButton.Text = "继续观察（Space）";
-		_tutorialOverlay.Visible = true;
+		_tutorialBody.Text = hint;
+		_tutorialBody.Visible = hint.Length > 0;
+		_tutorialConfirmButton.Text = action;
+		_tutorialOverlay.Show();
 		_tutorialConfirmButton.GrabFocus();
+	}
+
+	private void OnHookWindowHeld()
+	{
+		_firstCatchPausedForHookPrompt = true;
+		ShowTutorialPrompt("提竿 · 空格");
 	}
 
 	private static FishingSetup CopySetup(FishingSetup setup)
@@ -454,18 +451,13 @@ public partial class DialogueFishingModule : Control
 				{
 					_fightController.PauseFight();
 					_firstCatchPausedForFightPrompt = true;
-					_tutorialTitle.Text = "第六步：搏鱼";
-					_tutorialBody.Text =
-						"使用方向键或 WASD 移动收线区，" +
-						"让浅色鱼影保持在其中，直到进度填满。鱼潜入水下时仍会继续游动。";
-					_tutorialConfirmButton.Text = "开始搏鱼（Space）";
-					_tutorialOverlay.Visible = true;
-					_tutorialConfirmButton.GrabFocus();
+					ShowTutorialPrompt("开始收线", "用方向键或 WASD，让鱼影留在框内。");
 				}
 				break;
 
 			case BiteController.BiteResult.Late:
-				if (!_biteController.LastResolutionWasPlayerInitiated)
+				if (_activeTutorialStep != FishingTutorialStep.FirstCatch &&
+					!_biteController.LastResolutionWasPlayerInitiated)
 				{
 					CompleteMissWithoutBlocking(
 						FishingResult.CreateFailure(
@@ -515,7 +507,16 @@ public partial class DialogueFishingModule : Control
 		_resultOverlay.Visible = true;
 		_resultVisible = true;
 		_lastResult = result;
-		_resultLabel.Text = result.Caught ? "成功收竿" : "鱼挣脱了";
+		bool firstCatch = _activeTutorialStep == FishingTutorialStep.FirstCatch;
+		_resultLabel.Text = firstCatch
+			? result.Outcome switch
+			{
+				FishingOutcome.Caught => $"钓到{_tutorialFish.DisplayName}",
+				FishingOutcome.MissedEarly => "等浮漂沉下去再提竿。",
+				_ => "鱼挣脱了"
+			}
+			: result.Caught ? "成功收竿" : "鱼挣脱了";
+		_continueButton.Text = firstCatch && !result.Caught ? "再抛一竿" : "继续";
 		_continueButton.GrabFocus();
 	}
 
@@ -546,12 +547,18 @@ public partial class DialogueFishingModule : Control
 		}
 
 		FishingEventFinished?.Invoke(result);
-		SetInteractionBlocking(false);
 
 		if (completesFirstCatchTutorial)
 		{
+			if (!result.Caught && StartFirstCatchTutorial())
+			{
+				return;
+			}
+
 			CompleteTutorialStep();
 		}
+
+		SetInteractionBlocking(false);
 	}
 
 	private void CompleteMissWithoutBlocking(FishingResult result)

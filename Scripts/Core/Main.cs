@@ -332,6 +332,17 @@ public partial class Main : Control
 			case DialogueLineType.Choice:
 				ShowChoice(line);
 				break;
+
+			case DialogueLineType.FishingTutorial:
+				CancelTypewriter();
+				_epigraphText.Hide();
+				_dialogueCard.Hide();
+				_choiceCard.Hide();
+				if (!_fishingTutorialBlocking)
+				{
+					BeginLineTransition(line.NextId);
+				}
+				break;
 		}
 	}
 
@@ -414,10 +425,6 @@ public partial class Main : Control
 		_fishingStage.Visible = true;
 		// Only the companion with an existing approved visual reference is staged.
 		_fishingCompanion.Visible = sceneId == "fishing.aelyar";
-		if (!_fishingModule.IsFishingEnabled)
-		{
-			_fishingModule.SetFishingEnabled(true);
-		}
 	}
 
 	private void ConfigureFishingTriggerWindows()
@@ -750,8 +757,9 @@ public partial class Main : Control
 			return;
 		}
 
-		// Silence 节点自身就是话题间隔，避免额外叠加文本框停顿。
-		if (targetLine.Type == DialogueLineType.Silence)
+		// 动作和沉默节点直接开始，不叠加对白切换停顿。
+		if (targetLine.Type == DialogueLineType.Silence ||
+			targetLine.Type == DialogueLineType.FishingTutorial)
 		{
 			JumpTo(targetId);
 			return;

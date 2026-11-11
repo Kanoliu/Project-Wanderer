@@ -239,62 +239,18 @@
 	"speaker": "",
 	"text": "船舷边向外搭着一小块木制鱼台，边缘钉着几处固定鱼竿的卡槽。",
 	"sceneId": "fishing.aelyar",
-	"nextId": "act1_platform_equipment"
-  },
-  {
-	"id": "act1_platform_equipment",
-	"type": "Narration",
-	"speaker": "",
-	"text": "两张矮凳并排摆在栏杆前，脚边堆着鱼线、旧木桶和装饵的小盒。",
-	"nextId": "act1_platform_aier_sits"
-  },
-  {
-	"id": "act1_platform_aier_sits",
-	"type": "Narration",
-	"speaker": "",
-	"text": "艾尔亚尔在靠船尾的位置坐下，把另一张凳子踢向伊诺尔。",
-	"nextId": "act1_aier_first_step"
-  },
-  {
-	"id": "act1_aier_first_step",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "没吃过猪肉，总见过猪跑吧？考考你，钓鱼的第一步是什么？",
-	"nextId": "act1_inor_cast_guess"
-  },
-  {
-	"id": "act1_inor_cast_guess",
-	"type": "Dialogue",
-	"speaker": "伊诺尔",
-	"text": "把……鱼竿甩出去？",
 	"nextId": "act1_aier_bait_lesson"
   },
   {
 	"id": "act1_aier_bait_lesson",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
-	"text": "首先，当然是把鱼饵挂上鱼钩。不同的鱼，爱吃的东西也不同。",
-	"nextId": "act1_aier_bait_examples"
-  },
-  {
-	"id": "act1_aier_bait_examples",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "豆鲷这种杂食小鱼几乎来者不拒。",
-	"nextId": "act1_aier_bait_carnivores"
-  },
-  {
-	"id": "act1_aier_bait_carnivores",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "青鲈这种肉食鱼，则更偏爱虾饵、虫饵之类。",
+	"text": "先挂饵。豆鲷不挑食，挑一样试试。",
 	"nextId": "act1_tutorial_bait"
   },
   {
 	"id": "act1_tutorial_bait",
-	"type": "Narration",
-	"speaker": "",
-	"text": "【教程：打开饵料选择】",
+	"type": "FishingTutorial",
 	"fishing": "Enable",
 	"tutorial": "SelectBait",
 	"nextId": "act1_aier_depth_lesson"
@@ -303,58 +259,20 @@
 	"id": "act1_aier_depth_lesson",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
-	"text": "另外，不同的鱼待的水层也不同。浅水鱼通常比中层鱼更容易上钩。",
-	"nextId": "act1_aier_depth_seabed"
-  },
-  {
-	"id": "act1_aier_depth_seabed",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "至于海底嘛……哼哼，能钓上来什么，可就由不得你了。",
+	"text": "水层也有讲究。浅水里，豆鲷容易上钩。",
 	"nextId": "act1_tutorial_depth"
   },
   {
 	"id": "act1_tutorial_depth",
-	"type": "Narration",
-	"speaker": "",
-	"text": "【教程：打开水层选择】",
+	"type": "FishingTutorial",
 	"tutorial": "SelectDepth",
-	"nextId": "act1_inor_relics"
-  },
-  {
-	"id": "act1_inor_relics",
-	"type": "Dialogue",
-	"speaker": "伊诺尔",
-	"text": "我听说不少人从海里钓上过海遗物？应该能值不少钱吧？",
-	"nextId": "act1_aier_relic_warning"
-  },
-  {
-	"id": "act1_aier_relic_warning",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "呵呵，你以为这是好事？先不说那些海遗物到底值多少钱。",
-	"nextId": "act1_aier_relic_survivors"
-  },
-  {
-	"id": "act1_aier_relic_survivors",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "那些钓上来的人里，又有几个真能活着把东西带回岸上？",
-	"nextId": "act1_first_cast"
-  },
-  {
-	"id": "act1_first_cast",
-	"type": "Narration",
-	"speaker": "",
-	"text": "艾尔亚尔讽刺地笑了笑，把鱼饵甩了出去。\n【教程：抛竿与浮漂】",
-	"tutorial": "Cast",
 	"nextId": "act1_aier_most_important"
   },
   {
 	"id": "act1_aier_most_important",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
-	"text": "下一个问题。钓鱼最重要的是什么？",
+	"text": "钓鱼最重要的是什么？",
 	"nextId": "act1_inor_patience"
   },
   {
@@ -362,41 +280,24 @@
 	"type": "Dialogue",
 	"speaker": "伊诺尔",
 	"text": "耐心？",
-	"nextId": "act1_aier_confidence"
-  },
-  {
-	"id": "act1_aier_confidence",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "还好嘛，我还以为你会回答“鱼”。不过不对。",
 	"nextId": "act1_aier_confidence_answer"
   },
   {
 	"id": "act1_aier_confidence_answer",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
-	"text": "最重要的是信心——永远相信浮漂下面有东西。",
-	"nextId": "act1_inor_no_bite"
+	"text": "是信心。抛吧，信浮漂底下有东西。",
+	"nextId": "act1_first_cast"
   },
   {
-	"id": "act1_inor_no_bite",
-	"type": "Dialogue",
-	"speaker": "伊诺尔",
-	"text": "那要是一整天都没有鱼咬饵呢？",
-	"nextId": "act1_aier_wait_tomorrow"
-  },
-  {
-	"id": "act1_aier_wait_tomorrow",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "那就把这份相信留到第二天……啊，注意看。等一等……拉！",
+	"id": "act1_first_cast",
+	"type": "FishingTutorial",
+	"tutorial": "Cast",
 	"nextId": "act1_tutorial_first_catch"
   },
   {
 	"id": "act1_tutorial_first_catch",
-	"type": "Narration",
-	"speaker": "",
-	"text": "【教程：第一次咬饵与搏鱼；目标鱼为新手豆鲷】",
+	"type": "FishingTutorial",
 	"tutorial": "FirstCatch",
 	"nextId": "act1_aier_catch_praise"
   },
@@ -412,35 +313,6 @@
 	"type": "Dialogue",
 	"speaker": "伊诺尔",
 	"text": "这小东西连牙缝都填不满吧。",
-	"nextId": "act1_aier_wuzuona_secret"
-  },
-  {
-	"id": "act1_aier_wuzuona_secret",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "嘘……千万别让那个小龙女听见。",
-	"nextId": "act1_aier_wuzuona_first_catch"
-  },
-  {
-	"id": "act1_aier_wuzuona_first_catch",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "她第一次钓鱼，花了整整一天才钓上这么一只小东西。",
-	"nextId": "act1_aier_wuzuona_specimen"
-  },
-  {
-	"id": "act1_aier_wuzuona_specimen",
-	"type": "Dialogue",
-	"speaker": "艾尔亚尔",
-	"text": "她兴奋得差点把它做成标本，摆进船舱里。",
-	"nextId": "act1_silence_after_first_catch"
-  },
-  {
-	"id": "act1_silence_after_first_catch",
-	"type": "Silence",
-	"speaker": "",
-	"text": "",
-	"durationSeconds": 5,
 	"nextId": "act1_ship_question"
   },
   {

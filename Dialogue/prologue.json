@@ -310,7 +310,6 @@
     "type": "Dialogue",
     "speaker": "艾尔亚尔",
     "text": "所以你在里面漂了多久？",
-    "fishing": "Trigger",
     "nextId": "inor_drift_duration"
   },
   {
@@ -410,7 +409,6 @@
     "speaker": "库辛",
     "text": "就是这里了。还剩了些晚饭，你今晚先凑合一下吧。",
     "illustrationId": "prologue.cabin.night",
-    "fishing": "Disable",
     "nextId": "kuxin_room_warning"
   },
   {

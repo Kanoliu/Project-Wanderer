@@ -12,6 +12,15 @@ public class GameState
 	public HashSet<string> Flags { get; set; } = new();
 	public List<FishingResult> FishingHistory { get; set; } = new();
 
+	public void InitializeRelationships(IReadOnlyDictionary<string, int> defaults)
+	{
+		Relationships ??= new Dictionary<string, int>(StringComparer.Ordinal);
+		foreach ((string characterId, int value) in defaults)
+		{
+			Relationships.TryAdd(characterId, value);
+		}
+	}
+
 	public void BeginDay(int day, FishingSetup setup)
 	{
 		if (day < 1)

@@ -14,6 +14,9 @@ public partial class BiteController : Control
 	public delegate void BiteStartedEventHandler();
 
 	[Signal]
+	public delegate void HookWindowHeldEventHandler();
+
+	[Signal]
 	public delegate void BiteResolvedEventHandler(int result);
 
 	[Export] public double WaitMinimum { get; set; } = 1.5;
@@ -51,6 +54,7 @@ public partial class BiteController : Control
 	private bool _attemptActive;
 	private bool _biteActive;
 	private bool _inputEnabled;
+	private bool _holdAtHookWindow;
 	private bool _lastResolutionWasPlayerInitiated;
 
 	public FishBitePattern ActivePattern => _activePattern;
@@ -91,6 +95,17 @@ public partial class BiteController : Control
 		}
 
 		_biteElapsed += delta;
+		if (_holdAtHookWindow && _biteElapsed >= ActiveHookWindowStart)
+		{
+			_holdAtHookWindow = false;
+			_biteElapsed = ActiveHookWindowStart;
+			UpdateBiteMotion();
+			UpdateBiteDisplay();
+			PauseAttempt();
+			EmitSignal(SignalName.HookWindowHeld);
+			return;
+		}
+
 		UpdateBiteMotion();
 		UpdateBiteDisplay();
 
@@ -109,7 +124,7 @@ public partial class BiteController : Control
 			return;
 		}
 
-		ResolveHookAttempt();
+		Hook();
 		GetViewport().SetInputAsHandled();
 	}
 
@@ -119,6 +134,11 @@ public partial class BiteController : Control
 	}
 
 	public void StartAttempt(FishBitePattern pattern)
+	{
+		StartAttempt(pattern, false);
+	}
+
+	public void StartAttempt(FishBitePattern pattern, bool holdAtHookWindow)
 	{
 		ResetAttempt();
 		_activePattern = Enum.IsDefined(pattern)
@@ -130,6 +150,7 @@ public partial class BiteController : Control
 		);
 		_attemptActive = true;
 		_inputEnabled = true;
+		_holdAtHookWindow = holdAtHookWindow;
 		SetProcess(true);
 		UpdateWaitingDisplay();
 	}
@@ -167,6 +188,7 @@ public partial class BiteController : Control
 		_attemptActive = false;
 		_biteActive = false;
 		_inputEnabled = false;
+		_holdAtHookWindow = false;
 		_waitElapsed = 0.0;
 		_biteElapsed = 0.0;
 		_lastResolutionWasPlayerInitiated = false;
@@ -175,8 +197,13 @@ public partial class BiteController : Control
 		if (IsInstanceValid(_visual)) _visual.ResetVisual();
 	}
 
-	private void ResolveHookAttempt()
+	public void Hook()
 	{
+		if (!_attemptActive || !_inputEnabled)
+		{
+			return;
+		}
+
 		if (!_biteActive || _biteElapsed < ActiveHookWindowStart)
 		{
 			Resolve(BiteResult.Early, true);

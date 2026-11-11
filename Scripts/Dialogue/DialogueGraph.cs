@@ -112,6 +112,7 @@ public sealed class DialogueGraph
 	{
 		if (line.Type != DialogueLineType.Choice &&
 			line.Type != DialogueLineType.Silence &&
+			line.Type != DialogueLineType.FishingTutorial &&
 			string.IsNullOrWhiteSpace(line.Text))
 		{
 			errors.Add($"剧情 {line.Id} 的正文为空。");
@@ -128,6 +129,15 @@ public sealed class DialogueGraph
 		if (line.Type == DialogueLineType.Choice)
 		{
 			ValidateChoices(line, linesById, errors);
+		}
+
+		if (line.Type == DialogueLineType.FishingTutorial &&
+			(!Enum.IsDefined(line.Tutorial) ||
+				line.Tutorial == FishingTutorialStep.None ||
+				!string.IsNullOrWhiteSpace(line.Text) ||
+				string.IsNullOrWhiteSpace(line.NextId)))
+		{
+			errors.Add($"钓鱼教学节点 {line.Id} 必须设置有效的 tutorial 和 nextId，且正文应为空。");
 		}
 
 		if (line.Type == DialogueLineType.Silence)
