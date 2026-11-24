@@ -5,5 +5,6 @@ public enum FishingOutcome
 	MissedEarly,
 	MissedLate,
 	Escaped,
-	Cancelled
+	Cancelled,
+	NoBite
 }

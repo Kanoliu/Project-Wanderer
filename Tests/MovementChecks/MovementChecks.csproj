@@ -12,6 +12,12 @@
     <Compile Include="../../Scripts/Fishing/Data/IFishingDataRepository.cs" Link="IFishingDataRepository.cs" />
     <Compile Include="../../Scripts/Core/FishingDepth.cs" Link="FishingDepth.cs" />
     <Compile Include="../../Scripts/Core/FishingSetup.cs" Link="FishingSetup.cs" />
+    <Compile Include="../../Scripts/Core/DayPhase.cs" Link="DayPhase.cs" />
+    <Compile Include="../../Scripts/Core/DialogueEffect*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="../../Scripts/Core/FishingOutcome.cs" Link="FishingOutcome.cs" />
+    <Compile Include="../../Scripts/Core/FishingResult.cs" Link="FishingResult.cs" />
+    <Compile Include="../../Scripts/Core/GameState.cs" Link="GameState.cs" />
     <Content Include="../../Data/Fishing/*.json" Link="Data/Fishing/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../Data/Characters/characters.json" Link="Data/Characters/characters.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

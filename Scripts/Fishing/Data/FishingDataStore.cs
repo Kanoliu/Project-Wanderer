@@ -86,8 +86,17 @@ public partial class FishingDataStore : Node, IFishingDataRepository
 
 	public FishingEventRequest CreateEventRequest(
 		string eventId,
-		FishingSetup setup)
+		FishingSetup setup,
+		int day = 0)
 	{
-		return _repository.CreateEventRequest(eventId, setup);
+		return _repository.CreateEventRequest(eventId, setup, day);
+	}
+
+	public string GetFishDisplayName(string fishId)
+	{
+		if (TryGetVariant(fishId, out FishVariantDefinition variant))
+			return variant.DisplayName;
+
+		return TryGetFish(fishId, out FishDefinition fish) ? fish.DisplayName : fishId;
 	}
 }

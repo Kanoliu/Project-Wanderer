@@ -4,5 +4,6 @@ public enum FishingTutorialStep
 	SelectBait,
 	SelectDepth,
 	Cast,
-	FirstCatch
+	FirstCatch,
+	SelectShiftBait
 }

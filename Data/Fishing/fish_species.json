@@ -66,6 +66,12 @@
     {
       "id": "fish.qing_lu",
       "displayName": "青鲈",
+      "dinnerRecipe": {
+        "displayName": "青鲈杂菜浓汤",
+        "description": "青鲈与土豆、洋葱、干香草慢炖；鱼刺较多，适合熬汤。",
+        "favoriteCharacterIds": ["character.aelyar"],
+        "likedCharacterIds": ["character.baheda", "character.kusin"]
+      },
       "description": "最常见的海鱼之一。体色通常呈灰色，但在阳光直射下，鳞片会泛出幽幽青光。雄性会以背鳍的大小吸引配偶。作为常见食用鱼，青鲈肉质普通且刺多，民间多用于炖汤或火烤。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.probe",
@@ -93,6 +99,12 @@
     {
       "id": "fish.dou_diao",
       "displayName": "豆鲷",
+      "dinnerRecipe": {
+        "displayName": "酥炸豆鲷",
+        "description": "小鱼整条裹薄粉炸酥，撒粗盐，搭配酸味蘸酱。",
+        "favoriteCharacterIds": ["character.wuzuona"],
+        "likedCharacterIds": ["character.wensheng"]
+      },
       "description": "常见的小型海鱼，体型很小，通常成群活动。由于个头不足以作为主食，并不太受渔民欢迎；一些地区会将其整条油炸，当作下酒菜。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.probe",
@@ -120,6 +132,12 @@
     {
       "id": "fish.ying_qiang_yu",
       "displayName": "樱枪鱼",
+      "dinnerRecipe": {
+        "displayName": "烟熏枪鱼排",
+        "description": "厚切鱼肉盐腌后烟熏，紧实耐储存。",
+        "favoriteCharacterIds": ["character.baheda"],
+        "likedCharacterIds": ["character.wuzuona", "character.wensheng"]
+      },
       "description": "一种头部长有长刺的远洋鱼。性情暴躁，受到惊扰时甚至会主动冲撞小艇。体型大、出肉多，但肉质普通，许多海员会将其吊在船尾腌制、风干或熏制。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.strike",
@@ -148,6 +166,12 @@
     {
       "id": "fish.gui_piao",
       "displayName": "鬼漂",
+      "dinnerRecipe": {
+        "displayName": "香草焖鬼漂",
+        "description": "去除异味后以酸汁、洋葱与香草焖煮；并非日常食用鱼。",
+        "favoriteCharacterIds": ["character.wensheng"],
+        "likedCharacterIds": ["character.kusin", "character.wuzuona"]
+      },
       "description": "一种夜行鱼类，深夜时常浮到海面，通过短暂跃出水面辅助呼吸。跃起后会以很低的角度连续擦过水面，发出数声急促的拍水声。早年的水手在黑暗中看不清鱼身，只能看见远处接连溅起的白色浪花，误以为有海鬼在朝船只打水漂，因此得名。并非常见的食用鱼。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.drag",
@@ -173,6 +197,12 @@
     {
       "id": "fish.yan_ta",
       "displayName": "岩鳎",
+      "dinnerRecipe": {
+        "displayName": "奶油炖岩鳎",
+        "description": "细嫩鱼肉与奶油、胡椒、根茎蔬菜慢炖。",
+        "favoriteCharacterIds": ["character.kusin"],
+        "likedCharacterIds": ["character.baheda", "character.aelyar", "character.yang"]
+      },
       "description": "一种贴伏在海底生活的比目鱼，体表斑纹与礁岩十分相似，静止时很难被发现。肉质鲜嫩，常被用来炖汤。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.probe",
@@ -198,6 +228,12 @@
     {
       "id": "fish.dian_you",
       "displayName": "靛鱿",
+      "dinnerRecipe": {
+        "displayName": "靛墨烩饭",
+        "description": "鱿鱼圈和米粒焖煮，加入经过食用安全处理的靛蓝墨汁。",
+        "favoriteCharacterIds": ["character.yang"],
+        "likedCharacterIds": ["character.aelyar"]
+      },
       "description": "分布极广的鱿鱼，受到惊吓时会喷出靛蓝色的墨汁。相比食用，其墨汁作为蓝色染料的价值更受重视。",
       "catchDifficulty": "Low",
       "biteProfileId": "bite.strike",
@@ -225,6 +261,12 @@
     {
       "id": "fish.fu_zi_yu",
       "displayName": "负子鱼",
+      "dinnerRecipe": {
+        "displayName": "香煎负子鱼排",
+        "description": "宽扁鱼身切片煎至金黄，配酸果酱汁；避开背负幼鱼的个体。",
+        "favoriteCharacterIds": ["character.aelyar"],
+        "likedCharacterIds": ["character.baheda", "character.kusin"]
+      },
       "description": "身体宽而扁平，习惯保持水平姿态游动。繁殖季时，幼鱼会吸附在成鱼背部随其一同行动，因此得名“负子鱼”。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.drag",
@@ -252,6 +294,12 @@
     {
       "id": "fish.mang_man",
       "displayName": "盲鳗",
+      "dinnerRecipe": {
+        "displayName": "帝国炙烤盲鳗",
+        "description": "去骨切段，油脂与香草慢炙；源自灰目帝国贵族饮食。",
+        "favoriteCharacterIds": ["character.baheda"],
+        "likedCharacterIds": ["character.aelyar", "character.kusin", "character.wuzuona", "character.yang", "character.wensheng"]
+      },
       "description": "一种完全没有视觉的大型鳗鱼，通常藏身于海底洞穴，很少被捕获。肉质极为鲜美，曾被灰目帝国皇室视为最高级的食材之一。",
       "catchDifficulty": "High",
       "biteProfileId": "bite.drag",
@@ -276,6 +324,12 @@
     {
       "id": "fish.you_sha",
       "displayName": "鼬鲨",
+      "dinnerRecipe": {
+        "displayName": "重香料鲨肉炖锅",
+        "description": "妥善处理鲨肉后，借酸汁、香料与蔬菜炖煮，缓解酸味。",
+        "favoriteCharacterIds": [],
+        "likedCharacterIds": ["character.baheda", "character.aelyar", "character.kusin", "character.wuzuona", "character.yang", "character.wensheng"]
+      },
       "description": "一种小型掠食性鲨鱼，食谱极广，几乎什么都吃。肉质略带酸味，并不适合作为食用鱼。",
       "catchDifficulty": "High",
       "biteProfileId": "bite.strike",
@@ -301,6 +355,12 @@
     {
       "id": "fish.men_shen_xie",
       "displayName": "门神蟹",
+      "dinnerRecipe": {
+        "displayName": "铁锅焗门神蟹",
+        "description": "蟹钳取肉，与蒜、黄油和面包碎烘烤。",
+        "favoriteCharacterIds": ["character.wuzuona"],
+        "likedCharacterIds": ["character.kusin", "character.yang", "character.wensheng"]
+      },
       "description": "一种杂食性海蟹，长有两对足和两对钳。小钳负责进食和抓握，大钳则用于抵御捕食者。性情固执暴躁，大钳一旦夹住东西便很少主动松开，因此经常连同鱼饵一起被渔民钓上来。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.drag",
@@ -326,6 +386,12 @@
     {
       "id": "fish.liu_ye_shan",
       "displayName": "柳叶鳝",
+      "dinnerRecipe": {
+        "displayName": "蜜汁烤柳叶鳝",
+        "description": "剖开刷蜜汁、盐及酱料，反复烤出亮泽焦壳。",
+        "favoriteCharacterIds": [],
+        "likedCharacterIds": ["character.baheda", "character.aelyar", "character.yang", "character.wensheng"]
+      },
       "description": "一种身体扁平、呈流线型的草食性鳝鱼，平时活动于中层水域。休息时会贴伏在海底，细长的身体看起来就像一片水生植物的叶子。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.probe",
@@ -351,6 +417,12 @@
     {
       "id": "fish.dai_yu",
       "displayName": "袋鱼",
+      "dinnerRecipe": {
+        "displayName": "袋鱼双鲜羹",
+        "description": "袋鱼肉与常伴生的护士虾、蔬菜做清羹。",
+        "favoriteCharacterIds": ["character.kusin"],
+        "likedCharacterIds": ["character.aelyar", "character.wuzuona"]
+      },
       "description": "一种能够自行繁殖的鱼类，每次会产下大量鱼卵，却无法靠自身将卵播散出去。因此，它们与一种被称作“护士虾”的小型虾类形成了奇特的共生关系。护士虾常年攀附在袋鱼身上，到了繁殖期便会替它将鱼卵逐一取下、播散——期间也会顺便吃掉一部分。因此，钓上来的袋鱼身上通常还会附带一只护士虾。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.probe",
@@ -377,6 +449,12 @@
     {
       "id": "fish.xia_fan_kuo",
       "displayName": "霞帆蛞",
+      "dinnerRecipe": {
+        "displayName": "霞帆凉冻",
+        "description": "设定提案：经确认可安全食用的胶质组织制成凉冻，佐酸果汁和香草。",
+        "favoriteCharacterIds": ["character.yang"],
+        "likedCharacterIds": ["character.aelyar", "character.kusin", "character.wuzuona", "character.wensheng"]
+      },
       "description": "一种罕见的浮絮食软体生物，常随漂浮藻群一同在浅层与中层缓慢漂流。身体半透明，内部可见橙红色的细密脉络，背部长有数片宽大的膜状鳍叶，张开时像被海风撑起的小帆，因此得名“霞帆蛞”。它会用口部缓慢啃食浮絮，也会将碎小的浮絮卷附在身体表面作为伪装。由于外形艳丽醒目，常被舟洲沿海的孩童误认成漂在海上的花。",
       "catchDifficulty": "High",
       "biteProfileId": "bite.probe",
@@ -402,6 +480,12 @@
     {
       "id": "fish.lie_he_chang",
       "displayName": "裂颌鲳",
+      "dinnerRecipe": {
+        "displayName": "香辣裂颌鱼锅",
+        "description": "清理内脏后切块，以辛香料、洋葱炖成重口味鱼锅。",
+        "favoriteCharacterIds": ["character.wensheng"],
+        "likedCharacterIds": ["character.baheda", "character.wuzuona", "character.yang"]
+      },
       "description": "一种活动于浅层与中层的肉食性鱼类。头部宽而扁，嘴角向后延伸得异常夸张，闭口时也能看见两侧深深的裂缝。它们很少追逐健康鱼群，更喜欢在船只、浮木和鱼群附近徘徊，抢食受伤个体、腐肉和被丢弃的鱼块。进食时上下颌能向两侧大幅张开，吞下与头部等宽的肉块。",
       "catchDifficulty": "Medium",
       "biteProfileId": "bite.strike",

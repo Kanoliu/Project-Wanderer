@@ -143,6 +143,13 @@ public sealed class FishingDataRepository : IFishingDataRepository
 	public IReadOnlyList<FishingCatchCandidate> GetCatchCandidates(
 		FishingSetup setup)
 	{
+		return GetCatchCandidates(setup, FishCatchDifficulty.High);
+	}
+
+	private IReadOnlyList<FishingCatchCandidate> GetCatchCandidates(
+		FishingSetup setup,
+		FishCatchDifficulty maxDifficulty)
+	{
 		List<FishingCatchCandidate> candidates = new();
 
 		if (setup == null ||
@@ -154,7 +161,8 @@ public sealed class FishingDataRepository : IFishingDataRepository
 
 		foreach (FishDefinition fish in _fishById.Values)
 		{
-			if (!ContainsId(fish.Availability.DepthIds, depthId))
+			if (fish.CatchDifficulty > maxDifficulty ||
+				!ContainsId(fish.Availability.DepthIds, depthId))
 			{
 				continue;
 			}
@@ -207,17 +215,24 @@ public sealed class FishingDataRepository : IFishingDataRepository
 
 	public FishingEventRequest CreateEventRequest(
 		string eventId,
-		FishingSetup setup)
+		FishingSetup setup,
+		int day = 0)
 	{
-		return CreateEventRequest(eventId, setup, Random.Shared);
+		return CreateEventRequest(eventId, setup, Random.Shared, day);
 	}
 
 	internal FishingEventRequest CreateEventRequest(
 		string eventId,
 		FishingSetup setup,
-		Random random)
+		Random random,
+		int day = 0)
 	{
-		if (TryGetScriptedEvent(eventId, out FishingEventDefinition definition))
+		FishCatchDifficulty maxDifficulty = day == 1
+			? FishCatchDifficulty.Medium
+			: FishCatchDifficulty.High;
+		if (TryGetScriptedEvent(eventId, out FishingEventDefinition definition) &&
+			TryGetFish(definition.FishId, out FishDefinition scriptedFish) &&
+			scriptedFish.CatchDifficulty <= maxDifficulty)
 		{
 			FishingEventRequest request = new()
 			{
@@ -227,28 +242,26 @@ public sealed class FishingDataRepository : IFishingDataRepository
 				Quantity = definition.Quantity
 			};
 
-			if (TryGetFish(definition.FishId, out FishDefinition fish) &&
-				!string.IsNullOrWhiteSpace(fish.BiteProfileId) &&
+			if (!string.IsNullOrWhiteSpace(scriptedFish.BiteProfileId) &&
 				TryGetBiteProfile(
-					fish.BiteProfileId,
+					scriptedFish.BiteProfileId,
 					out BiteProfileDefinition biteProfile
 				))
 			{
 				request.BitePattern = biteProfile.Pattern;
 			}
 
-			if (TryGetFish(definition.FishId, out FishDefinition scriptedFish))
-				ApplyFightProfile(request, scriptedFish);
+			ApplyFightProfile(request, scriptedFish);
 			return request;
 		}
 
 		IReadOnlyList<FishingCatchCandidate> candidates =
-			GetCatchCandidates(setup);
+			GetCatchCandidates(setup, maxDifficulty);
 		FishDefinition selectedFish = SelectWeightedFish(candidates, random);
 
 		if (selectedFish != null)
 		{
-			return CreateNaturalRequest(eventId, selectedFish, random);
+			return CreateNaturalRequest(eventId, selectedFish, random, day != 1);
 		}
 
 		return new FishingEventRequest
@@ -261,9 +274,10 @@ public sealed class FishingDataRepository : IFishingDataRepository
 	private FishingEventRequest CreateNaturalRequest(
 		string eventId,
 		FishDefinition fish,
-		Random random)
+		Random random,
+		bool allowVariants)
 	{
-		FishVariantDefinition variant = SelectVariant(fish, random);
+		FishVariantDefinition variant = allowVariants ? SelectVariant(fish, random) : null;
 		FishingEventRequest request = new()
 		{
 			EventId = eventId ?? "",
@@ -468,6 +482,7 @@ public sealed class FishingDataRepository : IFishingDataRepository
 			depthsById,
 			validationErrors
 		);
+		ValidateDinnerRecipes(fishById.Values, validationErrors);
 		IndexBiteProfiles(
 			profilesDocument.BiteProfiles,
 			biteById,
@@ -696,6 +711,59 @@ public sealed class FishingDataRepository : IFishingDataRepository
 			}
 
 			fishById.Add(fish.Id, fish);
+		}
+	}
+
+	private static void ValidateDinnerRecipes(
+		IEnumerable<FishDefinition> fishDefinitions,
+		List<string> errors)
+	{
+		Dictionary<string, int> favoriteCounts = new(StringComparer.Ordinal);
+		foreach (FishDefinition fish in fishDefinitions)
+		{
+			DinnerRecipeDefinition recipe = fish.DinnerRecipe;
+			if (recipe == null)
+			{
+				continue;
+			}
+
+			if (string.IsNullOrWhiteSpace(recipe.DisplayName) ||
+				string.IsNullOrWhiteSpace(recipe.Description) ||
+				recipe.FavoriteCharacterIds == null || recipe.LikedCharacterIds == null)
+			{
+				errors.Add($"鱼种 {fish.Id} 的晚餐菜谱缺少名称、说明或偏好列表。");
+				continue;
+			}
+
+			HashSet<string> recipients = new(StringComparer.Ordinal);
+			foreach (string id in recipe.FavoriteCharacterIds)
+			{
+				if (!ValidateStableId(id, $"鱼种 {fish.Id} 的晚餐角色", errors))
+				{
+					continue;
+				}
+
+				if (!recipients.Add(id))
+				{
+					errors.Add($"鱼种 {fish.Id} 的晚餐偏好重复引用角色：{id}");
+					continue;
+				}
+
+				favoriteCounts[id] = favoriteCounts.GetValueOrDefault(id) + 1;
+				if (favoriteCounts[id] > 2)
+				{
+					errors.Add($"角色 {id} 的最爱料理超过两种。");
+				}
+			}
+
+			foreach (string id in recipe.LikedCharacterIds)
+			{
+				if (ValidateStableId(id, $"鱼种 {fish.Id} 的晚餐角色", errors) &&
+					!recipients.Add(id))
+				{
+					errors.Add($"鱼种 {fish.Id} 的晚餐偏好重复引用角色：{id}");
+				}
+			}
 		}
 	}
 

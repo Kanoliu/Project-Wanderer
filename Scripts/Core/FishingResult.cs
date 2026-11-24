@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 public class FishingResult
 {
 	public string EventId { get; set; } = "";
+	public int Day { get; set; }
 	public string BaseFishId { get; set; } = "";
 	public string FishId { get; set; } = "";
 	public bool IsSpecialVariant { get; set; }
@@ -11,6 +12,13 @@ public class FishingResult
 
 	[JsonIgnore]
 	public bool Caught => Outcome == FishingOutcome.Caught;
+
+	internal FishingResult ForDay(int day)
+	{
+		FishingResult entry = (FishingResult)MemberwiseClone();
+		entry.Day = day;
+		return entry;
+	}
 
 	public static FishingResult CreateCatch(
 		string eventId,

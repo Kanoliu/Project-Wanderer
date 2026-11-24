@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://d1ommm7wgkwbq"]
 
 [ext_resource type="Script" uid="uid://dl3e3wsahqdby" path="res://Scripts/Fishing/DialogueFishingModule.cs" id="1_module"]
-[ext_resource type="PackedScene" path="res://Scenes/UI/BobberHud.tscn" id="2_bite"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/FightHud.tscn" id="3_fight"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/BaseButton.tscn" id="4_button"]
 [ext_resource type="Texture2D" uid="uid://c2q37e7hjg8vj" path="res://Assets/Art/UI/day-cycle-v01/panel-card.svg" id="5_result_panel"]
@@ -18,17 +17,6 @@ texture_margin_top = 24.0
 texture_margin_right = 24.0
 texture_margin_bottom = 24.0
 
-[sub_resource type="StyleBoxTexture" id="StyleResult"]
-content_margin_left = 28.0
-content_margin_top = 24.0
-content_margin_right = 28.0
-content_margin_bottom = 24.0
-texture = ExtResource("5_result_panel")
-texture_margin_left = 28.0
-texture_margin_top = 28.0
-texture_margin_right = 28.0
-texture_margin_bottom = 28.0
-
 [node name="DialogueFishingModule" type="Control" unique_id=758306488]
 visible = false
 layout_mode = 3
@@ -40,28 +28,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_module")
 
-[node name="Hud" type="Control" parent="." unique_id=1556247112]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -496.0
-offset_top = 56.0
-offset_right = -56.0
-offset_bottom = 306.0
-grow_horizontal = 0
-mouse_filter = 2
-
-[node name="BiteController" parent="Hud" unique_id=1518898560 instance=ExtResource("2_bite")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="FightOverlay" type="Control" parent="." unique_id=1333558933]
 visible = false
 layout_mode = 1
@@ -70,78 +36,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Dim" type="ColorRect" parent="FightOverlay" unique_id=951772090]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.005, 0.015, 0.02, 0)
+mouse_filter = 2
 
 [node name="FightController" parent="FightOverlay" unique_id=1969921749 instance=ExtResource("3_fight")]
 custom_minimum_size = Vector2(856, 442.2)
 layout_mode = 1
-anchor_left = 0.5
-anchor_top = 0.4
-anchor_right = 0.5
-anchor_bottom = 0.4
-offset_left = -428.0
-offset_top = -221.1
-offset_right = 428.0
-offset_bottom = 221.1
-grow_horizontal = 2
-grow_vertical = 2
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1208.0
+offset_right = -352.0
+offset_top = 128.0
+offset_bottom = 570.2
 scale = Vector2(1.3457944, 1.3457944)
-pivot_offset = Vector2(428, 221.1)
-
-[node name="ResultOverlay" type="Control" parent="." unique_id=1713372355]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Dim" type="ColorRect" parent="ResultOverlay" unique_id=787327449]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.005, 0.015, 0.02, 0.42)
-
-[node name="ResultFrame" type="PanelContainer" parent="ResultOverlay" unique_id=1399589405]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -110.0
-offset_right = 200.0
-offset_bottom = 110.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleResult")
-
-[node name="ResultStack" type="VBoxContainer" parent="ResultOverlay/ResultFrame" unique_id=1751441250]
-layout_mode = 2
-theme_override_constants/separation = 18
-alignment = 1
-
-[node name="ResultLabel" type="Label" parent="ResultOverlay/ResultFrame/ResultStack" unique_id=1023453068]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.82, 0.827, 0.749, 1)
-theme_override_font_sizes/font_size = 26
-horizontal_alignment = 1
-
-[node name="ContinueButton" parent="ResultOverlay/ResultFrame/ResultStack" unique_id=164895222 instance=ExtResource("4_button")]
-layout_mode = 2
 
 [node name="TutorialOverlay" type="Control" parent="." unique_id=1366980182]
 visible = false
@@ -151,20 +57,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="TutorialFrame" type="PanelContainer" parent="TutorialOverlay" unique_id=149774679]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -256.0
-offset_top = -56.0
-offset_right = 256.0
-offset_bottom = -56.0
-grow_horizontal = 2
-grow_vertical = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -496.0
+offset_right = -56.0
+offset_top = 420.0
+offset_bottom = 420.0
 theme = ExtResource("6_theme")
 theme_override_styles/panel = SubResource("StyleTutorial")
 
@@ -215,3 +117,4 @@ custom_minimum_size = Vector2(196, 56)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "挂上鱼饵"
+alignment = 1

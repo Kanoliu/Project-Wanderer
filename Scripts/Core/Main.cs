@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 public partial class Main : Control
 {
@@ -9,10 +10,7 @@ public partial class Main : Control
 	private const double SlowCharactersPerSecond = 9.0;
 	private const double AcceleratedCharactersPerSecond = 72.0;
 	private const double AcceleratedPunctuationScale = 0.25;
-	private const double SubtitleEntranceDuration = 0.18;
 	private const double IllustrationCrossFadeDuration = 0.45;
-	private const double SameSpeakerTransitionDelay = 0.5;
-	private const double SpeakerChangeTransitionDelay = 1.0;
 	private static readonly Dictionary<string, string> IllustrationPaths =
 		new(StringComparer.Ordinal)
 		{
@@ -28,7 +26,15 @@ public partial class Main : Control
 				"res://Assets/Art/Backgrounds/open_sea_sunny_with_deck_background_raised.png"
 		};
 
-	private static readonly PackedScene ChoiceButtonScene = GD.Load<PackedScene>("res://Scenes/UI/BaseButton.tscn");
+	private static readonly PackedScene ChoiceButtonScene = GD.Load<PackedScene>("res://Scenes/UI/DialogueChoiceButton.tscn");
+	private static readonly PackedScene DinnerOptionScene = GD.Load<PackedScene>("res://Scenes/UI/BaseButton.tscn");
+	private static readonly Regex CurrentBaitToken = new(@"\\*\{当前饵料\\*\}");
+	private static readonly Regex TerminalCjkPunctuation =
+		new(@"[。，、！？：；](?=[ \t]*\r?$)", RegexOptions.Multiline);
+
+	[Export(PropertyHint.File, "*.json")]
+	public string[] DialogueFiles { get; set; } = Array.Empty<string>();
+
 	private Label _dialogueTitle;
 	private RichTextLabel _dialogueText;
 	private Control _storyStage;
@@ -36,16 +42,30 @@ public partial class Main : Control
 	private TextureRect _currentIllustration;
 	private Control _fishingStage;
 	private Control _fishingCompanion;
+	private DinnerStage _dinnerStage;
 	private Tween _illustrationTween;
 	private string _currentIllustrationId = string.Empty;
 	private Control _epigraphText;
 	private RichTextLabel _epigraphLabel;
-	private PanelContainer _dialogueCard;
+	private DialogueBox _dialogueCard;
 	private PanelContainer _choiceCard;
 	private VBoxContainer _choicePanel;
+	private Button _historyButton;
+	private Control _chapterTransition;
+	private Label _chapterTitle;
+	private Label _chapterSubtitle;
+	private AnimationPlayer _chapterAnimation;
+	private Control _storyPanels;
+	private Label _storyPanelTitle;
+	private RichTextLabel _storyPanelContent;
+	private ScrollContainer _dinnerMenu;
+	private VBoxContainer _dinnerOptions;
+	private Button _closeStoryPanelButton;
+	private bool _showingDaySettlement;
+	private Control _focusBeforeStoryPanel;
+	private readonly List<string> _dialogueHistory = new();
 	private DialogueFishingModule _fishingModule;
 	private FishingDataStore _fishingDataStore;
-	private bool _fishingEventBlocking;
 	private bool _fishingTutorialBlocking;
 
 	private DialogueGraph _dialogueGraph;
@@ -53,27 +73,17 @@ public partial class Main : Control
 	private GameState _gameState;
 	private RichTextLabel _activeSubtitle;
 	private string _activeSubtitleText = string.Empty;
+	private string _activeSubtitleSpeaker = string.Empty;
 	private int _visibleSubtitleCharacters;
 	private int _totalSubtitleCharacters;
 	private double _timeUntilNextCharacter;
 	private bool _isTypingSubtitle;
 	private bool _isSubtitleAccelerated;
 	private double _activeCharactersPerSecond = CharactersPerSecond;
-	private Tween _subtitleEntranceTween;
 	private bool _isSilenceActive;
 	private double _silenceTimeRemaining;
 	private string _silenceNextId = string.Empty;
-	private bool _isLineTransitionActive;
-	private double _lineTransitionTimeRemaining;
-	private string _lineTransitionTargetId = string.Empty;
-	private string _lastSpokenSpeaker = string.Empty;
-	private readonly Dictionary<string, DialogueFishingTriggerWindow>
-		_fishingTriggerWindowsByStartId =
-			new(StringComparer.Ordinal);
-	private readonly HashSet<string> _completedFishingTriggerWindowIds =
-		new(StringComparer.Ordinal);
-	private DialogueFishingTriggerWindow _activeFishingTriggerWindow;
-	private double _fishingTriggerTimeRemaining;
+	private readonly Queue<string> _queuedFishSignals = new();
 
 	public override void _Ready()
 	{
@@ -90,6 +100,8 @@ public partial class Main : Control
 		_fishingStage = GetNode<Control>("StoryStage/FishingStage");
 		_fishingCompanion =
 			_fishingStage.GetNode<Control>("Composition/Canvas/Aelyar");
+		_dinnerStage = GetNode<DinnerStage>("DinnerStage");
+		_dinnerStage.LineFinished += FinishDinnerLine;
 		_epigraphText =
 			GetNode<Control>("EpigraphText");
 
@@ -97,7 +109,7 @@ public partial class Main : Control
 			GetNode<RichTextLabel>("EpigraphText/Center/Text");
 
 		_dialogueCard =
-			GetNode<PanelContainer>("BottomArea/ContentStack/DialogueCard");
+			GetNode<DialogueBox>("BottomArea/ContentStack/DialogueCard");
 
 		_dialogueTitle =
 			GetNode<Label>(
@@ -117,19 +129,31 @@ public partial class Main : Control
 				"BottomArea/ContentStack/ChoiceCard/ChoiceMargin/ChoicePanel"
 			);
 
+		_historyButton = GetNode<Button>("HistoryButton");
+		_chapterTransition = GetNode<Control>("ChapterTransition");
+		_chapterTitle = _chapterTransition.GetNode<Label>("Center/Chapter/Title");
+		_chapterSubtitle = _chapterTransition.GetNode<Label>("Center/Chapter/Subtitle");
+		_chapterAnimation = _chapterTransition.GetNode<AnimationPlayer>("AnimationPlayer");
+		_chapterAnimation.AnimationFinished += OnChapterAnimationFinished;
+		_storyPanels = GetNode<Control>("StoryPanels");
+		_storyPanelTitle = _storyPanels.GetNode<Label>("Panel/Stack/Title");
+		_storyPanelContent = _storyPanels.GetNode<RichTextLabel>("Panel/Stack/Content");
+		_dinnerMenu = _storyPanels.GetNode<ScrollContainer>("Panel/Stack/DinnerMenu");
+		_dinnerOptions = _dinnerMenu.GetNode<VBoxContainer>("Options");
+		_closeStoryPanelButton = _storyPanels.GetNode<Button>("Panel/Stack/Close");
+		_historyButton.Pressed += ShowDialogueHistory;
+		GetViewport().GuiFocusChanged += OnGuiFocusChanged;
+		_closeStoryPanelButton.Pressed += CloseStoryPanel;
+
 		_fishingModule =
 			GetNode<DialogueFishingModule>("DialogueFishingModule");
 		_fishingModule.FishingEventFinished +=
 			OnFishingEventFinished;
-		_fishingModule.FishingInteractionBlockingChanged +=
-			OnFishingInteractionBlockingChanged;
 		_fishingModule.TutorialStepFinished +=
 			OnFishingTutorialStepFinished;
+		_fishingModule.SetupSelected += setup => _gameState.CurrentFishingSetup = setup;
 
-		DialogueLine[] lines = DialogueLoader.Load(
-			"res://Dialogue/prologue.json",
-			"res://Dialogue/act_one.json"
-		);
+		DialogueLine[] lines = DialogueLoader.Load(DialogueFiles);
 
 		if (!DialogueGraph.TryCreate(
 			lines,
@@ -148,7 +172,7 @@ public partial class Main : Control
 			return;
 		}
 
-		ConfigureFishingTriggerWindows();
+		ConfigureCreatorMenu(lines);
 
 		_currentLineId = _dialogueGraph.EntryId;
 
@@ -157,7 +181,7 @@ public partial class Main : Control
 
 	public override void _Process(double delta)
 	{
-		if (_fishingEventBlocking)
+		if (_chapterTransition.Visible)
 		{
 			return;
 		}
@@ -167,12 +191,8 @@ public partial class Main : Control
 			return;
 		}
 
-		UpdateFishingTriggerWindow(delta);
-
-		if (_fishingEventBlocking)
-		{
-			return;
-		}
+		if (!_fishingModule.IsEventActive && _queuedFishSignals.TryDequeue(out string eventId))
+			PrepareFishingEvent(eventId);
 
 		if (_isSilenceActive)
 		{
@@ -180,38 +200,11 @@ public partial class Main : Control
 
 			if (_silenceTimeRemaining <= 0.0)
 			{
-				if (_activeFishingTriggerWindow != null &&
-					_activeFishingTriggerWindow.EndId == _currentLineId)
-				{
-					TriggerActiveFishingWindow();
-
-					if (_fishingEventBlocking)
-					{
-						return;
-					}
-				}
-
 				string nextId = _silenceNextId;
 				_isSilenceActive = false;
 				_silenceTimeRemaining = 0.0;
 				_silenceNextId = string.Empty;
 				JumpTo(nextId);
-			}
-
-			return;
-		}
-
-		if (_isLineTransitionActive)
-		{
-			_lineTransitionTimeRemaining -= delta;
-
-			if (_lineTransitionTimeRemaining <= 0.0)
-			{
-				string targetId = _lineTransitionTargetId;
-				_isLineTransitionActive = false;
-				_lineTransitionTimeRemaining = 0.0;
-				_lineTransitionTargetId = string.Empty;
-				JumpTo(targetId);
 			}
 
 			return;
@@ -231,12 +224,11 @@ public partial class Main : Control
 		}
 	}
 
-	public override void _Input(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
-		if (_fishingEventBlocking ||
+		if (_chapterTransition.Visible ||
 			_fishingTutorialBlocking ||
-			_isSilenceActive ||
-			_isLineTransitionActive)
+			_isSilenceActive)
 		{
 			return;
 		}
@@ -245,6 +237,17 @@ public partial class Main : Control
 		// 普通鼠标点击不能直接推进剧情。
 		if (_choiceCard.Visible)
 		{
+			return;
+		}
+
+		if (_dinnerStage.Visible)
+		{
+			if (@event.IsActionPressed("ui_accept") ||
+				@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left })
+			{
+				_dinnerStage.Advance();
+				GetViewport().SetInputAsHandled();
+			}
 			return;
 		}
 
@@ -280,7 +283,7 @@ public partial class Main : Control
 			return;
 		}
 
-		BeginLineTransition(currentLine.NextId);
+		JumpTo(currentLine.NextId);
 	}
 
 	private void ShowCurrentLine()
@@ -297,7 +300,6 @@ public partial class Main : Control
 			return;
 		}
 
-		EnterFishingTriggerWindow(line.Id);
 		ApplyPresentation(line);
 		ApplyDialogueEffects(line.Effects);
 		ApplyFishingDirective(line);
@@ -306,19 +308,10 @@ public partial class Main : Control
 		switch (line.Type)
 		{
 			case DialogueLineType.Dialogue:
-				ShowDialogue(line);
-				break;
-
 			case DialogueLineType.Thought:
-				ShowThought(line);
-				break;
-
 			case DialogueLineType.Narration:
-				ShowNarration(line);
-				break;
-
 			case DialogueLineType.Monologue:
-				ShowMonologue(line);
+				ShowDialogue(line);
 				break;
 
 			case DialogueLineType.Silence:
@@ -340,8 +333,20 @@ public partial class Main : Control
 				_choiceCard.Hide();
 				if (!_fishingTutorialBlocking)
 				{
-					BeginLineTransition(line.NextId);
+					JumpTo(line.NextId);
 				}
+				break;
+
+			case DialogueLineType.DaySettlement:
+				ShowDaySettlement();
+				break;
+
+			case DialogueLineType.DinnerDialogue:
+				ShowDinnerLine(line);
+				break;
+
+			case DialogueLineType.ChapterTransition:
+				ShowChapterTransition(line);
 				break;
 		}
 	}
@@ -427,145 +432,6 @@ public partial class Main : Control
 		_fishingCompanion.Visible = sceneId == "fishing.aelyar";
 	}
 
-	private void ConfigureFishingTriggerWindows()
-	{
-		DialogueFishingTriggerWindow[] windows =
-			DialogueFishingTriggerWindowLoader.Load(
-				"res://Data/Fishing/dialogue_trigger_windows.json",
-				out string[] loadErrors
-			);
-
-		foreach (string error in loadErrors)
-		{
-			GD.PushError(error);
-		}
-
-		if (loadErrors.Length > 0)
-		{
-			return;
-		}
-
-		foreach (DialogueFishingTriggerWindow window in windows)
-		{
-			if (!_dialogueGraph.TryGetLineIndex(
-				window.StartId,
-				out int startIndex))
-			{
-				GD.PushError(
-					$"钓鱼触发范围 {window.Id} 的 startId 不存在：" +
-					window.StartId
-				);
-				continue;
-			}
-
-			if (!_dialogueGraph.TryGetLineIndex(
-				window.EndId,
-				out int endIndex) ||
-				!_dialogueGraph.TryGetLine(
-					window.EndId,
-					out DialogueLine endLine))
-			{
-				GD.PushError(
-					$"钓鱼触发范围 {window.Id} 的 endId 不存在：" +
-					window.EndId
-				);
-				continue;
-			}
-
-			if (startIndex > endIndex)
-			{
-				GD.PushError(
-					$"钓鱼触发范围 {window.Id} 的 startId 位于 endId 之后。"
-				);
-				continue;
-			}
-
-			if (endLine.Type != DialogueLineType.Silence)
-			{
-				GD.PushError(
-					$"钓鱼触发范围 {window.Id} 必须在沉默节点结束。"
-				);
-				continue;
-			}
-
-			_fishingTriggerWindowsByStartId.Add(
-				window.StartId,
-				window
-			);
-		}
-	}
-
-	private void EnterFishingTriggerWindow(string lineId)
-	{
-		if (!_fishingTriggerWindowsByStartId.TryGetValue(
-			lineId,
-			out DialogueFishingTriggerWindow window) ||
-			_completedFishingTriggerWindowIds.Contains(window.Id))
-		{
-			return;
-		}
-
-		if (_activeFishingTriggerWindow != null)
-		{
-			GD.PushWarning(
-				$"钓鱼触发范围 {window.Id} 与尚未结束的范围 " +
-				$"{_activeFishingTriggerWindow.Id} 重叠。"
-			);
-			return;
-		}
-
-		_activeFishingTriggerWindow = window;
-		_fishingTriggerTimeRemaining =
-			window.MinDelaySeconds +
-			Random.Shared.NextDouble() *
-			(window.MaxDelaySeconds - window.MinDelaySeconds);
-	}
-
-	private void UpdateFishingTriggerWindow(double delta)
-	{
-		if (_activeFishingTriggerWindow == null)
-		{
-			return;
-		}
-
-		_fishingTriggerTimeRemaining -= delta;
-
-		if (_fishingTriggerTimeRemaining <= 0.0)
-		{
-			TriggerActiveFishingWindow();
-		}
-	}
-
-	private void TriggerActiveFishingWindow()
-	{
-		if (_activeFishingTriggerWindow == null)
-		{
-			return;
-		}
-
-		DialogueFishingTriggerWindow window =
-			_activeFishingTriggerWindow;
-		_activeFishingTriggerWindow = null;
-		_fishingTriggerTimeRemaining = 0.0;
-		_completedFishingTriggerWindowIds.Add(window.Id);
-
-		FishingEventRequest request =
-			_fishingDataStore.CreateEventRequest(
-				window.Id,
-				_gameState.CurrentFishingSetup
-			);
-
-		bool eventStarted =
-			_fishingModule.TriggerFishingEvent(request);
-
-		if (!eventStarted)
-		{
-			GD.PushWarning(
-				$"钓鱼触发范围 {window.Id} 到时，但钓鱼模块未能启动事件。"
-			);
-		}
-	}
-
 	private void ApplyFishingTutorialDirective(DialogueLine line)
 	{
 		if (line.Tutorial == FishingTutorialStep.None)
@@ -592,58 +458,13 @@ public partial class Main : Control
 	private void ShowDialogue(DialogueLine line)
 	{
 		ShowDialogueCard();
-		RememberSpokenSpeaker(line);
+		bool spoken = line.Type is DialogueLineType.Dialogue or DialogueLineType.Monologue;
+		_dialogueTitle.Text = spoken ? line.Speaker : "";
+		_dialogueTitle.Visible = !string.IsNullOrWhiteSpace(_dialogueTitle.Text);
+		_dialogueCard.Voice = line.Type;
 
-		_dialogueTitle.Visible =
-			!string.IsNullOrWhiteSpace(line.Speaker);
-
-		_dialogueTitle.Text =
-			line.Speaker ?? string.Empty;
-
-		_dialogueText.Text =
-			string.Empty;
-
-		StartTypewriter(
-			_dialogueText,
-			line.Text ?? string.Empty
-		);
-	}
-
-	private void ShowThought(DialogueLine line)
-	{
-		ShowDialogueCard();
-
-		_dialogueTitle.Visible = false;
-
-		StartTypewriter(
-			_dialogueText,
-			$"（{line.Text ?? string.Empty}）"
-		);
-	}
-
-	private void ShowNarration(DialogueLine line)
-	{
-		ShowDialogueCard();
-
-		_dialogueTitle.Visible = false;
-
-		StartTypewriter(
-			_dialogueText,
-			line.Text ?? string.Empty
-		);
-	}
-
-	private void ShowMonologue(DialogueLine line)
-	{
-		ShowDialogueCard();
-		RememberSpokenSpeaker(line);
-		_dialogueTitle.Visible = false;
-
-		StartTypewriter(
-			_dialogueText,
-			line.Text ?? string.Empty,
-			line.Pace
-		);
+		StartTypewriter(_dialogueText, ResolveDialogueText(line.Text), line.Pace,
+			spoken ? line.Speaker : "");
 	}
 
 	private void ShowSilence(DialogueLine line)
@@ -665,12 +486,63 @@ public partial class Main : Control
 		_choiceCard.Visible = false;
 		_epigraphText.Visible = true;
 
-		_epigraphLabel.Text =
-			EscapeBbcode(line.Text ?? string.Empty);
+		string text = ResolveDialogueText(line.Text);
+		_epigraphLabel.Text = EscapeBbcode(text);
 		_epigraphLabel.VisibleCharacters = -1;
 		_epigraphLabel.SelfModulate = Colors.White;
 		_epigraphLabel.OffsetTransformPosition =
 			Vector2.Zero;
+		RecordDialogue(text);
+	}
+
+	private void ShowChapterTransition(DialogueLine line)
+	{
+		CancelTypewriter();
+		_dialogueCard.Hide();
+		_choiceCard.Hide();
+		_epigraphText.Hide();
+		_historyButton.Hide();
+		_fishingModule.SetFishingEnabled(false);
+		_queuedFishSignals.Clear();
+
+		if (line.Day is int day && day != _gameState.CurrentDay)
+		{
+			_gameState.BeginDay(day, new FishingSetup());
+		}
+
+		_chapterTitle.Text = line.Text;
+		_chapterSubtitle.Text = line.ChapterSubtitle ?? "";
+		_chapterSubtitle.Visible = !string.IsNullOrWhiteSpace(_chapterSubtitle.Text);
+		_chapterTitle.Visible = !string.IsNullOrWhiteSpace(line.Text);
+		_chapterTransition.Show();
+		_chapterAnimation.Play(_chapterTitle.Visible || _chapterSubtitle.Visible ? "cover" : "scene_cover");
+		_chapterAnimation.Advance(0.0);
+	}
+
+	private void OnChapterAnimationFinished(StringName animation)
+	{
+		if (animation == "reveal")
+		{
+			_chapterTransition.Hide();
+			if (_dinnerStage.Visible && _dialogueGraph.TryGetLine(_currentLineId, out DialogueLine dinner) &&
+				dinner.Type == DialogueLineType.DinnerDialogue)
+			{
+				PlayDinnerLine(dinner);
+			}
+			else
+			{
+				_historyButton.Show();
+			}
+			return;
+		}
+
+		if ((animation == "cover" || animation == "scene_cover") &&
+			_dialogueGraph.TryGetLine(_currentLineId, out DialogueLine chapter))
+		{
+			_chapterAnimation.Play("reveal");
+			// Reveal the next scene from black, including a settlement that pauses the tree.
+			JumpTo(chapter.NextId);
+		}
 	}
 
 	private void ShowDialogueCard()
@@ -716,9 +588,9 @@ public partial class Main : Control
 	{
 		Button button = ChoiceButtonScene.Instantiate<Button>();
 		button.Name = $"ChoiceButton{index + 1}";
-		button.Text = choice.Text ?? string.Empty;
+		button.Text = ResolveDialogueText(choice.Text);
 
-		button.Pressed += () => SelectChoice(choice);
+		button.Pressed += () => SelectChoice(choice, button.Text);
 
 		return button;
 	}
@@ -732,73 +604,20 @@ public partial class Main : Control
 		}
 	}
 
-	private void SelectChoice(DialogueChoice choice)
+	private void SelectChoice(DialogueChoice choice, string displayedText)
 	{
+		if (_fishingTutorialBlocking)
+		{
+			return;
+		}
+
+		RecordDialogue(displayedText, "伊诺尔");
 		_choiceCard.Visible = false;
 		ApplyDialogueEffects(choice.Effects);
 
 		// 不再通过数字行号跳转，
 		// 而是通过剧情 ID 跳转。
-		BeginLineTransition(choice.TargetId);
-	}
-
-	private void BeginLineTransition(string targetId)
-	{
-		if (string.IsNullOrWhiteSpace(targetId))
-		{
-			GD.PushError("尝试安排到一个空的剧情 ID。");
-			return;
-		}
-
-		if (_dialogueGraph == null ||
-			!_dialogueGraph.TryGetLine(targetId, out DialogueLine targetLine))
-		{
-			GD.PushError($"找不到剧情 ID：{targetId}");
-			return;
-		}
-
-		// 动作和沉默节点直接开始，不叠加对白切换停顿。
-		if (targetLine.Type == DialogueLineType.Silence ||
-			targetLine.Type == DialogueLineType.FishingTutorial)
-		{
-			JumpTo(targetId);
-			return;
-		}
-
-		CancelTypewriter();
-		_epigraphText.Visible = false;
-		_dialogueCard.Visible = false;
-		_choiceCard.Visible = false;
-
-		_isLineTransitionActive = true;
-		_lineTransitionTimeRemaining =
-			GetLineTransitionDelay(targetLine);
-		_lineTransitionTargetId = targetId;
-	}
-
-	private double GetLineTransitionDelay(DialogueLine targetLine)
-	{
-		string targetSpeaker = targetLine.Speaker ?? string.Empty;
-
-		if (!string.IsNullOrWhiteSpace(_lastSpokenSpeaker) &&
-			!string.IsNullOrWhiteSpace(targetSpeaker) &&
-			!string.Equals(
-				_lastSpokenSpeaker,
-				targetSpeaker,
-				StringComparison.Ordinal))
-		{
-			return SpeakerChangeTransitionDelay;
-		}
-
-		return SameSpeakerTransitionDelay;
-	}
-
-	private void RememberSpokenSpeaker(DialogueLine line)
-	{
-		if (!string.IsNullOrWhiteSpace(line.Speaker))
-		{
-			_lastSpokenSpeaker = line.Speaker;
-		}
+		JumpTo(choice.TargetId);
 	}
 
 	private void JumpTo(string targetId)
@@ -809,11 +628,17 @@ public partial class Main : Control
 			return;
 		}
 
-		if (_dialogueGraph != null &&
-			_dialogueGraph.TryGetLine(
-				targetId,
-				out DialogueLine _))
+		if (_dialogueGraph != null && _dialogueGraph.TryGetLine(targetId, out DialogueLine targetLine))
 		{
+			bool missingCatch = !string.IsNullOrWhiteSpace(targetLine.RequiredCatchId) &&
+				!_gameState.GetDailyCatch().ContainsKey(targetLine.RequiredCatchId);
+			bool missingDinner = targetLine.RequiresDinnerFish &&
+				_gameState.DinnerFishByDay?.ContainsKey(_gameState.CurrentDay) != true;
+			if (missingCatch || missingDinner)
+			{
+				targetId = targetLine.FallbackId;
+			}
+
 			_currentLineId = targetId;
 			ShowCurrentLine();
 			return;
@@ -828,41 +653,31 @@ public partial class Main : Control
 		{
 			case FishingDirective.Enable:
 				_fishingModule.SetFishingEnabled(true);
+				_gameState.EnterDialogueFishing();
 				break;
 
 			case FishingDirective.Trigger:
-				FishingEventRequest request =
-					_fishingDataStore.CreateEventRequest(
-						line.Id,
-						_gameState.CurrentFishingSetup
-					);
-				bool eventStarted =
-					_fishingModule.TriggerFishingEvent(request);
-
-				if (!eventStarted)
-				{
-					GD.PushWarning(
-						$"剧情 {line.Id} 请求触发钓鱼，" +
-						"但钓鱼模块尚未启用或事件仍在进行。"
-					);
-				}
+				_queuedFishSignals.Enqueue(string.IsNullOrEmpty(line.FishingEventId) ? line.Id : line.FishingEventId);
 				break;
 
 			case FishingDirective.Disable:
-				_fishingEventBlocking = false;
+				_queuedFishSignals.Clear();
 				_fishingModule.SetFishingEnabled(false);
 				break;
+		}
+	}
+
+	private void PrepareFishingEvent(string eventId)
+	{
+		if (!_fishingModule.PrepareFishingEvent(eventId, _gameState.CurrentFishingSetup, _gameState.CurrentDay))
+		{
+			GD.PushWarning($"钓鱼事件 {eventId} 无法开始准备。");
 		}
 	}
 
 	private void OnFishingEventFinished(FishingResult result)
 	{
 		_gameState.ApplyFishingResult(result);
-	}
-
-	private void OnFishingInteractionBlockingChanged(bool blocking)
-	{
-		_fishingEventBlocking = blocking;
 	}
 
 	private void OnFishingTutorialStepFinished(
@@ -872,6 +687,211 @@ public partial class Main : Control
 		_gameState.CurrentFishingSetup = setup ?? new FishingSetup();
 		_fishingTutorialBlocking = false;
 		AdvanceDialogue();
+	}
+
+	private string ResolveDialogueText(string text)
+	{
+		text ??= string.Empty;
+		if (!text.Contains("当前饵料", StringComparison.Ordinal))
+		{
+			return text;
+		}
+
+		string baitName = _fishingDataStore.TryGetBait(
+			_gameState.CurrentFishingSetup?.BaitId, out FishingBaitDefinition bait)
+			? bait.DisplayName
+			: "这个鱼饵";
+		return CurrentBaitToken.Replace(text, _ => baitName);
+	}
+
+	private void RecordDialogue(string text, string speaker = "")
+	{
+		if (!string.IsNullOrWhiteSpace(text))
+		{
+			_dialogueHistory.Add(string.IsNullOrWhiteSpace(speaker) ? text : $"{speaker}\n{text}");
+		}
+	}
+
+	private void ShowDialogueHistory()
+	{
+		string content = string.Join("\n\n", _dialogueHistory);
+		ShowStoryPanel("历史对话", content.Length > 0 ? content : "暂无记录", "关闭");
+		_storyPanelContent.ScrollToLine(_storyPanelContent.GetLineCount() - 1);
+	}
+
+	private void ShowDaySettlement()
+	{
+		CancelTypewriter();
+		_gameState.EnterSettlement();
+		_showingDaySettlement = true;
+
+		IReadOnlyDictionary<string, int> catchByFish = _gameState.GetDailyCatch();
+		List<string> rows = new();
+		foreach ((string fishId, int quantity) in catchByFish)
+		{
+			rows.Add($"{_fishingDataStore.GetFishDisplayName(fishId)} × {quantity}");
+		}
+
+		ShowStoryPanel("今日渔获", rows.Count > 0 ? string.Join("\n", rows) : "今天没有钓到鱼", "继续");
+	}
+
+	private void ShowDinnerMenu(IReadOnlyList<FishDefinition> options)
+	{
+		_storyPanelTitle.Text = "选一道晚饭";
+		_storyPanelContent.Hide();
+		_closeStoryPanelButton.Hide();
+		_dinnerMenu.Show();
+		_dinnerMenu.ScrollVertical = 0;
+
+		foreach (FishDefinition fish in options)
+		{
+			Button button = DinnerOptionScene.Instantiate<Button>();
+			button.Text = $"{fish.DinnerRecipe.DisplayName}（{fish.DisplayName}）";
+			button.TooltipText = fish.DinnerRecipe.Description;
+			button.Pressed += () =>
+			{
+				if (_gameState.TryServeDinner(_fishingDataStore, fish.Id))
+				{
+					LeaveSettlement();
+				}
+			};
+			_dinnerOptions.AddChild(button);
+		}
+
+		_dinnerOptions.GetChild<Button>(0).GrabFocus();
+	}
+
+	private void LeaveSettlement()
+	{
+		_showingDaySettlement = false;
+		_dinnerMenu.Hide();
+		foreach (Node child in _dinnerOptions.GetChildren())
+		{
+			_dinnerOptions.RemoveChild(child);
+			child.QueueFree();
+		}
+		DismissStoryPanel();
+
+		if (_dialogueGraph.TryGetLine(_currentLineId, out DialogueLine settlement) &&
+			!string.IsNullOrWhiteSpace(settlement.NextId))
+		{
+			JumpTo(settlement.NextId);
+			return;
+		}
+
+		_gameState.CompleteDay();
+	}
+
+	private void ShowDinnerLine(DialogueLine line)
+	{
+		CancelTypewriter();
+		_dialogueCard.Hide();
+		_choiceCard.Hide();
+		_epigraphText.Hide();
+		_historyButton.Hide();
+		_dinnerStage.Show();
+		if (!_chapterTransition.Visible)
+		{
+			PlayDinnerLine(line);
+		}
+	}
+
+	private void PlayDinnerLine(DialogueLine line)
+	{
+		RecordDialogue(line.Text, line.Speaker);
+		_dinnerStage.PlayLine(line.SpeakerId, line.Text);
+	}
+
+	private void FinishDinnerLine()
+	{
+		if (!_dialogueGraph.TryGetLine(_currentLineId, out DialogueLine line))
+		{
+			return;
+		}
+
+		if (string.IsNullOrWhiteSpace(line.NextId))
+		{
+			_gameState.CompleteDay();
+			_historyButton.Show();
+			return;
+		}
+
+		if (_dialogueGraph.TryGetLine(line.NextId, out DialogueLine next) &&
+			next.Type != DialogueLineType.DinnerDialogue)
+		{
+			_dinnerStage.Hide();
+			_gameState.CompleteDay();
+		}
+		JumpTo(line.NextId);
+	}
+
+	private void ShowStoryPanel(string title, string content, string closeText)
+	{
+		_storyPanelContent.Show();
+		_closeStoryPanelButton.Show();
+		_storyPanelTitle.Text = title;
+		_storyPanelContent.Text = content;
+		_closeStoryPanelButton.Text = closeText;
+		_storyPanels.Show();
+		_storyPanelContent.ScrollToLine(0);
+		GetTree().Paused = true;
+		_closeStoryPanelButton.GrabFocus();
+	}
+
+	private void OnGuiFocusChanged(Control control)
+	{
+		if (!_storyPanels.Visible && control != _historyButton)
+		{
+			_focusBeforeStoryPanel = control;
+		}
+	}
+
+	public override void _ExitTree()
+	{
+		GetViewport().GuiFocusChanged -= OnGuiFocusChanged;
+	}
+
+	private void CloseStoryPanel()
+	{
+		if (_historyOverSettlement)
+		{
+			_historyOverSettlement = false;
+			ShowDaySettlement();
+			if (_returnToDinnerMenu)
+			{
+				_storyPanelTitle.Text = "选一道晚饭";
+				_storyPanelContent.Hide();
+				_closeStoryPanelButton.Hide();
+				_dinnerMenu.Show();
+				_dinnerOptions.GetChild<Button>(0).GrabFocus();
+			}
+			return;
+		}
+		if (_showingDaySettlement)
+		{
+			IReadOnlyList<FishDefinition> options = _gameState.GetDinnerOptions(_fishingDataStore);
+			if (options.Count > 0)
+			{
+				ShowDinnerMenu(options);
+			}
+			else
+			{
+				LeaveSettlement();
+			}
+			return;
+		}
+
+		DismissStoryPanel();
+	}
+
+	private void DismissStoryPanel()
+	{
+		_storyPanels.Hide();
+		GetTree().Paused = false;
+		if (IsInstanceValid(_focusBeforeStoryPanel) && _focusBeforeStoryPanel.IsVisibleInTree())
+		{
+			_focusBeforeStoryPanel.GrabFocus();
+		}
 	}
 
 	private void ApplyDialogueEffects(DialogueEffect[] effects)
@@ -886,12 +906,14 @@ public partial class Main : Control
 	private void StartTypewriter(
 		RichTextLabel subtitle,
 		string text,
-		DialoguePace pace = DialoguePace.Normal)
+		DialoguePace pace = DialoguePace.Normal,
+		string speaker = "")
 	{
 		CancelTypewriter();
 
 		_activeSubtitle = subtitle;
 		_activeSubtitleText = text ?? string.Empty;
+		_activeSubtitleSpeaker = speaker;
 		_visibleSubtitleCharacters = 0;
 		_timeUntilNextCharacter = 0.0;
 		_isTypingSubtitle = true;
@@ -900,40 +922,20 @@ public partial class Main : Control
 			? SlowCharactersPerSecond
 			: CharactersPerSecond;
 
-		subtitle.Text =
-			EscapeBbcode(_activeSubtitleText);
+		string escapedText = EscapeBbcode(_activeSubtitleText);
+		// Full-width sentence endings leave a blank half-cell to the right of centered dialogue.
+		int halfEm = subtitle.GetThemeFontSize("normal_font_size") / 2;
+		subtitle.Text = TerminalCjkPunctuation.Replace(escapedText,
+			match => $"[font gl=-{halfEm}]{match.Value}[/font]");
 
 		subtitle.VisibleCharacters = 0;
 		_totalSubtitleCharacters =
 			subtitle.GetTotalCharacterCount();
 
-		subtitle.SelfModulate =
-			new Color(1.0f, 1.0f, 1.0f, 0.0f);
-		subtitle.OffsetTransformPosition =
-			new Vector2(0.0f, 2.0f);
-
-		_subtitleEntranceTween = CreateTween();
-		_subtitleEntranceTween
-			.SetTrans(Tween.TransitionType.Quad)
-			.SetEase(Tween.EaseType.Out)
-			.SetParallel(true);
-		_subtitleEntranceTween.TweenProperty(
-			subtitle,
-			"self_modulate:a",
-			1.0f,
-			SubtitleEntranceDuration
-		);
-		_subtitleEntranceTween.TweenProperty(
-			subtitle,
-			"offset_transform_position",
-			Vector2.Zero,
-			SubtitleEntranceDuration
-		);
-
 		if (_totalSubtitleCharacters == 0)
-		{
 			FinishTypewriter();
-		}
+		else
+			RevealNextCharacter();
 	}
 
 	private void RevealNextCharacter()
@@ -993,6 +995,7 @@ public partial class Main : Control
 		_activeSubtitle.OffsetTransformPosition =
 			Vector2.Zero;
 
+		RecordDialogue(_activeSubtitleText, _activeSubtitleSpeaker);
 		_isTypingSubtitle = false;
 		_isSubtitleAccelerated = false;
 		_activeSubtitle = null;
@@ -1014,11 +1017,6 @@ public partial class Main : Control
 		_timeUntilNextCharacter = 0.0;
 		_activeCharactersPerSecond = CharactersPerSecond;
 
-		if (_subtitleEntranceTween != null)
-		{
-			_subtitleEntranceTween.Kill();
-			_subtitleEntranceTween = null;
-		}
 	}
 
 	private static double GetPunctuationDelay(

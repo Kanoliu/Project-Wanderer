@@ -81,11 +81,20 @@ public class FishingCatchCandidate
 	public int Weight { get; set; }
 }
 
+public class DinnerRecipeDefinition
+{
+	public string DisplayName { get; set; } = "";
+	public string Description { get; set; } = "";
+	public string[] FavoriteCharacterIds { get; set; } = Array.Empty<string>();
+	public string[] LikedCharacterIds { get; set; } = Array.Empty<string>();
+}
+
 public class FishDefinition
 {
 	public string Id { get; set; } = "";
 	public string DisplayName { get; set; } = "";
 	public string Description { get; set; } = "";
+	public DinnerRecipeDefinition DinnerRecipe { get; set; }
 	public FishCatchDifficulty CatchDifficulty { get; set; }
 	public FishAvailabilityDefinition Availability { get; set; } = new();
 	public string BiteProfileId { get; set; } = "";

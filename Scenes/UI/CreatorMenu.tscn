@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/CreatorMenu.cs" id="script"]
+[ext_resource type="Theme" path="res://Assets/Art/UI/dialogue/wanderer-theme.tres" id="theme"]
+
+[node name="CreatorMenu" type="ColorRect"]
+process_mode = 3
+z_index = 100
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.02, 0.04, 0.04, 0.45)
+theme = ExtResource("theme")
+script = ExtResource("script")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left = 0.16
+anchor_right = 0.84
+anchor_top = 0.09
+anchor_bottom = 0.91
+theme_type_variation = &"DialogueBodyStandalone"
+
+[node name="Stack" type="VBoxContainer" parent="Panel"]
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Panel/Stack"]
+text = "制作者模式"
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.843, 0.718, 0.486, 1)
+
+[node name="Location" type="Label" parent="Panel/Stack"]
+unique_name_in_owner = true
+text = "当前位置"
+text_overrun_behavior = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="Section" type="OptionButton" parent="Panel/Stack"]
+unique_name_in_owner = true
+
+[node name="Search" type="LineEdit" parent="Panel/Stack"]
+unique_name_in_owner = true
+placeholder_text = "搜索节点 ID、台词、角色或功能"
+clear_button_enabled = true
+
+[node name="Entries" type="ItemList" parent="Panel/Stack"]
+unique_name_in_owner = true
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 20
+theme_override_constants/v_separation = 8
+
+[node name="Actions" type="HBoxContainer" parent="Panel/Stack"]
+alignment = 2
+
+[node name="Back" type="Button" parent="Panel/Stack/Actions"]
+text = "返回游戏"
+
+[node name="Run" type="Button" parent="Panel/Stack/Actions"]
+unique_name_in_owner = true
+text = "执行选中项"

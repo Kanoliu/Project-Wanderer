@@ -23,6 +23,7 @@ internal static class Program
     public static void Main(string[] args)
     {
         Require(FishingDataRepository.TryLoad(out var repository, out var errors), string.Join("\n", errors));
+        DinnerChecks.Run(repository, Require);
         CheckLossTierLoading();
         CheckGlobalGainLoading();
         foreach (var species in repository.Fish)
@@ -77,6 +78,7 @@ internal static class Program
         }
         Require(seenFish.Count == repository.Fish.Sum(f => 1 + f.Variants.Length), "Not every species/variant was exercised");
         Console.WriteLine($"PASS: {seenFish.Count} fish forms propagate movement and progress rates through natural requests");
+        CheckFirstDayCatchPool(repository);
         var setup = new FishingSetup { BaitId = "bait.chao_gen_chong", Depth = FishingDepth.Shallow };
         foreach (string eventId in new[] { "act1.tutorial.first_catch", "test.natural_catch" })
         {
@@ -208,6 +210,22 @@ internal static class Program
             ? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(args[1]), "movement-feel.json") : null);
         Console.WriteLine($"All {_checks:N0} assertions passed.");
         if (args.Length == 2 && args[0] == "--balance-report") BalanceChecks.Run(repository, args[1]);
+    }
+
+    private static void CheckFirstDayCatchPool(FishingDataRepository repository)
+    {
+        foreach (var bait in repository.Baits)
+        foreach (var depth in repository.Depths)
+        for (int seed = 0; seed < 100; seed++)
+        {
+            var setup = new FishingSetup { BaitId = bait.Id, Depth = depth.Value };
+            var request = repository.CreateEventRequest("test.day_one", setup, new Random(seed), day: 1);
+            Require(repository.TryGetFish(request.BaseFishId, out var species) &&
+                species.CatchDifficulty != FishCatchDifficulty.High &&
+                request.FishId == species.Id && !request.IsSpecialVariant,
+                $"First day drew an advanced fish or an empty catch for {bait.Id} at {depth.Id}");
+        }
+        Console.WriteLine("PASS: every day-one bait and depth yields only standard low/medium species");
     }
 
     private static void CheckLossTierLoading()

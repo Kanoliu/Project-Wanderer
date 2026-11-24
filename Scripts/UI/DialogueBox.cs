@@ -3,27 +3,38 @@ using Godot;
 [Tool]
 public partial class DialogueBox : PanelContainer
 {
-    private Label _title;
-    private Control _header;
-    private PanelContainer _body;
+	private Label _title;
+	private Control _header;
+	private RichTextLabel _text;
+	private DialogueLineType _voice = DialogueLineType.Dialogue;
 
-    public override void _Ready()
-    {
-        _title = GetNode<Label>("DialogueStack/Header/DialogueTitle");
-        _header = GetNode<Control>("DialogueStack/Header");
-        _body = GetNode<PanelContainer>("DialogueStack/Body");
-        UpdateSpeakerState();
-    }
+	[Export]
+	public DialogueLineType Voice
+	{
+		get => _voice;
+		set
+		{
+			_voice = value;
+			if (_text != null) ApplyVoice();
+		}
+	}
 
-    public override void _Process(double delta) => UpdateSpeakerState();
+	public override void _Ready()
+	{
+		_title = GetNode<Label>("DialogueStack/Header/DialogueTitle");
+		_header = GetNode<Control>("DialogueStack/Header");
+		_text = GetNode<RichTextLabel>("DialogueStack/Body/DialogueText");
+		_title.VisibilityChanged += ApplyVoice;
+		ApplyVoice();
+	}
 
-    private void UpdateSpeakerState()
-    {
-        bool showHeader = _title.Visible && !string.IsNullOrWhiteSpace(_title.Text);
-        if (_header.Visible != showHeader)
-            _header.Visible = showHeader;
-        StringName variation = showHeader ? "DialogueBody" : "DialogueBodyStandalone";
-        if (_body.ThemeTypeVariation != variation)
-            _body.ThemeTypeVariation = variation;
-    }
+	private void ApplyVoice()
+	{
+		bool thought = Voice == DialogueLineType.Thought;
+		bool narration = Voice == DialogueLineType.Narration;
+		_header.Visible = !thought && !narration && _title.Visible && !string.IsNullOrWhiteSpace(_title.Text);
+		ThemeTypeVariation = thought ? "ThoughtBody" : narration ? "" : "DialogueBodyStandalone";
+		_text.ThemeTypeVariation = thought ? "ThoughtText" : narration ? "NarrationText" : "";
+		_text.HorizontalAlignment = narration ? HorizontalAlignment.Center : HorizontalAlignment.Left;
+	}
 }

@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://d1nfscnecmto5" path="res://Assets/Art/UI/dialogue/button-focus.svg" id="7"]
 [ext_resource type="Texture2D" uid="uid://drrc843ro71uj" path="res://Assets/Art/UI/dialogue/dialogue-header-tail.svg" id="8"]
 [ext_resource type="Texture2D" uid="uid://k7yapfb4vb6n" path="res://Assets/Art/UI/dialogue/dialogue-standalone.svg" id="9"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dinner/bubble-tail-left.svg" id="10"]
+[ext_resource type="Texture2D" path="res://Assets/Art/UI/dinner/bubble-tail-right.svg" id="11"]
 
 [sub_resource type="StyleBoxTexture" id="button_disabled"]
 content_margin_left = 44.0
@@ -66,10 +68,11 @@ texture_margin_right = 16.0
 texture_margin_bottom = 16.0
 
 [sub_resource type="StyleBoxTexture" id="dialogue_panel"]
+; The connected header supplies the upper 26 px of the visible dialogue body.
 content_margin_left = 28.0
-content_margin_top = 28.0
+content_margin_top = 15.0
 content_margin_right = 28.0
-content_margin_bottom = 28.0
+content_margin_bottom = 41.0
 texture = ExtResource("1")
 texture_margin_left = 28.0
 texture_margin_top = 28.0
@@ -106,7 +109,55 @@ texture_margin_top = 26.0
 texture_margin_right = 28.0
 texture_margin_bottom = 26.0
 
+[sub_resource type="StyleBoxTexture" id="dinner_bubble_left"]
+content_margin_left = 18.0
+content_margin_top = 16.0
+content_margin_right = 18.0
+content_margin_bottom = 36.0
+texture = ExtResource("10")
+texture_margin_left = 64.0
+texture_margin_top = 14.0
+texture_margin_right = 24.0
+texture_margin_bottom = 23.0
+
+[sub_resource type="StyleBoxTexture" id="dinner_bubble_right"]
+content_margin_left = 18.0
+content_margin_top = 16.0
+content_margin_right = 18.0
+content_margin_bottom = 36.0
+texture = ExtResource("11")
+texture_margin_left = 24.0
+texture_margin_top = 14.0
+texture_margin_right = 64.0
+texture_margin_bottom = 23.0
+
+[sub_resource type="StyleBoxFlat" id="thought_panel"]
+bg_color = Color(0.12, 0.17, 0.18, 0.92)
+border_width_left = 2
+border_color = Color(0.55, 0.67, 0.68, 1)
+content_margin_left = 28.0
+content_margin_right = 28.0
+content_margin_top = 24.0
+content_margin_bottom = 24.0
+
+[sub_resource type="FontVariation" id="thought_font"]
+variation_transform = Transform2D(1, 0, -0.12, 1, 0, 0)
+
 [resource]
+ThoughtBody/base_type = &"PanelContainer"
+ThoughtBody/styles/panel = SubResource("thought_panel")
+DialogueAttribution/base_type = &"Label"
+DialogueAttribution/colors/font_color = Color(0.843, 0.718, 0.486, 1)
+DialogueAttribution/font_sizes/font_size = 24
+NarrationText/base_type = &"RichTextLabel"
+NarrationText/font_sizes/normal_font_size = 28
+NarrationText/constants/outline_size = 6
+NarrationText/colors/font_outline_color = Color(0.07, 0.10, 0.11, 0.96)
+NarrationText/colors/default_color = Color(0.94, 0.94, 0.89, 1)
+ThoughtText/base_type = &"RichTextLabel"
+ThoughtText/fonts/normal_font = SubResource("thought_font")
+ThoughtText/font_sizes/normal_font_size = 28
+ThoughtText/colors/default_color = Color(0.79, 0.86, 0.86, 1)
 default_font_size = 26
 Button/colors/font_color = Color(0.82, 0.827, 0.749, 1)
 Button/colors/font_disabled_color = Color(0.345, 0.396, 0.396, 1)
@@ -120,17 +171,26 @@ Button/styles/hover = SubResource("button_hover")
 Button/styles/hover_pressed = SubResource("button_pressed")
 Button/styles/normal = SubResource("button_normal")
 Button/styles/pressed = SubResource("button_pressed")
+DialogueChoiceButton/base_type = &"Button"
+DialogueChoiceButton/font_sizes/font_size = 32
 DialogueBody/base_type = &"PanelContainer"
 DialogueBody/styles/panel = SubResource("dialogue_panel")
 DialogueBodyStandalone/base_type = &"PanelContainer"
 DialogueBodyStandalone/styles/panel = SubResource("standalone")
 DialogueHeaderTail/base_type = &"PanelContainer"
 DialogueHeaderTail/styles/panel = SubResource("header_tail")
+DinnerBubbleLeft/base_type = &"PanelContainer"
+DinnerBubbleLeft/styles/panel = SubResource("dinner_bubble_left")
+DinnerBubbleRight/base_type = &"PanelContainer"
+DinnerBubbleRight/styles/panel = SubResource("dinner_bubble_right")
+DinnerBubbleText/base_type = &"Label"
+DinnerBubbleText/constants/line_separation = 10
+DinnerBubbleText/font_sizes/font_size = 26
 Label/colors/font_color = Color(0.82, 0.827, 0.749, 1)
 PanelContainer/styles/panel = SubResource("empty")
 RichTextLabel/colors/default_color = Color(0.82, 0.827, 0.749, 1)
 RichTextLabel/constants/line_separation = 4
-RichTextLabel/font_sizes/normal_font_size = 26
+RichTextLabel/font_sizes/normal_font_size = 32
 SpeakerTag/base_type = &"Label"
 SpeakerTag/colors/font_color = Color(0.843, 0.718, 0.486, 1)
 SpeakerTag/styles/normal = SubResource("speaker_tag")

@@ -1,0 +1,115 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Art/Backgrounds/ship-dinner.png" id="1_art"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/DinnerBubble.tscn" id="2_bubble"]
+[ext_resource type="Script" path="res://Scripts/UI/DinnerStage.cs" id="3_script"]
+
+[node name="DinnerStage" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_script")
+
+[node name="Matte" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.012, 0.012, 0.01, 1)
+
+[node name="Composition" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+ratio = 1.7838126
+
+[node name="Canvas" type="Control" parent="Composition"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Table" type="TextureRect" parent="Composition/Canvas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_art")
+expand_mode = 1
+
+[node name="Aelyar" type="VBoxContainer" parent="Composition/Canvas"]
+layout_mode = 1
+anchor_left = 0.582
+anchor_right = 0.79
+anchor_top = 0.050
+anchor_bottom = 0.155
+mouse_filter = 2
+alignment = 2
+
+[node name="Bubble" parent="Composition/Canvas/Aelyar" instance=ExtResource("2_bubble")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Text" parent="Composition/Canvas/Aelyar/Bubble" index="0"]
+text = "辛苦了！天天土豆泥的日子\n终于结束了！"
+
+[node name="Wuzuona" type="VBoxContainer" parent="Composition/Canvas"]
+layout_mode = 1
+anchor_left = 0.036
+anchor_right = 0.244
+anchor_top = 0.18
+anchor_bottom = 0.320
+mouse_filter = 2
+alignment = 2
+
+[node name="Bubble" parent="Composition/Canvas/Wuzuona" instance=ExtResource("2_bubble")]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+theme_type_variation = &"DinnerBubbleRight"
+
+[node name="Wensheng" type="VBoxContainer" parent="Composition/Canvas"]
+layout_mode = 1
+anchor_left = 0.621
+anchor_right = 0.83
+anchor_top = 0.28
+anchor_bottom = 0.488
+mouse_filter = 2
+alignment = 2
+
+[node name="Bubble" parent="Composition/Canvas/Wensheng" instance=ExtResource("2_bubble")]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Yang" type="VBoxContainer" parent="Composition/Canvas"]
+layout_mode = 1
+anchor_left = 0.19
+anchor_right = 0.400
+anchor_top = 0.34
+anchor_bottom = 0.518
+mouse_filter = 2
+alignment = 2
+
+[node name="Bubble" parent="Composition/Canvas/Yang" instance=ExtResource("2_bubble")]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+theme_type_variation = &"DinnerBubbleRight"
+
+[node name="ReadingTime" type="Timer" parent="."]
+one_shot = true
+
+[editable path="Composition/Canvas/Aelyar/Bubble"]

@@ -113,6 +113,8 @@ public sealed class DialogueGraph
 		if (line.Type != DialogueLineType.Choice &&
 			line.Type != DialogueLineType.Silence &&
 			line.Type != DialogueLineType.FishingTutorial &&
+			line.Type != DialogueLineType.DaySettlement &&
+			line.Type != DialogueLineType.ChapterTransition &&
 			string.IsNullOrWhiteSpace(line.Text))
 		{
 			errors.Add($"剧情 {line.Id} 的正文为空。");
@@ -129,6 +131,27 @@ public sealed class DialogueGraph
 		if (line.Type == DialogueLineType.Choice)
 		{
 			ValidateChoices(line, linesById, errors);
+		}
+
+		if (line.Type == DialogueLineType.ChapterTransition &&
+			(line.Day is <= 0 || string.IsNullOrWhiteSpace(line.NextId) || line.NextId == line.Id))
+		{
+			errors.Add($"章节转场 {line.Id} 必须指向下一剧情节点；day 如有设置，必须从 1 开始。");
+		}
+
+		bool hasCondition = line.RequiresDinnerFish || !string.IsNullOrWhiteSpace(line.RequiredCatchId);
+		if ((hasCondition || !string.IsNullOrWhiteSpace(line.FallbackId)) &&
+			(!hasCondition ||
+				string.IsNullOrWhiteSpace(line.FallbackId) ||
+				line.FallbackId == line.Id || !linesById.ContainsKey(line.FallbackId)))
+		{
+			errors.Add($"剧情 {line.Id} 的条件跳转必须设置有效条件与 fallbackId。");
+		}
+
+		if (line.Type == DialogueLineType.DinnerDialogue &&
+			(string.IsNullOrWhiteSpace(line.SpeakerId) || string.IsNullOrWhiteSpace(line.Speaker)))
+		{
+			errors.Add($"晚餐对白 {line.Id} 必须设置 speakerId 和 speaker。");
 		}
 
 		if (line.Type == DialogueLineType.FishingTutorial &&
@@ -252,6 +275,11 @@ public sealed class DialogueGraph
 			if (!string.IsNullOrWhiteSpace(line.NextId))
 			{
 				pending.Push(line.NextId);
+			}
+
+			if (!string.IsNullOrWhiteSpace(line.FallbackId))
+			{
+				pending.Push(line.FallbackId);
 			}
 
 			foreach (DialogueChoice choice in

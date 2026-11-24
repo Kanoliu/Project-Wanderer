@@ -6,6 +6,13 @@
 [ext_resource type="PackedScene" path="res://Scenes/UI/DialogueBox.tscn" id="4_dialogue"]
 [ext_resource type="Theme" uid="uid://l13b4dpguk5i" path="res://Assets/Art/UI/dialogue/wanderer-theme.tres" id="5_theme"]
 [ext_resource type="PackedScene" uid="uid://ccvt30p7pt2pq" path="res://Scenes/FishingStage.tscn" id="6_stage"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/BobberHud.tscn" id="7_bobber"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/BaseButton.tscn" id="8_button"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/StoryPanels.tscn" id="9_panels"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/ChapterTransition.tscn" id="10_chapter"]
+[ext_resource type="PackedScene" path="res://Scenes/DinnerStage.tscn" id="11_dinner"]
+
+[ext_resource type="PackedScene" path="res://Scenes/UI/CreatorMenu.tscn" id="12_creator"]
 
 [node name="Main" type="Control" unique_id=1990365058]
 layout_mode = 3
@@ -14,7 +21,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_ig7tw")
+DialogueFiles = PackedStringArray("res://Dialogue/prologue.json", "res://Dialogue/act_one.json")
 
 [node name="StoryStage" type="Control" parent="." unique_id=1707821311]
 layout_mode = 1
@@ -77,6 +86,10 @@ color = Color(0.015, 0.025, 0.045, 0.08)
 z_index = 10
 layout_mode = 1
 
+[node name="DinnerStage" parent="." instance=ExtResource("11_dinner")]
+visible = false
+layout_mode = 1
+
 [node name="BottomArea" type="MarginContainer" parent="." unique_id=732352966]
 z_index = 10
 layout_mode = 0
@@ -91,6 +104,7 @@ theme_override_constants/margin_bottom = 56
 layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 2
+theme_override_constants/separation = 12
 
 [node name="DialogueCard" parent="BottomArea/ContentStack" unique_id=606475549 instance=ExtResource("4_dialogue")]
 layout_mode = 2
@@ -114,6 +128,40 @@ size_flags_horizontal = 3
 theme = ExtResource("5_theme")
 theme_override_constants/separation = 12
 
-[node name="DialogueFishingModule" parent="." unique_id=575421984 instance=ExtResource("3_fishing")]
+[node name="BobberHud" parent="." instance=ExtResource("7_bobber")]
+visible = false
+z_index = 19
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -496.0
+offset_right = -56.0
+offset_top = 160.0
+offset_bottom = 410.0
+
+[node name="DialogueFishingModule" parent="." unique_id=575421984 node_paths=PackedStringArray("BobberHud") instance=ExtResource("3_fishing")]
 z_index = 20
+layout_mode = 1
+BobberHud = NodePath("../BobberHud")
+
+[node name="HistoryButton" parent="." instance=ExtResource("8_button")]
+z_index = 21
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -242.0
+offset_top = 56.0
+offset_right = -56.0
+offset_bottom = 112.0
+grow_horizontal = 0
+text = "历史对话"
+alignment = 1
+
+[node name="StoryPanels" parent="." instance=ExtResource("9_panels")]
+layout_mode = 1
+
+[node name="ChapterTransition" parent="." instance=ExtResource("10_chapter")]
+layout_mode = 1
+
+[node name="CreatorMenu" parent="." instance=ExtResource("12_creator")]
+visible = false
 layout_mode = 1

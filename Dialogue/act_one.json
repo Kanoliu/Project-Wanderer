@@ -1,5 +1,13 @@
 [
   {
+	"id": "act1_chapter_morning",
+	"type": "ChapterTransition",
+	"text": "第一天",
+	"chapterSubtitle": "上午",
+	"day": 1,
+	"nextId": "act1_morning_wakeup"
+  },
+  {
 	"id": "act1_morning_wakeup",
 	"type": "Narration",
 	"speaker": "",
@@ -359,6 +367,8 @@
   },
   {
 	"id": "act1_aier_finances",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.ship_introduction",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
 	"text": "咳咳……你也看到了，我们又不是什么声名远扬的大组织。",
@@ -517,6 +527,8 @@
   },
   {
 	"id": "act1_aier_three_thousand",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.family_topic",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
 	"text": "那就先别想这么远了。作为救下你的报酬，你先替三弦号钓上三千条鱼吧。",
@@ -630,6 +642,8 @@
   },
   {
 	"id": "act1_inor_two_hundred",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.elf_age_topic",
 	"type": "Dialogue",
 	"speaker": "伊诺尔",
 	"text": "嗯……两百？",
@@ -667,6 +681,7 @@
   {
 	"id": "act1_morning_ends",
 	"type": "Dialogue",
+	"fishing": "Disable",
 	"speaker": "艾尔亚尔",
 	"text": "上午就先到这里吧。看来今天收成还不错！你也去休息一下。",
 	"nextId": "act1_morning_ends_kuxin"
@@ -687,10 +702,17 @@
   },
   {
 	"id": "act1_silence_between_shifts",
-	"type": "Silence",
-	"speaker": "",
-	"text": "",
-	"durationSeconds": 7.5,
+	"type": "ChapterTransition",
+	"text": "第一天",
+	"chapterSubtitle": "下午",
+	"nextId": "act1_afternoon_bait"
+  },
+  {
+	"id": "act1_afternoon_bait",
+	"type": "FishingTutorial",
+	"sceneId": "fishing.kusin",
+	"fishing": "Enable",
+	"tutorial": "SelectShiftBait",
 	"nextId": "act1_afternoon_kuxin_opens"
   },
   {
@@ -825,6 +847,8 @@
   },
   {
 	"id": "act1_inor_uncertainty",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.kuxin_lesson",
 	"type": "Dialogue",
 	"speaker": "伊诺尔",
 	"text": "可很多时候，把一切都算得清清楚楚，只得到一个稳定的结果……",
@@ -973,6 +997,8 @@
   },
   {
 	"id": "act1_wensheng_eel",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.food_supply",
 	"type": "Dialogue",
 	"speaker": "温生",
 	"text": "今天钓到鳝了吗？前几天那锅炖鳝还挺好吃的。",
@@ -1075,6 +1101,8 @@
   },
   {
 	"id": "act1_inor_some_memory",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.kuxin_home",
 	"type": "Dialogue",
 	"speaker": "伊诺尔",
 	"text": "那里总归……还是有些值得怀念的东西吧？",
@@ -1278,6 +1306,8 @@
   },
   {
 	"id": "act1_inor_story_conclusion",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.kuxin_story",
 	"type": "Dialogue",
 	"speaker": "伊诺尔",
 	"text": "所以……我的目标，是钓一条和船一样大的鱼？",
@@ -1342,6 +1372,8 @@
   },
   {
 	"id": "act1_aier_appears",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.kuxin_retirement",
 	"type": "Dialogue",
 	"speaker": "艾尔亚尔",
 	"text": "有人叫我吗？",
@@ -1399,6 +1431,8 @@
   },
   {
 	"id": "act1_kuxin_elves_at_sea",
+	"fishing": "Trigger",
+	"fishingEventId": "act1.trigger.aier_origin",
 	"type": "Dialogue",
 	"speaker": "库辛",
 	"text": "你又在海上见过多少精灵？他们可是最讨厌海洋的种族之一。",
@@ -1450,6 +1484,8 @@
   {
 	"id": "act1_eel_caught",
 	"type": "Dialogue",
+	"requiredCatchId": "fish.liu_ye_shan",
+	"fallbackId": "act1_afternoon_end",
 	"speaker": "伊诺尔",
 	"text": "比我想象中……小多了啊。",
 	"nextId": "act1_kuxin_eel_praise"
@@ -1479,8 +1515,107 @@
   {
 	"id": "act1_afternoon_end",
 	"type": "Dialogue",
+	"fishing": "Disable",
 	"speaker": "库辛",
 	"text": "哼……收获还不错。今天就到这儿吧。把这些鱼提到厨房去，然后坐着等吃。",
-	"nextId": null
+	"nextId": "act1_chapter_evening"
+  },
+  {
+	"id": "act1_chapter_evening",
+	"type": "ChapterTransition",
+	"text": "第一天",
+	"chapterSubtitle": "傍晚",
+	"nextId": "act1_day_settlement"
+  },
+  {
+	"id": "act1_day_settlement",
+	"type": "DaySettlement",
+	"nextId": "act1_dinner_transition"
+  },
+  {
+	"id": "act1_dinner_transition",
+	"type": "ChapterTransition",
+	"nextId": "act1_dinner_aelyar_open"
+  },
+  {
+	"id": "act1_dinner_aelyar_open",
+	"type": "DinnerDialogue",
+	"speakerId": "character.aelyar",
+	"speaker": "艾尔亚尔",
+	"text": "辛苦了！天天土豆泥的日子\n终于结束了！",
+	"requiresDinnerFish": true,
+	"fallbackId": "act1_dinner_aelyar_no_fish",
+	"nextId": "act1_dinner_wuzuona_mast"
+  },
+  {
+	"id": "act1_dinner_aelyar_no_fish",
+	"type": "DinnerDialogue",
+	"speakerId": "character.aelyar",
+	"speaker": "艾尔亚尔",
+	"text": "辛苦了！",
+	"nextId": "act1_dinner_wuzuona_mast"
+  },
+  {
+	"id": "act1_dinner_wuzuona_mast",
+	"type": "DinnerDialogue",
+	"speakerId": "character.wuzuona",
+	"speaker": "乌佐娜",
+	"text": "如果那天不是温生在咬钩时从桅杆上掉下来，吓得我脱手了",
+	"nextId": "act1_dinner_wuzuona_catch"
+  },
+  {
+	"id": "act1_dinner_wuzuona_catch",
+	"type": "DinnerDialogue",
+	"speakerId": "character.wuzuona",
+	"speaker": "乌佐娜",
+	"text": "我们早就吃上好的了。",
+	"nextId": "act1_dinner_wensheng_retort"
+  },
+  {
+	"id": "act1_dinner_wensheng_retort",
+	"type": "DinnerDialogue",
+	"speakerId": "character.wensheng",
+	"speaker": "温生",
+	"text": "放屁，你那杆分明\n挂在了水草上。",
+	"nextId": "act1_dinner_aelyar_route"
+  },
+  {
+	"id": "act1_dinner_aelyar_route",
+	"type": "DinnerDialogue",
+	"speakerId": "character.aelyar",
+	"speaker": "艾尔亚尔",
+	"text": "明天我要和船长研究一下航线，钓鱼就交给你们了。",
+	"nextId": "act1_dinner_wuzuona_afternoon"
+  },
+  {
+	"id": "act1_dinner_wuzuona_afternoon",
+	"type": "DinnerDialogue",
+	"speakerId": "character.wuzuona",
+	"speaker": "乌佐娜",
+	"text": "我下午！",
+	"nextId": "act1_dinner_yang_join"
+  },
+  {
+	"id": "act1_dinner_yang_join",
+	"type": "DinnerDialogue",
+	"speakerId": "character.yang",
+	"speaker": "阳",
+	"text": "我也和乌佐娜一起",
+	"nextId": "act1_dinner_wensheng_silence"
+  },
+  {
+	"id": "act1_dinner_wensheng_silence",
+	"type": "DinnerDialogue",
+	"speakerId": "character.wensheng",
+	"speaker": "温生",
+	"text": "……",
+	"nextId": "act1_dinner_yang_seconds"
+  },
+  {
+	"id": "act1_dinner_yang_seconds",
+	"type": "DinnerDialogue",
+	"speakerId": "character.yang",
+	"speaker": "阳",
+	"text": "好吃，可以再来一碗吗？"
   }
 ]

@@ -1,0 +1,59 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://Assets/Art/UI/dialogue/wanderer-theme.tres" id="1_theme"]
+
+[sub_resource type="Animation" id="Animation_in"]
+resource_name = "appear"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:offset_transform_position")
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(0, 10), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_out"]
+resource_name = "disappear"
+length = 0.16
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bubble"]
+_data = {
+&"appear": SubResource("Animation_in"),
+&"disappear": SubResource("Animation_out")
+}
+
+[node name="DinnerBubble" type="PanelContainer"]
+custom_minimum_size = Vector2(116, 0)
+mouse_filter = 2
+theme = ExtResource("1_theme")
+theme_type_variation = &"DinnerBubbleLeft"
+
+[node name="Text" type="Label" parent="."]
+custom_maximum_size = Vector2(362, -1)
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"DinnerBubbleText"
+autowrap_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_bubble")
+}

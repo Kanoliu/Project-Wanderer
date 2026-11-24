@@ -21,5 +21,5 @@ public interface IFishingDataRepository
 	bool TryGetFightProfile(string id, out FightProfileDefinition profile);
 	bool TryGetScriptedEvent(string id, out FishingEventDefinition fishingEvent);
 	FishingEventRequest CreateEventRequest(string eventId);
-	FishingEventRequest CreateEventRequest(string eventId, FishingSetup setup);
+	FishingEventRequest CreateEventRequest(string eventId, FishingSetup setup, int day = 0);
 }

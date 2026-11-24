@@ -7,7 +7,10 @@ public enum DialogueLineType
 	Silence,
 	Epigraph,
 	Choice,
-	FishingTutorial
+	FishingTutorial,
+	DaySettlement,
+	ChapterTransition,
+	DinnerDialogue
 }
 
 public enum DialoguePace
